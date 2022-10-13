@@ -7,17 +7,24 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 import time
+
 contact = "Бату"
 text = "Hey, this message was sent using Selenium"
-driver = webdriver.Chrome()
+
+options = webdriver.ChromeOptions()
+options.add_argument(r'--user-data-dir=C:\Users\OFFICE\AppData\Local\Google\Chrome\User Data\Default')
+options.add_argument('--profile-directory=Default')
+driver = webdriver.Chrome(options=options)
+
 driver.get("https://web.whatsapp.com")
+
 print("Scan QR Code, And then Enter")
 input()
 print("Logged In")
 # inp_xpath_search = "//input[@title='Search or start new chat']"
 # input_box_search = WebDriverWait(driver,50).until(lambda driver: driver.find_element(inp_xpath_search))
 # input_box_search.click()
-time.sleep(2)
+# time.sleep(2)
 # input_box_search.send_keys(contact)
 time.sleep(2)
 selected_contact = driver.find_element(By.XPATH, '//span[@title="{}"]'.format(contact))
