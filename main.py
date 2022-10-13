@@ -24,4 +24,3 @@ if number in config.py
     
 
 """
-driver.find_element(By.XPATH,"/html[@class='js no-touch serviceworker adownload cssanimations csstransitions webp exiforientation webp-alpha webp-animation webp-lossless wf-loading']/body[@class='web dark']/div[@id='app']/div[@class='_1ADa8 _3Nsgw app-wrapper-web font-fix os-win']/span[4]/div[@class='o--vV']/ul[@class='_1HnQz']/div/li[@class='_2qR8G _1wMaz _19zgN _18oo2']/div[@class='_2oldI dJxPU']").click()
