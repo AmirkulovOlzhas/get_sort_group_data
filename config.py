@@ -14,17 +14,19 @@ driver.get("https://web.whatsapp.com")
 print("Scan QR Code, And then Enter")
 input()
 print("Logged In")
-inp_xpath_search = "//input[@title='Search or start new chat']"
-input_box_search = WebDriverWait(driver,50).until(lambda driver: driver.find_element(inp_xpath_search))
-input_box_search.click()
+# inp_xpath_search = "//input[@title='Search or start new chat']"
+# input_box_search = WebDriverWait(driver,50).until(lambda driver: driver.find_element(inp_xpath_search))
+# input_box_search.click()
 time.sleep(2)
-input_box_search.send_keys(contact)
+# input_box_search.send_keys(contact)
 time.sleep(2)
-selected_contact = driver.find_element(By.XPATH, "//span[@title='"+contact+"']")
+selected_contact = driver.find_element(By.XPATH, '//span[@title="{}"]'.format(contact))
+print("success")
 selected_contact.click()
-inp_xpath = '//div[@class="_22Msk copyable-text selectable-text"][@contenteditable="true"][@data-tab="1"]'
+inp_xpath = '//div[@class="copyable-text"]'
 input_box = driver.find_element(By.XPATH, inp_xpath)
 time.sleep(2)
-input_box.send_keys(text + Keys.ENTER)
+for i in input_box:
+    print(i)
 time.sleep(2)
 driver.quit()
