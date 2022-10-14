@@ -14,7 +14,7 @@ def select(xpath, class_name, text='NULL', click=0):
         selected.click()
     if text != 'NULL':
         print(text)
-    time.sleep(2)
+    time.sleep(0.5)
 
 
 options = webdriver.ChromeOptions()
@@ -25,24 +25,25 @@ driver = webdriver.Chrome(executable_path=r'C:\Users\OFFICE\PycharmProjects\what
                           options=options)
 driver.get("https://web.whatsapp.com")
 
-i = 15
-while i > 0:
-    print("Waiting...{}".format(i))
-    time.sleep(1)
-    i -= 1
+# i = 15
+# # while i > 0:
+# #     print("Waiting...{}".format(i))
+# #     time.sleep(1)
+# #     i -= 1
+input()
 print("Logged In")
-time.sleep(2)
 
 select('//button[@class="{}"]', archive, "archive opened", click=1)
 select('//span[@title="{}"]', contact, "contact opened", 1)
 select('//span[@class="{}"]', message_class)
 pg.click(913, 617)
-for i in range(10):
+for i in range(20):
     pg.press('home')
-    print("home pressed")
-    time.sleep(1)
+    print("{}...".format(i), end='')
+    time.sleep(0.3)
 
-bs4_code.select_all_text(driver.page_source, message_class)
-bs4_code.select_photo_scr(driver.page_source, photo_class)
-time.sleep(20)
+# bs4_code.select_all_text(driver.page_source, message_class)
+# bs4_code.select_photo_scr(driver.page_source, photo_class)
+bs4_code.req_url(driver.page_source)
+input()
 driver.quit()
