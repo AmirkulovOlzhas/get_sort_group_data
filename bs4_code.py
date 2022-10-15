@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup as bs
 from config import message_class_list, message_class_list_with_text, list_p
 
-
+#git test
 def select_all_text(url, class_name):
     soup = bs(url, 'html.parser')
     try:
