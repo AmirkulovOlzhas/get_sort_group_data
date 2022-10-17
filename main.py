@@ -5,7 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 from bs4_code import req_url
-from config import contact, archive
+from config import contact, archive, select_ico
 
 
 def select(xpath, class_name, text='NULL', click=0, ms=False):
@@ -35,7 +35,7 @@ while True:  # waiting for wa
         # выбор архива
         select('//button[@class="{}"]', archive, "archive opened", click=1)
         break
-    except():
+    except:
         print("not yet")
         time.sleep(1)
 
@@ -62,15 +62,25 @@ for i in message_list:
     r.write(i)
     if i != message_list[len(message_list) - 1]:
         r.write('\n')
+r.close()
 
 select('//div[@class="{}"]', '_28_W0', click=1)  # click menu
 select('//div[@aria-label="{}"]', 'Выбрать сообщения', click=1)
 
+messages = driver.find_element(By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")).\
+    find_elements(By.XPATH, '//div')
+print(len(messages))
 # select
-# for i in r:
-#     for j in
-# i = 0
-# while i <= s:
+r = open('text.txt', 'r', encoding='utf8')
+for i in r:
+    for j in messages:
+        print(j)
+        print(j.text)
+        if j.text == i:
+            print("succes")
+            j.find_element(By.XPATH, '//input[@class="{}"]'.format(
+                select_ico)).click()
+            pg.keyDown()
 #
 #     select('//div[@class="{}"]', select_message_class, 1, True)
 
