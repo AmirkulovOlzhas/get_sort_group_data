@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup as bs
-from config import message_class_list, message_class_list_with_text, list_p, chat
+
+from config import message_class_list, list_p, chat
 
 
 def select_all_text(url, class_name):
@@ -36,6 +37,7 @@ def number_check(i):
 
 
 def req_url(url, key=0):
+    j = 0
     soup = bs(url, 'lxml')
     messages = soup.find('div', class_=chat).find_all('div')
     sum = 0
@@ -46,18 +48,13 @@ def req_url(url, key=0):
             i_class = " ".join(map(str, i.get('class')))
         else:
             i_class = " "
-        if i_class in message_class_list:
-
-            if i_class in message_class_list_with_text:
-                if i_class.find('img'):
-                    number_check(i)
-                    sum += 1
-                    messages_list.append(i)
-            else:
-                number_check(i)
-                sum += 1
-                messages_list.append(i)
-
+        if ("_1-lf9 _3mSPV" not in str(i.find_all('div'))) & (i_class in message_class_list):
+            number_check(i)
+            sum += 1
+            messages_list.append(i.text)
+            if key == 1:
+                j += 1
+                print(j, " - ", i.text)
     print('sum = {}'.format(sum))
     if key == 0:
         return sum
