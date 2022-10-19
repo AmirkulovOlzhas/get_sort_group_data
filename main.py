@@ -27,12 +27,30 @@ def select(xpath, class_name, text='NULL', click=0, ms=False):
         return 0
 
 
+def taking_sorted_messages(solo=0, check=False):
+    messages = driver.find_element(
+        By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
+        find_elements(By.XPATH, '//div[@data-id]')
+    sm = []
+    # print('len messages: ', len(messages))
+    for mes in messages:
+        # print(mes.get_attribute('innerHTML'))
+        if 'visual-checkbox' in mes.get_attribute('innerHTML'):
+            sm.append(mes)
+
+    if check==True:
+        return sm[solo]
+    else:
+        return sm
+
+
 tic = time.time()
 options = webdriver.ChromeOptions()
 options.add_argument(r'--user-data-dir=C:\Users\OFFICE\AppData\Local\Google\Chrome\User Data\Default')
 options.add_argument('--profile-directory=Default')
 
-driver = webdriver.Chrome(executable_path=r'C:\Users\OFFICE\PycharmProjects\whatsapp-project\chromedriver.exe',
+driver = webdriver.Chrome\
+    (executable_path=r'C:\Users\OFFICE\PycharmProjects\whatsapp-project\chromedriver.exe',
                           options=options)
 driver.get("https://web.whatsapp.com")
 
@@ -79,61 +97,65 @@ select('//div[@aria-label="{}"]', 'Выбрать сообщения', click=1)
 toc = time.time()
 tic = print_time(tic, toc, "selects")
 
-messages = driver.find_element(By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
-    find_elements(By.XPATH, '//div[@data-id]')
-sorted_messages = []
-print('len messages: ', len(messages))
+sorted_messages = taking_sorted_messages()
 
-for mes in messages:
-    # print(mes.get_attribute('innerHTML'))
-    if 'visual-checkbox' in mes.get_attribute('innerHTML'):
-        # print('*', end='')
-        sorted_messages.append(mes)
 print('len sorted_m: ', len(sorted_messages))
 
 toc = time.time()
 tic = print_time(tic, toc, "array1")
 
-# print(len(messages))
-# print(len(messages))
-# select
 r = open('text.txt', 'r', encoding='utf8')
-l = 0
+# l = 0
+n=''
 for i in r:
-    print('')
-    for j in sorted_messages:
-
-        temp_line = j.text.splitlines()
+    for j in range(len(sorted_messages)):
+        temp_line = sorted_messages[j].text.splitlines()
+        n1=n
         n = ''.join(temp_line)
 
-        # if l < 3:
-        #     print("i: ", str(i.splitlines()[0]) , "\nn: ", n)
-        #     print("1: ", j.get_attribute('innerHTML'))
-        #     print("2: ", j.get_attribute('class'))
-        # print("2: ", j.find_element(By.XPATH, '//div[@class="{}"]'.format(select_ico)))
+        print(sorted_messages[j].get_attribute('innerHTML'))
+        if (str(n) == str(i.splitlines()[0]))&(n1!=n):
+            if 'img' in sorted_messages[j].get_attribute('innerHTML'):
+                if '_3BK98' in str(sorted_messages[j].get_attribute('innerHTML')):
+                    if "_3BK98 _3vy-1" not in str(sorted_messages[j].get_attribute('innerHTML')):
+                        print(i.splitlines()[0], ' - ', n)
+                        print('+', sorted_messages[j].get_attribute('innerHTML'))
+                        selected = sorted_messages[j].find_element(By.XPATH, '//div[@class="{}"]'.
+                                                                   format(select_ico))
+                        selected.click()
+                        sorted_messages[j] = taking_sorted_messages(j, True)
+                        break
+                    else:
+                        print("-")
 
-        # problem here. need to choose next element if this was selected
-        if str(n) == str(i.splitlines()[0]):
-            l += 1
-            print(l)
-            print(j.get_attribute('class'))
-            if "_3Zpy8" not in str(j.get_attribute('class')):
-
-                selected = j.find_element(By.XPATH, '//div[@class="{}"]'.format(select_ico))
-                selected.click()
-
-                sorted_messages.remove(j)
-
-                print("after remove: ", len(sorted_messages))
-                print("+: ", j.get_attribute('innerHTML'))
-                # pg.press('down')
-                break
+        # temp_line = j.text.splitlines()
+        # n = ''.join(temp_line)
+        #
+        # # if l < 3:
+        # #     print("i: ", str(i.splitlines()[0]) , "\nn: ", n)
+        # #     print("1: ", j.get_attribute('innerHTML'))
+        # #     print("2: ", j.get_attribute('class'))
+        # # print("2: ", j.find_element(By.XPATH, '//div[@class="{}"]'.format(select_ico)))
+        #
+        # # problem here. need to choose next element if this was selected
+        # if str(n) == str(i.splitlines()[0]):
+        #     l += 1
+        #     print(l)
+        #     print(j.get_attribute('class'))
+        #     if "_3Zpy8" not in str(j.get_attribute('class')):
+        #
+        #         selected = j.find_element(By.XPATH, '//div[@class="{}"]'.format(select_ico))
+        #         selected.click()
+        #
+        #         sorted_messages.remove(j)
+        #
+        #         print("after remove: ", len(sorted_messages))
+        #         print("+: ", j.get_attribute('innerHTML'))
+        #         # pg.press('down')
+        #         break
 
 toc = time.time()
 tic = print_time(tic, toc, "array2")
-# pg.keyDown()
-#
-#     select('//div[@class="{}"]', select_message_class, 1, True)
 
 # bs4_code.select_all_text(driver.page_source, message_class)
 # bs4_code.select_photo_scr(driver.page_source, photo_class)
