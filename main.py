@@ -5,11 +5,11 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 from bs4_code import req_url
-from config import contact, archive, select_ico, message_class_list
+from config import contact, archive, select_ico, not_selected_ico_class
 
 
-def print_time(tic, toc, text='?'):
-    print("used time for {}: {} sec".format(text, (tic - toc)))
+def print_time(ttic, ttoc, text='?'):
+    print("used time for {}: {} sec".format(text, (ttic - ttoc)))
     return time.time()
 
 
@@ -76,12 +76,11 @@ r.close()
 select('//div[@class="{}"]', '_28_W0', click=1)  # click menu
 select('//div[@aria-label="{}"]', 'Выбрать сообщения', click=1)
 
-
 toc = time.time()
 tic = print_time(tic, toc, "selects")
 
 messages = driver.find_element(By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
-        find_elements(By.XPATH, '//div[@data-id]')
+    find_elements(By.XPATH, '//div[@data-id]')
 sorted_messages = []
 print('len messages: ', len(messages))
 
@@ -99,24 +98,40 @@ tic = print_time(tic, toc, "array1")
 # print(len(messages))
 # select
 r = open('text.txt', 'r', encoding='utf8')
+l = 0
 for i in r:
-    print('+')
+    print('')
     for j in sorted_messages:
-        print('.', end='')
+
         temp_line = j.text.splitlines()
         n = ''.join(temp_line)
-        if str(n) == str(i.splitlines()[0]):
-            print("success")
-            # problem here. need to choose next element if this was selected
-            selected = j.find_element(By.XPATH, '//div[@class="{}"]'.format(
-                select_ico))
-            selected.click()
-            break
 
+        # if l < 3:
+        #     print("i: ", str(i.splitlines()[0]) , "\nn: ", n)
+        #     print("1: ", j.get_attribute('innerHTML'))
+        #     print("2: ", j.get_attribute('class'))
+        # print("2: ", j.find_element(By.XPATH, '//div[@class="{}"]'.format(select_ico)))
+
+        # problem here. need to choose next element if this was selected
+        if str(n) == str(i.splitlines()[0]):
+            l += 1
+            print(l)
+            print(j.get_attribute('class'))
+            if "_3Zpy8" not in str(j.get_attribute('class')):
+
+                selected = j.find_element(By.XPATH, '//div[@class="{}"]'.format(select_ico))
+                selected.click()
+
+                sorted_messages.remove(j)
+
+                print("after remove: ", len(sorted_messages))
+                print("+: ", j.get_attribute('innerHTML'))
+                # pg.press('down')
+                break
 
 toc = time.time()
 tic = print_time(tic, toc, "array2")
-            # pg.keyDown()
+# pg.keyDown()
 #
 #     select('//div[@class="{}"]', select_message_class, 1, True)
 
