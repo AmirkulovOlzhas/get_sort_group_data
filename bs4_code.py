@@ -33,7 +33,7 @@ def number_check(i):
         for key, value in list_p.items():
             if value in i.get('data-id'):
                 # print(key)
-                return 1
+                return True
 
 
 def req_url(url, key=0):
@@ -49,15 +49,16 @@ def req_url(url, key=0):
         else:
             i_class = "+"
         if ("_1-lf9 _3mSPV" not in str(i.find_all('div'))) & (i_class in message_class_list):
-            number_check(i)
-            sum += 1
-            # print(j, ' - ', i)
-            messages_list.append(i.text)
-            if key == 1:
-                j += 1
-                # print(j, " - ", i.text)
+            #проверка номеров
+            if number_check(i):
+                sum += 1
+                # print(j, ' - ', i)
+                messages_list.append(i.text)
+                if key == 1:
+                    j += 1
+                    # print(j, " - ", i.text)
     print('sum = {}'.format(sum))
     if key == 0:
         return sum
     else:
-        return sum, messages_list
+        return messages_list
