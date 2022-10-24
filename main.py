@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from fucions import taking_sorted_messages, print_time, select, write_to_file
 from bs4_code import req_url
 from config import contact, archive, select_ico, argument1, argument2,\
-    select_ico2,select_ico3,select_ico_input,select_ico4
+    select_ico2,select_ico3,select_ico_input,select_ico4, msg_cont_class
 
 
 tic = time.time()
@@ -75,13 +75,11 @@ for i in r:
                         # print(str(sorted_messages[j].get_attribute('innerHTML')))
                         if "_1-lf9 _3mSPV" not in j_html:
                             if '_22Msk' not in j_html:
-                                # sorted_messages[j].find_element(By.XPATH, '//')
                                 try:
-                                    # print(i.splitlines()[0], ' - ', n)
-                                    print('+', j_html)
+                                    # print('+', j_html)
                                     # selected worked with select_ico
-                                    document_root = html.document_fromstring(j_html)
-                                    print(etree.tostring(document_root, encoding='unicode', pretty_print=True))
+                                    # document_root = html.document_fromstring(j_html)
+                                    # print(etree.tostring(document_root, encoding='unicode', pretty_print=True))
                                     selected = sorted_messages[j].find_element(By.XPATH, '//div[@data-testid="{}"]'.
                                                                                format('msg-container'))
                                     # selected = sorted_messages[j].find_element(By.XPATH, '//div[@class="{}"]'.
@@ -89,12 +87,11 @@ for i in r:
                                     selected1 = sorted_messages[j].find_element(By.XPATH, '//div[@class="{}"]'.
                                                                                format('_3BK98'))
                                     # selected.click()
-                                    print('selected: ',selected.get_attribute('innerHTML'))
-                                    if 'image' in selected.get_attribute('innerHTML'):
-                                        print("***")
+                                    # print('selected: ',selected.get_attribute('innerHTML'))
+                                    if msg_cont_class[0] in str(selected.get_attribute('class')) or msg_cont_class[1] in str(selected.get_attribute('class')):
                                         driver.execute_script("arguments[0].click();", selected1)
+                                        print('selected msg with photo')
                                     time.sleep(0.3)
-                                    print(j_html)
                                     sorted_messages[j]='none'
                                     # sorted_messages.remove(j)#taking_sorted_messages(driver, By, j, True)
                                     sum+=1
