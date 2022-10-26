@@ -20,11 +20,6 @@ def taking_sorted_messages(driver, By, solo=0, check=False):
         return sm, sum
 
 
-def print_time(ttic, ttoc, text='?'):
-    print("used time for {}: {} sec".format(text, (ttic - ttoc)))
-    return time.time()
-
-
 def select(driver, By, xpath, class_name, text='NULL', click=0, ms=False):
     selected_element = driver.find_element(By.XPATH, xpath.format(class_name))
     if click == 1:
