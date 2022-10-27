@@ -31,6 +31,7 @@ while True:  # waiting for wa
 select(driver, By, '//span[@title="{}"]', contact, "contact opened", 1)
 
 pg.click(913, 617, button='middle')
+pg.click(913, 617, button='middle')
 
 i = 0
 message_div_sum, message_div_sum2 = 0, 1
@@ -102,10 +103,6 @@ for i in r:
                     time.sleep(0.1)
                     break
 
-
-
-
-
                 except Exception as e:
                     print("-----------------------\nwrong: {}".format(e))
                     print(j_html)
@@ -119,5 +116,11 @@ print(list_sum)
 # bs4_code.select_all_text(driver.page_source, message_class)
 # bs4_code.select_photo_scr(driver.page_source, photo_class)
 # sum_div = bs4_code.req_url(driver.page_source)
+if input("Download? 1-yes everything else - no: ") == 'yes':
+    # select_download = driver.find_element(By.XPATH, '//span@data-testid={}'.format('download'))
+    select(driver, By, '//span[@data-testid="{}"]', class_name='download', click=1)
+else:
+    print('okay')
+
 input()
 driver.quit()
