@@ -7,7 +7,7 @@ select_ico2 ="g0rxnol2 l7jjieqr dh5rsm73 hpdpob1j neme6l2y ajgl1lbb dntxsmpk ixn
 select_ico3 = "g0rxnol2 cm280p3y ppled2lx m62443ks thr4l2wc cd4l02zd m98q8jdg aickbkrb h0ed51ke dntxsmpk ixn6u0rb s2vc4xk1 o0wkt7aw cpfmwfku eliz2k8b"
 select_ico4 = "lhggkp7q hdpg1tjz ptatjang dj32rci9 g965lu3b q4zabkcz q0ohlrvj av59jz02 grf4wkbn hir9ny8g axi1ht8l"
 
-msg_cont_class = ['_1-lf9 _1pC3e', '_1-lf9 _18q-J _1uBlg']
+msg_cont_class = ['_1-lf9 _1pC3e', ' _1-lf9 _1pC3e _18q-J', '_1-lf9 _18q-J _1uBlg']
 
 chat = "n5hs2j7m oq31bsqd gx1rr48f qh5tioqs"
 message_class = "i0jNr selectable-text copyable-text"

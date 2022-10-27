@@ -4,6 +4,8 @@ import pyautogui as pg
 from lxml import etree, html
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from fucions import taking_sorted_messages, select, write_to_file
 from bs4_code import req_url
 from config import contact, archive, select_ico, argument1, argument2,\
@@ -28,7 +30,8 @@ while True:  # waiting for wa
 # выбор контакта
 select(driver, By, '//span[@title="{}"]', contact, "contact opened", 1)
 
-pg.click(913, 617)
+pg.click(913, 617, button='middle')
+
 i = 0
 message_div_sum, message_div_sum2 = 0, 1
 while True:
@@ -61,40 +64,53 @@ for i in r:
             temp_line = sorted_messages[j].text.splitlines()
             j_text = str(''.join(''.join(temp_line)))
             j_html = str(sorted_messages[j].get_attribute('innerHTML'))
-            if i_text == j_text:
+            print(i_text,' - ', j_text, '\n', type(i_text), ' - ', type(j_text))
+            if i_text==j_text:
+                print('True')
                 #cant see mess with a lot of photo
-                if '_3BK98' in j_html:
+                # wait = WebDriverWait(driver, 10)
+                # element = wait.until(EC.element_to_be_clickable(By.XPATH, '//div[@data-testid="{}"]'.format('msg-container')))
+                # if '_3BK98' in j_html:
+                print('True')
+                try:
+                    # document_root = html.document_fromstring(j_html)
+                    # print(etree.tostring(document_root, encoding='unicode', pretty_print=True))
+                    selected = sorted_messages[j].find_element(By.XPATH, '//div[@data-testid="{}"]'.
+                                                               format('msg-container'))
+                    selected1 = sorted_messages[j].find_element(By.XPATH, '//div[@class="{}"]'.
+                                                               format('_3BK98'))
+                    print("-", str(selected.get_attribute('class')))
+
+
+                    # if msg_cont_class[0] in str(selected.get_attribute('class')):
+                    print("solo photo")
                     try:
-                        document_root = html.document_fromstring(j_html)
-                        print(etree.tostring(document_root, encoding='unicode', pretty_print=True))
-                        selected = sorted_messages[j].find_element(By.XPATH, '//div[@data-testid="{}"]'.
-                                                                   format('msg-container'))
-                        selected1 = sorted_messages[j].find_element(By.XPATH, '//div[@class="{}"]'.
-                                                                   format('_3BK98'))
-                        print("-", str(selected.get_attribute('class')))
-                        if msg_cont_class[0] in str(selected.get_attribute('class')):
-                            print("solo photo")
-                            driver.execute_script("arguments[0].click();", sorted_messages[j].find_element(By.CLASS_NAME, '_3BK98'))
-                            sorted_messages[j] = 'none'
-                            sum += 1
-                            time.sleep(0.1)
-                            break
-                        else:
-                            list_sum+=1
-                        # if msg_cont_class[1] in j_html:
-                        #     print("list photo")
-                        #     webdriver.ActionChains(driver).move_to_element(sorted_messages[j].find_element(By.CLASS_NAME, '_3BK98'))
-                        #     time.sleep(0.2)
-                        #     driver.execute_script("arguments[0].click();", selected1)
-                        #     pg.press('keydown')
-
-
-
+                        driver.execute_script("arguments[0].click();",
+                                              sorted_messages[j].find_element(By.CLASS_NAME, '_3BK98'))
+                        pg.click(913, 617, button='middle')
+                        # pg.press('pagedown')
                     except Exception as e:
-                        print("-----------------------\nwrong: {}".format(e))
-                        print(j_html)
-                    finally:
-                        print(j_text, ' - ', i_text, '\n--------------------')
+                        print(f"exception handled - {e}")
+                        list_sum += 1
+                        # element = WebDriverWait(driver, 10).until(
+                        #                 EC.presence_of_element_located((By.ID, "myDynamicElement"))
+                        #             )
+                        wait = WebDriverWait(driver, 10)
+                        element= wait.until(EC.element_to_be_clickable(By.CLASS_NAME.format('_3BK98')))
+                    sorted_messages[j] = 'none'
+                    sum += 1
+                    time.sleep(0.1)
+                    break
+
+
+
+
+
+                except Exception as e:
+                    print("-----------------------\nwrong: {}".format(e))
+                    print(j_html)
+                finally:
+                    print(j_text, ' - ', i_text, '\n--------------------')
 
 
 print("sum = {}".format(sum))
