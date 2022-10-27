@@ -54,6 +54,7 @@ def req_url(url, key=0):
                 sum += 1
                 # print(j, ' - ', i)
                 messages_list.append(i.text)
+                print(i.text)
                 if key == 1:
                     j += 1
                     # print(j, " - ", i.text)

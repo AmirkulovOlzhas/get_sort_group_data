@@ -57,6 +57,7 @@ r = open('text.txt', 'r', encoding='utf8')
 j_text= ''
 sum = 0
 list_sum=0
+pg.click(913, 617, button='middle')
 for i in r:
     i_text = str(''.join(i.splitlines()))
     for j in range(len(sorted_messages)):
@@ -87,7 +88,6 @@ for i in r:
                     try:
                         driver.execute_script("arguments[0].click();",
                                               sorted_messages[j].find_element(By.CLASS_NAME, '_3BK98'))
-                        pg.click(913, 617, button='middle')
                         # pg.press('pagedown')
                     except Exception as e:
                         print(f"exception handled - {e}")
