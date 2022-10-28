@@ -1,6 +1,11 @@
 import time
 
 
+def click(pg, click_c=1):
+    for i in range(click_c):
+        pg.click(913, 617, button='middle')
+
+
 def taking_sorted_messages(driver, By, solo=0, check=False):
     messages = driver.find_element(
         By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
