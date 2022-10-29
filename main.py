@@ -7,8 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from fucions import taking_sorted_messages, select, write_to_file, click
 from bs4_code import req_url
-from config import contact, archive, select_ico, argument1, argument2,\
-    select_ico2,select_ico3,select_ico_input,select_ico4, msg_cont_class
+from config import contact, archive, select_ico, argument1, argument2, msg_cont_class
 
 while True:
     flag = input("park-0, enb-1, abai-2: ")
@@ -35,21 +34,24 @@ while True:  # waiting for wa
 
 # выбор контакта
 select(driver, By, '//span[@title="{}"]', contact[int(flag)], "contact opened", 1)
-click(pg)
 
-mes_cunt, message_div_sum, message_div_sum2 = 0, 0, 1
-message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source)
+mes_cunt, message_div_sum, message_div_sum2 = 0, 99, 100
+message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag)
+
+click(pg)
+pg.press('home')
 while True:
     pg.press('home')
     print("{}...".format(mes_cunt), end='')
     time.sleep(0.3)
     if mes_cunt % 5 == 0:
-        message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source)
+        message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag)
         if message_div_sum == message_div_sum2:
-            break1
+            print("break")
+            break
     mes_cunt += 1
 
-write_to_file(req_url(driver.page_source, key=1))
+write_to_file(req_url(driver.page_source, key=1, flag=flag))
 
 select(driver, By, '//div[@class="{}"]', '_28_W0', click=1)  # click menu
 select(driver, By, '//div[@aria-label="{}"]', 'Выбрать сообщения', click=1)
@@ -65,9 +67,8 @@ for i in r:
     for j in range(len(sorted_messages)):
         if(sorted_messages[j])!='none':
             temp_line = sorted_messages[j].text.splitlines()
-            j_text = str(''.join(''.join(temp_line)))
-            j_html = str(sorted_messages[j].get_attribute('innerHTML'))
-            print(i_text,' - ', j_text, '\n', type(i_text), ' - ', type(j_text))
+            j_text, j_html = str(''.join(''.join(temp_line))), str(sorted_messages[j].get_attribute('innerHTML'))
+            # print(i_text,' - ', j_text, '\n', type(i_text), ' - ', type(j_text))
             if i_text==j_text:
                 try:
                     # document_root = html.document_fromstring(j_html)
@@ -75,16 +76,16 @@ for i in r:
                     selected = sorted_messages[j].find_element(By.XPATH, '//div[@data-testid="{}"]'.
                                                                format('msg-container'))
                     selected1 = sorted_messages[j].find_element(By.XPATH, '//div[@class="{}"]'.
-                                                               format('_3BK98'))
+                                                               format(select_ico))
                     print("-", str(selected.get_attribute('class')))
 
                     try:
                         driver.execute_script("arguments[0].click();",
-                                              sorted_messages[j].find_element(By.CLASS_NAME, '_3BK98'))
+                                              sorted_messages[j].find_element(By.CLASS_NAME, select_ico))
                     except Exception as e:
                         print(f"exception handled - {e}")
                         wait = WebDriverWait(driver, 10)
-                        element= wait.until(EC.element_to_be_clickable(By.CLASS_NAME.format('_3BK98')))
+                        element= wait.until(EC.element_to_be_clickable(By.CLASS_NAME.format(select_ico)))
                     sorted_messages[j] = 'none'
                     sum += 1
                     time.sleep(0.1)

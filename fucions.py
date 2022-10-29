@@ -31,12 +31,11 @@ def select(driver, By, xpath, class_name, text='NULL', click=0, ms=False):
         selected_element.click()
     if text != 'NULL':
         print(text)
-    time.sleep(0.5)
-
-    if ms:
-        return 1
-    else:
-        return 0
+    time.sleep(0.2)
+    # if ms:
+    #     return 1
+    # else:
+    #     return 0
 
 
 def write_to_file(message_list):
