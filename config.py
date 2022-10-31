@@ -1,5 +1,6 @@
 contact = ["Содержание парков", "Еңбекші ішкі орам", "Build stroi Ішкі орам"]
 archive = "_3hD9c"
+text_message = "_1-lf9 _3mSPV"
 
 select_ico = "_3BK98"
 select_ico_input = "lhggkp7q cxec7x23 kanlod6e gfz4du6o r7fjleex nmeg1xfo okm7a8wg le5p0ye3"

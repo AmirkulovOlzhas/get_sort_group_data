@@ -11,7 +11,8 @@ from config import contact, archive, select_ico, argument1, argument2, msg_cont_
 
 while True:
     flag = input("park-0, enb-1, abai-2: ")
-    if int(flag) in [0,1,2]:
+    saved_number = input("0 - not saved numbers mes, 1 saved: ")
+    if int(flag) in [0,1,2] and int(saved_number) in [0,1]:
         print("Selected {}".format(flag))
         break
     else:
@@ -34,9 +35,14 @@ while True:  # waiting for wa
 
 # выбор контакта
 select(driver, By, '//span[@title="{}"]', contact[int(flag)], "contact opened", 1)
-
+time.sleep(2)
+try:
+    select(driver, By, '//div[@class="{}"', '_27Uai', click=1)
+    print('pg down')
+except:
+    print('not pg down')
 mes_cunt, message_div_sum, message_div_sum2 = 0, 99, 100
-message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag)
+message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag, saved_number=saved_number)
 
 click(pg)
 pg.press('home')
@@ -45,18 +51,18 @@ while True:
     print("{}...".format(mes_cunt), end='')
     time.sleep(0.3)
     if mes_cunt % 5 == 0:
-        message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag)
+        message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag, saved_number=saved_number)
         if message_div_sum == message_div_sum2:
             print("break")
             break
     mes_cunt += 1
 
-write_to_file(req_url(driver.page_source, key=1, flag=flag))
+write_to_file(req_url(driver.page_source, key=1, flag=flag, saved_number=saved_number))
 
 select(driver, By, '//div[@class="{}"]', '_28_W0', click=1)  # click menu
 select(driver, By, '//div[@aria-label="{}"]', 'Выбрать сообщения', click=1)
 
-sorted_messages, sum = taking_sorted_messages(driver, By)
+sorted_messages, sum = taking_sorted_messages(driver, By, saved_number = saved_number)
 print('len sorted_m: ', len(sorted_messages), ' - ', sum)
 
 r = open('text.txt', 'r', encoding='utf8')
@@ -77,8 +83,6 @@ for i in r:
                                                                format('msg-container'))
                     selected1 = sorted_messages[j].find_element(By.XPATH, '//div[@class="{}"]'.
                                                                format(select_ico))
-                    print("-", str(selected.get_attribute('class')))
-
                     try:
                         driver.execute_script("arguments[0].click();",
                                               sorted_messages[j].find_element(By.CLASS_NAME, select_ico))
@@ -88,7 +92,7 @@ for i in r:
                         element= wait.until(EC.element_to_be_clickable(By.CLASS_NAME.format(select_ico)))
                     sorted_messages[j] = 'none'
                     sum += 1
-                    time.sleep(0.1)
+                    # time.sleep(0.1)
                     break
 
                 except Exception as e:
