@@ -37,10 +37,10 @@ while True:  # waiting for wa
 select(driver, By, '//span[@title="{}"]', contact[int(flag)], "contact opened", 1)
 time.sleep(2)
 try:
-    select(driver, By, '//div[@class="{}"', '_27Uai', click=1)
+    select(driver, By, '//div[@class="{}"]', '_27Uai', click=1)
     print('pg down')
-except:
-    print('not pg down')
+except Exception as e:
+    print('not pg down - ', e)
 mes_cunt, message_div_sum, message_div_sum2 = 0, 99, 100
 message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag, saved_number=saved_number)
 
