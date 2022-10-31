@@ -4,34 +4,10 @@ from config import message_class_list, list_p, chat, list_en, list_ab, text_mess
 
 
 def number_list_append(div_mes, flag, messages_list, sum, saved_number):
-    if number_check(div_mes, flag) == int(saved_number):  # 0 выделяет ненужно !0 нужное
+    if number_check(div_mes, flag) == int(saved_number):
         sum += 1
         messages_list.append(div_mes.text)
     return messages_list, sum
-
-
-def select_all_text(url, class_name):
-    soup = bs(url, 'html.parser')
-    try:
-        got_span = soup.find_all("span", {"class": "{}".format(class_name)})
-    except IndexError:
-        got_span = 'null'
-
-    for span in got_span:
-        print(span.text)
-    print(got_span)
-
-
-def select_photo_scr(url, class_name):
-    soup = bs(url, 'html.parser')
-    try:
-        got_span = soup.find_all("img", {"class": "{}".format(class_name)})
-    except IndexError:
-        got_span = 'null'
-
-    # for span in got_span:
-    #     print(span.text)
-    print('got span: {}'.format(len(got_span)))
 
 
 def number_check(div_mes, flag):
@@ -62,7 +38,7 @@ def req_url(url, key=0, flag=0, saved_number=0):
         # number check
         if (text_message not in str(div_mes.find_all('div'))) & (i_class in message_class_list):
             messages_list, sum = number_list_append(div_mes, flag, messages_list, sum=sum, saved_number=saved_number)
-        elif text_message in str(div_mes.find_all('div')):
+        elif text_message in str(div_mes.find_all('div')) and (i_class in message_class_list):
             messages_list, sum = number_list_append(div_mes, flag, messages_list, sum=sum, saved_number=saved_number)
 
     print('sum = {}'.format(sum))
@@ -70,3 +46,27 @@ def req_url(url, key=0, flag=0, saved_number=0):
         return sum
     else:
         return messages_list
+
+
+def select_all_text(url, class_name):
+    soup = bs(url, 'html.parser')
+    try:
+        got_span = soup.find_all("span", {"class": "{}".format(class_name)})
+    except IndexError:
+        got_span = 'null'
+
+    for span in got_span:
+        print(span.text)
+    print(got_span)
+
+
+def select_photo_scr(url, class_name):
+    soup = bs(url, 'html.parser')
+    try:
+        got_span = soup.find_all("img", {"class": "{}".format(class_name)})
+    except IndexError:
+        got_span = 'null'
+
+    # for span in got_span:
+    #     print(span.text)
+    print('got span: {}'.format(len(got_span)))

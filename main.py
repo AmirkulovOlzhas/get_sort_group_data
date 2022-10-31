@@ -36,25 +36,29 @@ while True:  # waiting for wa
 # выбор контакта
 select(driver, By, '//span[@title="{}"]', contact[int(flag)], "contact opened", 1)
 time.sleep(2)
+click(pg)
 try:
     select(driver, By, '//div[@class="{}"]', '_27Uai', click=1)
     print('pg down')
+    time.sleep(2)
 except Exception as e:
     print('not pg down - ', e)
 mes_cunt, message_div_sum, message_div_sum2 = 0, 99, 100
 message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag, saved_number=saved_number)
 
-click(pg)
 pg.press('home')
 while True:
     pg.press('home')
     print("{}...".format(mes_cunt), end='')
     time.sleep(0.3)
-    if mes_cunt % 5 == 0:
+    if mes_cunt % 7 == 0:
+        pg.scroll(7)
+        pg.scroll(-2)
         message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag, saved_number=saved_number)
         if message_div_sum == message_div_sum2:
-            print("break")
-            break
+            if mes_cunt > 15:
+                print("break")
+                break
     mes_cunt += 1
 
 write_to_file(req_url(driver.page_source, key=1, flag=flag, saved_number=saved_number))
