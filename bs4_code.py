@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup as bs
-
 from config import message_class_list, list_p, chat, list_en, list_ab, text_message
 
 

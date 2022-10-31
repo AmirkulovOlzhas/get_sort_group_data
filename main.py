@@ -72,39 +72,27 @@ print('len sorted_m: ', len(sorted_messages), ' - ', sum)
 r = open('text.txt', 'r', encoding='utf8')
 j_text, sum= '', 0
 click(pg, 2)
+
 for i in r:
     i_text = str(''.join(i.splitlines()))
+    time_a = time.time()
     for j in range(len(sorted_messages)):
-        if(sorted_messages[j])!='none':
-            temp_line = sorted_messages[j].text.splitlines()
-            j_text, j_html = str(''.join(''.join(temp_line))), str(sorted_messages[j].get_attribute('innerHTML'))
-            # print(i_text,' - ', j_text, '\n', type(i_text), ' - ', type(j_text))
+        if sorted_messages[j]:
+            j_text, j_html = str(''.join(''.join(sorted_messages[j].text.splitlines()))), str(sorted_messages[j].get_attribute('innerHTML'))
             if i_text==j_text:
                 try:
-                    # document_root = html.document_fromstring(j_html)
-                    # print(etree.tostring(document_root, encoding='unicode', pretty_print=True))
-                    selected = sorted_messages[j].find_element(By.XPATH, '//div[@data-testid="{}"]'.
-                                                               format('msg-container'))
-                    selected1 = sorted_messages[j].find_element(By.XPATH, '//div[@class="{}"]'.
-                                                               format(select_ico))
-                    try:
-                        driver.execute_script("arguments[0].click();",
-                                              sorted_messages[j].find_element(By.CLASS_NAME, select_ico))
-                    except Exception as e:
-                        print(f"exception handled - {e}")
-                        wait = WebDriverWait(driver, 10)
-                        element= wait.until(EC.element_to_be_clickable(By.CLASS_NAME.format(select_ico)))
-                    sorted_messages[j] = 'none'
-                    sum += 1
-                    # time.sleep(0.1)
-                    break
-
+                    driver.execute_script("arguments[0].click();",
+                                          sorted_messages[j].find_element(By.CLASS_NAME, select_ico))
                 except Exception as e:
-                    print("-----------------------\nwrong: {}".format(e))
-                    print(j_html)
-                finally:
-                    print(j_text, ' - ', i_text, '\n--------------------')
+                    print(f"exception handled - {e}")
+                    wait = WebDriverWait(driver, 10)
+                    element= wait.until(EC.element_to_be_clickable(By.CLASS_NAME.format(select_ico)))
+                # sorted_messages[j] = 'none'
+                sorted_messages.remove(sorted_messages[j])
+                sum += 1
+                break
 
+    print(time.time() - time_a)
 
 print("sum = {}".format(sum))
 

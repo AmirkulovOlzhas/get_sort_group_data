@@ -6,26 +6,25 @@ def click(pg, click_c=1):
         pg.click(913, 617, button='middle')
 
 
-def taking_sorted_messages(driver, By, solo=0, check=False, saved_number=0):
+def taking_sorted_messages(driver, By, saved_number=0):
     messages = driver.find_element(
         By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
         find_elements(By.XPATH, '//div[@data-id]')
-    sm = []
-    sum = 0
-    # print('len messages: ', len(messages))
-    for mes in messages:
-        if '_1-lf9 _3mSPV' not in mes.get_attribute('innerHTML'):
-            sum += 1
-            sm.append(mes)
-        if int(saved_number) == 0:
-            if '_1-lf9 _3mSPV' in mes.get_attribute('innerHTML'):
+
+    if int(saved_number) != 0:
+        sm = []
+        sum = 0
+        for mes in messages:
+            if '_1-lf9 _3mSPV' not in mes.get_attribute('innerHTML'):
                 sum += 1
                 sm.append(mes)
-    if check:
-        # print("if 30: ", sm[solo].get_attribute('innerHTML'))
-        return sm[solo]
-    else:
+            if int(saved_number) == 0:
+                if '_1-lf9 _3mSPV' in mes.get_attribute('innerHTML'):
+                    sum += 1
+                    sm.append(mes)
         return sm, sum
+    else:
+        return messages, len(messages)
 
 
 def select(driver, By, xpath, class_name, text='NULL', click=0, ms=False):
