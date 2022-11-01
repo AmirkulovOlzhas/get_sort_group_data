@@ -22,13 +22,16 @@ def check_data(nd):
                 if '*' in line[1]:
                     line_sum += int(line[1].split('+')[1])
         line_sum += line_count
+        if '+' in line[1]:
+            # print(line[1][line[1].index('+')+1:])
+            sum += int(line[1][line[1].index('+')+1:])
         print(line, ': ',  line_sum)
         sum += int(line_sum)
     print(sum)
 
 
-if input("Download? 1-yes everything else - no: ") == 'yes':
-    name_data = take_name_data()
-    check_data(name_data)
-else:
-    print('puck')
+# if input("Download? 1-yes everything else - no: ") == 'yes':
+name_data = take_name_data()
+check_data(name_data)
+# else:
+#     print('puck')

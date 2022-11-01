@@ -38,7 +38,9 @@ select(driver, By, '//span[@title="{}"]', contact[int(flag)], "contact opened", 
 time.sleep(2)
 click(pg)
 try:
-    select(driver, By, '//div[@class="{}"]', '_27Uai', click=1)
+    pg.scroll(-5)
+    select(driver, By, '//span[@class="{}"]', '_3K42l', click=1)
+    pg.scroll(-5)
     print('pg down')
     time.sleep(2)
 except Exception as e:
@@ -50,13 +52,13 @@ pg.press('home')
 while True:
     pg.press('home')
     print("{}...".format(mes_cunt), end='')
-    time.sleep(0.3)
-    if mes_cunt % 7 == 0:
+    time.sleep(0.2)
+    if mes_cunt % 5 == 0:
         pg.scroll(7)
         pg.scroll(-2)
         message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag, saved_number=saved_number)
         if message_div_sum == message_div_sum2:
-            if mes_cunt > 15:
+            if mes_cunt > 10:
                 print("break")
                 break
     mes_cunt += 1
@@ -70,30 +72,29 @@ sorted_messages, sum = taking_sorted_messages(driver, By, saved_number = saved_n
 print('len sorted_m: ', len(sorted_messages), ' - ', sum)
 
 r = open('text.txt', 'r', encoding='utf8')
-j_text, sum= '', 0
+sum = 0
 click(pg, 2)
+txt_list=[]
 
 for i in r:
-    i_text = str(''.join(i.splitlines()))
-    time_a = time.time()
-    for j in range(len(sorted_messages)):
-        if sorted_messages[j]:
-            j_text, j_html = str(''.join(''.join(sorted_messages[j].text.splitlines()))), str(sorted_messages[j].get_attribute('innerHTML'))
-            if i_text==j_text:
-                try:
-                    driver.execute_script("arguments[0].click();",
-                                          sorted_messages[j].find_element(By.CLASS_NAME, select_ico))
-                except Exception as e:
-                    print(f"exception handled - {e}")
-                    wait = WebDriverWait(driver, 10)
-                    element= wait.until(EC.element_to_be_clickable(By.CLASS_NAME.format(select_ico)))
-                # sorted_messages[j] = 'none'
-                sorted_messages.remove(sorted_messages[j])
-                sum += 1
-                break
+    txt_list.append(str(''.join(i.splitlines())))
+time_a = time.time()
+for mes in sorted_messages:
+    if mes:
+        j_text = str(''.join(''.join(mes.text.splitlines())))
+        if j_text in txt_list:
+            try:
+                driver.execute_script("arguments[0].click();",
+                                      mes.find_element(By.CLASS_NAME, select_ico))
+            except Exception as e:
+                print(f"exception handled - {e}")
+                wait = WebDriverWait(driver, 10)
+                element= wait.until(EC.element_to_be_clickable(By.CLASS_NAME.format(select_ico)))
+            txt_list.remove(j_text)
+            print(len(txt_list))
+            sum += 1
 
-    print(time.time() - time_a)
-
+print(time.time() - time_a)
 print("sum = {}".format(sum))
 
 # bs4_code.select_all_text(driver.page_source, message_class)

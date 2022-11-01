@@ -35,10 +35,14 @@ def req_url(url, key=0, flag=0, saved_number=0):
         else:
             i_class = "+"
         # number check
-        if (text_message not in str(div_mes.find_all('div'))) & (i_class in message_class_list):
-            messages_list, sum = number_list_append(div_mes, flag, messages_list, sum=sum, saved_number=saved_number)
-        elif text_message in str(div_mes.find_all('div')) and (i_class in message_class_list):
-            messages_list, sum = number_list_append(div_mes, flag, messages_list, sum=sum, saved_number=saved_number)
+        if saved_number == 1:
+            if (text_message not in str(div_mes.find_all('div'))) & (i_class in message_class_list):
+                messages_list, sum = number_list_append(
+                                     div_mes, flag, messages_list, sum=sum, saved_number=saved_number)
+        else:
+            if i_class in message_class_list:
+                messages_list, sum = number_list_append(
+                                     div_mes, flag, messages_list, sum=sum, saved_number=saved_number)
 
     print('sum = {}'.format(sum))
     if key == 0:
