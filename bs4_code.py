@@ -69,7 +69,4 @@ def select_photo_scr(url, class_name):
         got_span = soup.find_all("img", {"class": "{}".format(class_name)})
     except IndexError:
         got_span = 'null'
-
-    # for span in got_span:
-    #     print(span.text)
     print('got span: {}'.format(len(got_span)))
