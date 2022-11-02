@@ -37,12 +37,20 @@ while True:  # waiting for wa
 select(driver, By, '//span[@title="{}"]', contact[int(flag)], "contact opened", 1)
 time.sleep(2)
 click(pg)
-try:
+try: #!!!
     pg.scroll(-5)
-    select(driver, By, '//span[@class="{}"]', '_3K42l', click=1)
+    # select(driver, By, '//span[@class="{}"]', '_3K42l', click=1)
+    # print('1s')
+    # time.sleep(2)
+    select(driver, By, '//div[@class="{}"]', '_1GLVO _165_h', click=1)
+    print('2s')
+    time.sleep(2)
+    # select(driver, By, '//div[@class="{}"]', '_27Uai', click=1)
+    # print('3s')
+    # time.sleep(2)
     pg.scroll(-5)
     print('pg down')
-    time.sleep(2)
+    # time.sleep(2)
 except Exception as e:
     print('not pg down - ', e)
 mes_cunt, message_div_sum, message_div_sum2 = 0, 99, 100
@@ -52,13 +60,13 @@ pg.press('home')
 while True:
     pg.press('home')
     print("{}...".format(mes_cunt), end='')
-    time.sleep(0.2)
-    if mes_cunt % 5 == 0:
+    if mes_cunt % 7 == 0:
         pg.scroll(7)
         pg.scroll(-2)
+        time.sleep(0.5)
         message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag, saved_number=saved_number)
         if message_div_sum == message_div_sum2:
-            if mes_cunt > 10:
+            if mes_cunt > 15:
                 print("break")
                 break
     mes_cunt += 1

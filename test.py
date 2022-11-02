@@ -4,29 +4,23 @@ def take_name_data():
     abc = "0123456789+:"
     for word in r:
         name = word.split('**')
-        data = name[len(name) - 1]
-        for letter in data:
-            if letter not in abc:
-                data = data.replace(letter, '')
-        book_r.append([name[0], data])
+        if len(name) > 1:
+            data = name[len(name) - 1]
+            for letter in data:
+                if letter not in abc:
+                    data = data.replace(letter, '')
+            book_r.append([name[0], data])
     return book_r
 
 
 def check_data(nd):
     sum = 0
     for line in nd:
-        line_count = line[1].count(":")-1
-        line_sum = 1
-        if line_count > 1:
-            if '+' in line[1]:
-                if '*' in line[1]:
-                    line_sum += int(line[1].split('+')[1])
-        line_sum += line_count
+        line_count = line[1].count(":")
         if '+' in line[1]:
-            # print(line[1][line[1].index('+')+1:])
-            sum += int(line[1][line[1].index('+')+1:])
-        print(line, ': ',  line_sum)
-        sum += int(line_sum)
+            line_count += int(line[1][line[1].index('+')+1:])
+        print(line, '- ', line_count)
+        sum += int(line_count)
     print(sum)
 
 

@@ -12,6 +12,7 @@ def number_list_append(div_mes, flag, messages_list, sum, saved_number):
 def number_check(div_mes, flag):
     if div_mes.get('data-id'):
         check = 0
+        # убрать условия со словарем
         if int(flag) == 0:
             this_list = list_p
         elif int(flag) == 1:
@@ -22,6 +23,7 @@ def number_check(div_mes, flag):
             # print(value, div_mes.get('data-id'))
             if value in div_mes.get('data-id'):
                 check += 1
+                break
         return check
 
 
