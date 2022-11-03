@@ -2,10 +2,17 @@ from bs4 import BeautifulSoup as bs
 from config import message_class_list, list_p, chat, list_en, list_ab, text_message
 
 
-def number_list_append(div_mes, flag, messages_list, sum, saved_number):
+def number_list_append(div_mes, flag, messages_list, sum, saved_number, key=0):
     if number_check(div_mes, flag) == int(saved_number):
         sum += 1
-        messages_list.append(div_mes.text)
+        if (saved_number == 0) & (key != 0) & (div_mes.text.count(':') < 3):
+            if div_mes.text[-5:] == div_mes.text[-10:-5]:
+                messages_list.append(div_mes.text[:-5])
+                print('+')
+            else:
+                messages_list.append(div_mes.text)
+        else:
+            messages_list.append(div_mes.text)
     return messages_list, sum
 
 
@@ -20,7 +27,6 @@ def number_check(div_mes, flag):
         else:
             this_list = list_ab
         for key, value in this_list.items():
-            # print(value, div_mes.get('data-id'))
             if value in div_mes.get('data-id'):
                 check += 1
                 break
@@ -40,11 +46,11 @@ def req_url(url, key=0, flag=0, saved_number=0):
         if saved_number == 1:
             if (text_message not in str(div_mes.find_all('div'))) & (i_class in message_class_list):
                 messages_list, sum = number_list_append(
-                                     div_mes, flag, messages_list, sum=sum, saved_number=saved_number)
+                                     div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
         else:
             if i_class in message_class_list:
                 messages_list, sum = number_list_append(
-                                     div_mes, flag, messages_list, sum=sum, saved_number=saved_number)
+                                     div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
 
     print('sum = {}'.format(sum))
     if key == 0:

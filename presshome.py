@@ -1,8 +1,6 @@
-import pyautogui as pg
-import time as t
 
-
-for i in range(20):
-    pg.press('home')
-    t.sleep(1.25)
+x = '+7 778 586 0653На РоботеДанное сообщение удалено10:0910:09'
+print(x[-5:], ' - ', x[-10:-5])
+if x[-5:] == x[-10:-5]:
+    print(x[:-5])
 
