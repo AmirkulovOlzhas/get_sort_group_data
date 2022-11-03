@@ -5,7 +5,8 @@ from config import message_class_list, list_p, chat, list_en, list_ab, text_mess
 def number_list_append(div_mes, flag, messages_list, sum, saved_number, key=0):
     if number_check(div_mes, flag) == int(saved_number):
         sum += 1
-        if (saved_number == 0) & (key != 0) & (div_mes.text.count(':') < 3):
+        #включить сюда количество фото в сообщений наверное
+        if (key != 0) & (div_mes.text.count(':') < 3):
             if div_mes.text[-5:] == div_mes.text[-10:-5]:
                 messages_list.append(div_mes.text[:-5])
                 print('+')
@@ -28,7 +29,7 @@ def number_check(div_mes, flag):
             this_list = list_ab
         for key, value in this_list.items():
             if value in div_mes.get('data-id'):
-                check += 1
+                check = 1
                 break
         return check
 

@@ -91,7 +91,7 @@ for i in r:
 time_a = time.time()
 for mes in sorted_messages:
         j_text = str(''.join(''.join(mes.text.splitlines())))
-        # print(j_text)
+        print(j_text)
         if j_text in txt_list:
             try:
                 driver.execute_script("arguments[0].click();",
