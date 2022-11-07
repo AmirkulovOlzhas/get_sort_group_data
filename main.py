@@ -7,6 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from fucions import taking_sorted_messages, select, write_to_file, click
 from bs4_code import req_url
+from test import start_park_rename
 from config import contact, archive, select_ico, argument1, argument2, msg_cont_class
 
 while True:
@@ -25,6 +26,7 @@ driver = webdriver.Chrome\
                           options=options)
 driver.get("https://web.whatsapp.com")
 
+
 while True:  # waiting for wa
     try:
         select(driver, By, '//button[@class="{}"]', archive, "archive opened", clicked=1)
@@ -36,22 +38,22 @@ while True:  # waiting for wa
 select(driver, By, '//span[@title="{}"]', contact[int(flag)], "contact opened", 1)
 time.sleep(2)
 click(pg)
-try: #!!!
-    pg.scroll(-5)
-    select(driver, By, '//span[@class="{}"]', '_3K42l', clicked=1)
-    print('1s')
-    time.sleep(2)
-    # select(driver, By, '//div[@class="{}"]', '_1GLVO _165_h', click=1)
-    # print('2s')
-    # time.sleep(2)
-    # select(driver, By, '//div[@class="{}"]', '_27Uai', click=1)
-    # print('3s')
-    # # time.sleep(2)
-    # pg.scroll(-5)
-    print('pg down')
-    # time.sleep(2)
-except Exception as e:
-    print('not pg down - ', e)
+# try: #!!!
+#     pg.scroll(-5)
+#     select(driver, By, '//span[@class="{}"]', '_3K42l', clicked=1)
+#     print('1s')
+#     time.sleep(2)
+#     select(driver, By, '//div[@class="{}"]', '_1GLVO _165_h', click=1)
+#     print('2s')
+#     time.sleep(2)
+#     select(driver, By, '//div[@class="{}"]', '_27Uai', click=1)
+#     print('3s')
+#     # time.sleep(2)
+#     # pg.scroll(-5)
+#     print('pg down')
+#     # time.sleep(2)
+# except Exception as e:
+#     print('not pg down - ', e)
 mes_cunt, message_div_sum, message_div_sum2 = 0, 99, 100
 message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag, saved_number=saved_number)
 
@@ -82,9 +84,8 @@ sorted_messages = taking_sorted_messages(driver, By, saved_number = int(saved_nu
 print('len sorted_m: ', len(sorted_messages))
 
 r = open('text.txt', 'r', encoding='utf8')
-sum = 0
+sum, txt_list = 0, []
 click(pg, 2)
-txt_list=[]
 
 for i in r:
     txt_list.append(str(''.join(i.splitlines())))
@@ -107,10 +108,12 @@ print(len(txt_list))
 print(time.time() - time_a)
 print("sum = {}".format(sum))
 
+if flag == 0:
+    start_park_rename()
 # bs4_code.select_all_text(driver.page_source, message_class)
 # bs4_code.select_photo_scr(driver.page_source, photo_class)
 # sum_div = bs4_code.req_url(driver.page_source)
-if input("Download? 1-yes everything else - no: ") == 'yes':
+if input("Download? 1-yes everything else - no: ") == '1':
     select(driver, By, '//span[@data-testid="{}"]', class_name='download', clicked=1)
 else:
     print('okay')
