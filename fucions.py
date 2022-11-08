@@ -3,12 +3,18 @@ import pyautogui as pg
 from bs4_code import req_url
 
 
+def set_driver_by(d, B):
+    global driver
+    global By
+    driver, By = d, B
+
+
 def click(click_c=1):
     for i in range(click_c):
         pg.click(913, 617, button='middle')
 
 
-def taking_sorted_messages(driver, By, saved_number=0):
+def taking_sorted_messages(saved_number=0):
     messages = driver.find_element(
         By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
         find_elements(By.XPATH, '//div[@data-id]')
@@ -22,7 +28,7 @@ def taking_sorted_messages(driver, By, saved_number=0):
         return messages
 
 
-def select(driver, By, xpath, class_name, text='NULL', clicked=0):
+def select(xpath, class_name, text='NULL', clicked=0):
     selected_element = driver.find_element(By.XPATH, xpath.format(class_name))
     if clicked == 1:
         selected_element.click()
@@ -40,11 +46,10 @@ def write_to_file(message_list):
     r.close()
 
 
-def message_count(driver, flag, saved_number):
+def message_count(flag, saved_number):
     mes_cunt, message_div_sum, message_div_sum2 = 0, 99, 100
     message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag,
                                                                  saved_number=saved_number)
-
     pg.press('home')
     result_repeated = 0
     while True:
@@ -63,8 +68,8 @@ def message_count(driver, flag, saved_number):
             if result_repeated > 5:
                 break
         mes_cunt += 1
-
     write_to_file(req_url(driver.page_source, key=1, flag=flag, saved_number=saved_number))
+    return message_div_sum
 
 
 def sorted_text_list():
