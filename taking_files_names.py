@@ -13,7 +13,7 @@ counter = {"17 Мкр": 0,
 
 
 def rename_file(this_line):
-    temp_line_name = this_line.replace(' (', '')
+    temp_line_name = this_line.replace(' (', '-')
     temp_line_name = temp_line_name.replace(')', '')
     os.rename(mypath + '\\' + this_line, mypath + '\\' + temp_line_name)
 
@@ -32,7 +32,7 @@ all_files_name = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 i, temp_value = 0, 0
 
 # rename
-with open('park_mes_name.txt', 'r', encoding='utf8') as f:
+with open('stuf/park_mes_name.txt', 'r', encoding='utf8') as f:
     for line in f:
         try:
             for key, value in counter.items():

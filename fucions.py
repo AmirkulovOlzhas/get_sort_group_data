@@ -1,7 +1,9 @@
 import time
+import pyautogui as pg
+from bs4_code import req_url
 
 
-def click(pg, click_c=1):
+def click(click_c=1):
     for i in range(click_c):
         pg.click(913, 617, button='middle')
 
@@ -11,7 +13,7 @@ def taking_sorted_messages(driver, By, saved_number=0):
         By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
         find_elements(By.XPATH, '//div[@data-id]')
     sm = []
-    if int(saved_number) != 0:
+    if saved_number != 0:
         for mes in messages:
             if '_1-lf9 _3mSPV' not in mes.get_attribute('innerHTML'):
                 sm.append(mes)
@@ -30,9 +32,45 @@ def select(driver, By, xpath, class_name, text='NULL', clicked=0):
 
 
 def write_to_file(message_list):
-    r = open('text.txt', 'w', encoding='utf8')
+    r = open('stuf/text.txt', 'w', encoding='utf8')
     for i in range(len(message_list)):
         r.write(message_list[i])
-        if i+1 != len(message_list):
+        if i + 1 != len(message_list):
             r.write('\n')
     r.close()
+
+
+def message_count(driver, flag, saved_number):
+    mes_cunt, message_div_sum, message_div_sum2 = 0, 99, 100
+    message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag,
+                                                                 saved_number=saved_number)
+
+    pg.press('home')
+    result_repeated = 0
+    while True:
+        pg.press('home')
+        print("{}...".format(mes_cunt), end='')
+        if mes_cunt % 5 == 0:
+            pg.scroll(7)
+            pg.scroll(-2)
+            time.sleep(0.3)
+            message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag,
+                                                                         saved_number=saved_number)
+            if message_div_sum == message_div_sum2:
+                result_repeated += 1
+            else:
+                result_repeated = 0
+            if result_repeated > 5:
+                break
+        mes_cunt += 1
+
+    write_to_file(req_url(driver.page_source, key=1, flag=flag, saved_number=saved_number))
+
+
+def sorted_text_list():
+    r = open('stuf/text.txt', 'r', encoding='utf8')
+    txt_list = []
+    click(2)
+    for i in r:
+        txt_list.append(str(''.join(i.splitlines())))
+    return txt_list

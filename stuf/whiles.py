@@ -8,3 +8,9 @@ from fucions import select
 #             break
 #         except:
 #             time.sleep(1)
+
+def main():
+    print('hello')
+
+if __name__ == __main__:
+    main()

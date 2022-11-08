@@ -3,13 +3,11 @@ from config import message_class_list, list_p, chat, list_en, list_ab, text_mess
 
 
 def number_list_append(div_mes, flag, messages_list, sum, saved_number, key=0):
-    if number_check(div_mes, flag) == int(saved_number):
+    if number_check(div_mes, flag) == saved_number:
         sum += 1
-        #включить сюда количество фото в сообщений наверное
         if (key != 0) & (div_mes.text.count(':') < 3):
             if div_mes.text[-5:] == div_mes.text[-10:-5]:
                 messages_list.append(div_mes.text[:-5])
-                print('+')
             else:
                 messages_list.append(div_mes.text)
         else:
@@ -19,14 +17,15 @@ def number_list_append(div_mes, flag, messages_list, sum, saved_number, key=0):
 
 def number_check(div_mes, flag):
     if div_mes.get('data-id'):
-        check = 0
+        check, this_list = 0, 0
         # убрать условия со словарем
-        if int(flag) == 0:
-            this_list = list_p
-        elif int(flag) == 1:
-            this_list = list_en
-        else:
-            this_list = list_ab
+        match flag:
+            case 0:
+                this_list = list_p
+            case 1:
+                this_list = list_en
+            case 2:
+                this_list = list_ab
         for key, value in this_list.items():
             if value in div_mes.get('data-id'):
                 check = 1
@@ -47,11 +46,11 @@ def req_url(url, key=0, flag=0, saved_number=0):
         if saved_number == 1:
             if (text_message not in str(div_mes.find_all('div'))) & (i_class in message_class_list):
                 messages_list, sum = number_list_append(
-                                     div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
+                    div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
         else:
             if i_class in message_class_list:
                 messages_list, sum = number_list_append(
-                                     div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
+                    div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
 
     print('sum = {}'.format(sum))
     if key == 0:
