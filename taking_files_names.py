@@ -4,7 +4,7 @@ from os.path import isfile, join
 from stuf.delete_parentheses import rename_all_files
 
 mypath = r"C:\Users\OFFICE\Desktop\test"
-
+# [{},{},{}]
 counter = {"17 Мкр": 0,
            "Касирет": 0,
            "Алатау": 0,
@@ -16,7 +16,7 @@ counter = {"17 Мкр": 0,
 all_files_name = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 print(len(all_files_name))
 
-rename_all_files(all_files_name)
+rename_all_files(all_files_name, outside=True)
 
 # taking updated photo names from folder
 all_files_name = [f for f in listdir(mypath) if isfile(join(mypath, f))]

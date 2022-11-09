@@ -69,7 +69,7 @@ def select_messages():
     time_a = time.time()
     for mes in sorted_messages:
         j_text = str(''.join(''.join(mes.text.splitlines())))
-        print(j_text)
+        # print(j_text)
         if j_text in txt_list:
             try:
                 driver.execute_script("arguments[0].click();",
@@ -105,7 +105,7 @@ if __name__ == "__main__":
 
 if input("Download? 1-yes everything else - no: ") == '1':
     select('//span[@data-testid="{}"]', class_name='download', clicked=1)
-    if group_flag == 0:
-        start_park_rename()
+    # if group_flag == 0:
+    start_park_rename()
 input()
 driver.quit()

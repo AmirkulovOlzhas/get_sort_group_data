@@ -14,6 +14,12 @@ def click(click_c=1):
         pg.click(913, 617, button='middle')
 
 
+def split_text_date(td):
+    date = td[-5:]
+    text = td[:-5]
+    print(date, ' - ', text.split('**')[1] if '**' in text else text)
+
+
 def taking_sorted_messages(saved_number=0):
     messages = driver.find_element(
         By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
@@ -21,8 +27,18 @@ def taking_sorted_messages(saved_number=0):
     sm = []
     if saved_number != 0:
         for mes in messages:
+            text_date = str(''.join(''.join(mes.text.splitlines())))
             if '_1-lf9 _3mSPV' not in mes.get_attribute('innerHTML'):
                 sm.append(mes)
+                if '**' in text_date:
+                    temp = text_date.split('**')
+                    if len(temp[1].split(':')[0]) > 2:
+                        print('+', end='')
+                        split_text_date(text_date)  # 'split **',
+            else:
+                print('-', end='')
+                split_text_date(text_date)  # "if '_1-lf9 _3mSPV' in",
+        # надо сохранить еще сообщения
         return sm
     else:
         return messages
