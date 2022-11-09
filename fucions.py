@@ -34,10 +34,10 @@ def taking_sorted_messages(saved_number=0):
                     temp = text_date.split('**')
                     if len(temp[1].split(':')[0]) > 2:
                         print('+', end='')
-                        split_text_date(text_date)  # 'split **',
+                        split_text_date(text_date)
             else:
                 print('-', end='')
-                split_text_date(text_date)  # "if '_1-lf9 _3mSPV' in",
+                split_text_date(text_date)
         # надо сохранить еще сообщения
         return sm
     else:
