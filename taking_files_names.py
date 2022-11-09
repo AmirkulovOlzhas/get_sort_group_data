@@ -1,6 +1,7 @@
 import os
 from os import listdir
 from os.path import isfile, join
+from stuf.delete_parentheses import rename_all_files
 
 mypath = r"C:\Users\OFFICE\Desktop\test"
 
@@ -11,21 +12,11 @@ counter = {"17 Мкр": 0,
            "Победа": 0
            }
 
-
-def rename_file(this_line):
-    temp_line_name = this_line.replace(' (', '-')
-    temp_line_name = temp_line_name.replace(')', '')
-    os.rename(mypath + '\\' + this_line, mypath + '\\' + temp_line_name)
-
-
 # taking photo names from folder
 all_files_name = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 print(len(all_files_name))
 
-# delete () to correct sort files
-for line in all_files_name:
-    if ('(' in line) & (')' in line):
-        rename_file(line)
+rename_all_files(all_files_name)
 
 # taking updated photo names from folder
 all_files_name = [f for f in listdir(mypath) if isfile(join(mypath, f))]
