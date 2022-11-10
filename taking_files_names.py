@@ -1,20 +1,38 @@
 import os
 from os import listdir
 from os.path import isfile, join
-from stuf.delete_parentheses import rename_all_files
+
+
+def rename_file(this_line, pr, outside):
+    if pr == 1:
+        temp_line_name = this_line.replace(' (', '-')
+        temp_line_name = temp_line_name.replace(')', '')
+    else:
+        temp_line_name = this_line
+    if not outside:
+        os.rename(mypath + '\\' + this_line, mypath + '\\' + '00' + temp_line_name[29:])
+    else:
+        os.rename(mypath + '\\' + this_line, mypath + '\\' + temp_line_name)
+
+
+def rename_all_files(afn, outside=False):
+    for this_line in afn:
+        p = 0
+        if ('(' in this_line) & (')' in this_line):
+            p = 1
+        rename_file(this_line, p, outside)
+
+
+if input("park(print park) or not: ") == 'park':
+    contact = 0
+else:
+    contact = 4
 
 mypath = r"C:\Users\OFFICE\Desktop\test"
-# [{},{},{}]
-counter = {"17 Мкр": 0,
-           "Касирет": 0,
-           "Алатау": 0,
-           "Нурсат": 0,
-           "Победа": 0
-           }
 
 # taking photo names from folder
 all_files_name = [f for f in listdir(mypath) if isfile(join(mypath, f))]
-print(len(all_files_name))
+print("len", len(all_files_name))
 
 rename_all_files(all_files_name, outside=True)
 
@@ -25,13 +43,13 @@ i, temp_value = 0, 0
 # rename
 with open('stuf/park_mes_name.txt', 'r', encoding='utf8') as f:
     for line in f:
-        try:
-            for key, value in counter.items():
-                if key == line.replace('\n', ''):
-                    counter[key] += 1
-                    temp_value = counter[key]
-            os.rename(mypath + '\\' + all_files_name[i],
-                      mypath + '\\' + line.replace('\n', '') + f' - {temp_value}.jpeg')
-        except Exception as e:
-            print(e)
+        temp_line = line.replace('\n', '').split(' ')
+        temp_value = 1
+        while True:
+            try:
+                os.rename(mypath + '\\' + all_files_name[i],
+                          mypath + '\\' + temp_line[0][contact:] + f' {temp_line[1]} - {temp_value}.jpeg')
+                break
+            except:
+                temp_value += 1
         i += 1

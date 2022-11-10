@@ -25,7 +25,12 @@ def check_data(nd):
         sum += int(line_count)
 
         while line_count > 0:
-            lines += line[0]+'\n'
+            if line[1][2] == ':':
+                line[1] = line[1][:5]
+            else:
+                dot_index = line[1].index(':')
+                line[1] = line[1][dot_index - 2:dot_index + 2]
+            lines += line[0] + ' ' + line[1].replace(":", "_") + '\n'
             line_count -= 1
     mes_name.write(lines[:-1])
     print(sum)
@@ -34,3 +39,6 @@ def check_data(nd):
 def start_park_rename():
     name_data = take_name_data()
     check_data(name_data)
+
+
+start_park_rename()

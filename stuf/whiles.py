@@ -1,5 +1,5 @@
 import time
-from fucions import select
+from fuctions import select
 
 # def waiting_wa():
 #     while True:  # waiting for wa

@@ -5,7 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from fucions import taking_sorted_messages, select, write_to_file, click, \
+from fuctions import taking_sorted_messages, select, write_to_file, click, \
     message_count, sorted_text_list, set_driver_by
 from bs4_code import req_url
 from test import start_park_rename
