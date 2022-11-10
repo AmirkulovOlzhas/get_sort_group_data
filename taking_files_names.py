@@ -5,7 +5,7 @@ from os.path import isfile, join
 
 def rename_file(this_line, pr, outside):
     if pr == 1:
-        temp_line_name = this_line.replace(' (', '-')
+        temp_line_name = this_line.replace(' (', '- ')
         temp_line_name = temp_line_name.replace(')', '')
     else:
         temp_line_name = this_line
@@ -23,8 +23,11 @@ def rename_all_files(afn, outside=False):
         rename_file(this_line, p, outside)
 
 
-if input("park(print park) or not: ") == 'park':
+a = input("park, abai, enb :")
+if a == 'park':
     contact = 0
+elif a == 'abai':
+    contact = 5
 else:
     contact = 4
 
@@ -48,8 +51,9 @@ with open('stuf/park_mes_name.txt', 'r', encoding='utf8') as f:
         while True:
             try:
                 os.rename(mypath + '\\' + all_files_name[i],
-                          mypath + '\\' + temp_line[0][contact:] + f' {temp_line[1]} - {temp_value}.jpeg')
+                          mypath + '\\' + temp_line[1] + f' {temp_line[0][contact:]} - {temp_value}.jpeg')
                 break
-            except:
+            except Exception as e:
+                print(e)
                 temp_value += 1
         i += 1

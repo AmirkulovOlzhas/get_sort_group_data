@@ -15,9 +15,11 @@ def click(click_c=1):
 
 
 def split_text_date(td):
-    date = td[-5:]
-    text = td[:-5]
-    print(date, ' - ', text.split('**')[1] if '**' in text else text)
+    ti = td.index(':')
+    date = td[ti - 2:ti + 3]
+    text = td[:ti - 2]
+    print('---', date, ' - ', text.split('**')[1].
+          replace('Пересланное сообщение', 'P') if '**' in text else text)
 
 
 def taking_sorted_messages(saved_number=0):

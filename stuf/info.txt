@@ -8,3 +8,8 @@ main - объеденяет functions, bs4_code, test
 
 taking_file_names - переименовывает фото в папке, по списку в park_mes_name.txt
 
+   ti = td.index(':')
+    date = td[ti - 2:ti + 2]
+    text = td[:ti - 2]
+    if text.split('**')[1] != 'Пересланное сообщение':
+        print('---', date, ' - ', text.split('**')[1] if '**' in text else text)
