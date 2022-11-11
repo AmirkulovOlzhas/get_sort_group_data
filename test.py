@@ -25,13 +25,12 @@ def check_data(nd):
         sum += int(line_count)
 
         while line_count > 0:
-            print(line)
             if line[1]:
                 if line[1][2] == ':':
                     line[1] = line[1][:5]
                 else:
                     dot_index = line[1].index(':')
-                    line[1] = line[1][dot_index - 2:dot_index + 2]
+                    line[1] = line[1][dot_index - 2:dot_index + 3]
             lines += line[0] + ' ' + line[1].replace(":", "_") + '\n'
             line_count -= 1
     mes_name.write(lines[:-1])

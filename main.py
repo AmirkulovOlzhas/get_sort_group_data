@@ -9,7 +9,7 @@ from fuctions import taking_sorted_messages, select, write_to_file, click, \
     message_count, sorted_text_list, set_driver_by
 from bs4_code import req_url
 from test import start_park_rename
-from config import contact, archive, select_ico, argument1, argument2, msg_cont_class
+from config import contact, archive, select_ico, argument1, argument2, msg_cont_class, chat
 
 
 def create_driver():
@@ -59,7 +59,6 @@ def find_mes_in_chat():
     click()
     return message_count(group_flag, saved_number)
 
-
 def select_messages():
     select('//div[@class="{}"]', '_28_W0', clicked=1)
     select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1)
@@ -85,27 +84,28 @@ def select_messages():
 def main():
     create_driver()
     archive_open()
-    while str(input('Начинается новый выбор. Напишите "stop" для остановки \n'\
-                    'или просто нажмите "Enter" что бы продолжить: ')).lower()!='stop':
+    while str(input('Начинается новый выбор. Напишите "stop" для остановки \n' \
+                    'или просто нажмите "Enter" что бы продолжить: ')).lower() != 'stop':
         choose_chat()
         select_chat()
         time.sleep(5)
         try:
-            if find_mes_in_chat()!=0:
+            if find_mes_in_chat() != 0:
                 select_messages()
             else:
                 print('Нет сообщений для выделения')
             print("------------------------------------------")
         except Exception as e:
-            print(e)
+            print('main-103: ', e)
 
 
 if __name__ == "__main__":
     main()
 
+if input("take names? ") == '1':
+    start_park_rename()
 if input("Download? 1-yes everything else - no: ") == '1':
     select('//span[@data-testid="{}"]', class_name='download', clicked=1)
     # if group_flag == 0:
-    start_park_rename()
 input()
 driver.quit()

@@ -14,12 +14,23 @@ def click(click_c=1):
         pg.click(913, 617, button='middle')
 
 
+def delete_text_from_str(tt):
+    tt = tt.replace('Пересланное сообщение', '')
+    return tt
+
+
 def split_text_date(td):
     ti = td.index(':')
     date = td[ti - 2:ti + 3]
     text = td[:ti - 2]
-    print('---', date, ' - ', text.split('**')[1].
-          replace('Пересланное сообщение', 'P') if '**' in text else text)
+    if '**' in text:
+        temp_text = text.split('**')[1]
+    else:
+        temp_text = text
+    if 'Пересланное сообщение' in temp_text:
+        temp_text = delete_text_from_str(temp_text)
+    if temp_text not in ['', ' ']:
+        print('---', date, '-', temp_text)
 
 
 def taking_sorted_messages(saved_number=0):
@@ -35,10 +46,10 @@ def taking_sorted_messages(saved_number=0):
                 if '**' in text_date:
                     temp = text_date.split('**')
                     if len(temp[1].split(':')[0]) > 2:
-                        print('+', end='')
+                        # print('+', end='')
                         split_text_date(text_date)
             else:
-                print('-', end='')
+                # print('-', end='')
                 split_text_date(text_date)
         # надо сохранить еще сообщения
         return sm
@@ -66,25 +77,21 @@ def write_to_file(message_list):
 
 def message_count(flag, saved_number):
     mes_cunt, message_div_sum, message_div_sum2 = 0, 99, 100
-    message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag,
-                                                                 saved_number=saved_number)
-    pg.press('home')
     result_repeated = 0
-    while True:
+    while result_repeated < 5:
         pg.press('home')
         print("{}...".format(mes_cunt), end='')
+        time.sleep(0.2)
         if mes_cunt % 5 == 0:
             pg.scroll(7)
             pg.scroll(-2)
-            time.sleep(0.3)
             message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag,
                                                                          saved_number=saved_number)
-            if message_div_sum == message_div_sum2:
-                result_repeated += 1
-            else:
-                result_repeated = 0
-            if result_repeated > 5:
-                break
+            print('found mes sum: ', message_div_sum)
+        if message_div_sum == message_div_sum2:
+            result_repeated += 1
+        else:
+            result_repeated = 0
         mes_cunt += 1
     write_to_file(req_url(driver.page_source, key=1, flag=flag, saved_number=saved_number))
     return message_div_sum

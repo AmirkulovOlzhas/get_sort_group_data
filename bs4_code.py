@@ -36,27 +36,27 @@ def number_check(div_mes, flag):
 def req_url(url, key=0, flag=0, saved_number=0):
     soup = bs(url, 'lxml')
     messages = soup.find('div', class_=chat).find_all('div')
-    messages_list, sum = [], 0
-    for div_mes in messages:
-        if div_mes.get('class'):
-            i_class = " ".join(map(str, div_mes.get('class')))
-        else:
-            i_class = "+"
-        # number check
-        if saved_number == 1:
-            if (text_message not in str(div_mes.find_all('div'))) & (i_class in message_class_list):
-                messages_list, sum = number_list_append(
-                    div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
-        else:
-            if i_class in message_class_list:
-                messages_list, sum = number_list_append(
-                    div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
+    if key == 1:
+        messages_list, sum = [], 0
+        for div_mes in messages:
+            if div_mes.get('class'):
+                i_class = " ".join(map(str, div_mes.get('class')))
+            else:
+                i_class = "+"
+            # number check
+            if saved_number == 1:
+                if (text_message not in str(div_mes.find_all('div'))) & (i_class in message_class_list):
+                    messages_list, sum = number_list_append(
+                        div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
+            else:
+                if i_class in message_class_list:
+                    messages_list, sum = number_list_append(
+                        div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
 
-    print('sum = {}'.format(sum))
-    if key == 0:
-        return sum
-    else:
+        print('sum = {}'.format(sum))
         return messages_list
+    else:
+        return len(messages)
 
 
 def select_all_text(url, class_name):

@@ -54,6 +54,6 @@ with open('stuf/park_mes_name.txt', 'r', encoding='utf8') as f:
                           mypath + '\\' + temp_line[1] + f' {temp_line[0][contact:]} - {temp_value}.jpeg')
                 break
             except Exception as e:
-                print(e)
+                print('tsm-57: ', e)
                 temp_value += 1
         i += 1
