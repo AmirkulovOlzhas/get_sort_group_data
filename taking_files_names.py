@@ -50,8 +50,9 @@ with open('stuf/park_mes_name.txt', 'r', encoding='utf8') as f:
         temp_value = 1
         while True:
             try:
+                file_type = '.' + str(all_files_name[i][-4:].replace('.', ''))
                 os.rename(mypath + '\\' + all_files_name[i],
-                          mypath + '\\' + temp_line[1] + f' {temp_line[0][contact:]} - {temp_value}.jpeg')
+                          mypath + '\\' + temp_line[1] + f' {temp_line[0][contact:]} - {str(temp_value) + file_type}')
                 break
             except Exception as e:
                 print('tsm-57: ', e)

@@ -43,7 +43,6 @@ def choose_chat():
 def select_chat():
     select('//span[@title="{}"]', contact[group_flag], "contact opened", clicked=1)
 
-
 def archive_open():
     print("Подождите")
     while True:  # waiting for wa
@@ -60,8 +59,6 @@ def find_mes_in_chat():
     return message_count(group_flag, saved_number)
 
 def select_messages():
-    select('//div[@class="{}"]', '_28_W0', clicked=1)
-    select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1)
     sorted_messages = taking_sorted_messages(saved_number=saved_number)
     txt_list = sorted_text_list()
     print('len sorted_m: ', len(sorted_messages))
@@ -71,12 +68,17 @@ def select_messages():
         # print(j_text)
         if j_text in txt_list:
             try:
+                # element = WebDriverWait(driver, 10).until(
+                #     EC.presence_of_element_located((By.CLASS_NAME, select_ico)))
                 driver.execute_script("arguments[0].click();",
                                       mes.find_element(By.CLASS_NAME, select_ico))
             except Exception as e:
                 print(f"exception handled - {e}")
+                print('j_text=-',j_text)
                 wait = WebDriverWait(driver, 10)
-                element = wait.until(EC.element_to_be_clickable(By.CLASS_NAME.format(select_ico)))
+                element = wait.until(EC.element_to_be_clickable((By.CLASS_NAME.format(select_ico))))
+                driver.execute_script("arguments[0].click();",
+                                      mes.find_element(By.CLASS_NAME, select_ico))
             txt_list.remove(j_text)
     print(time.time() - time_a)
 
@@ -91,6 +93,9 @@ def main():
         time.sleep(5)
         try:
             if find_mes_in_chat() != 0:
+                print('before sm')
+                select('//div[@class="{}"]', '_28_W0', clicked=1)
+                select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1)
                 select_messages()
             else:
                 print('Нет сообщений для выделения')

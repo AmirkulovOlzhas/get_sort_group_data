@@ -11,7 +11,7 @@ def set_driver_by(d, B):
 
 def click(click_c=1):
     for i in range(click_c):
-        pg.click(913, 617, button='middle')
+        pg.click(389, 777, button='middle')
 
 
 def delete_text_from_str(tt):
