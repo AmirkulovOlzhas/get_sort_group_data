@@ -19,7 +19,7 @@ def delete_text_from_str(tt):
     return tt
 
 
-def split_text_date(td):
+def split_text_date(td, r):
     ti = td.index(':')
     date = td[ti - 2:ti + 3]
     text = td[:ti - 2]
@@ -30,7 +30,7 @@ def split_text_date(td):
     if 'Пересланное сообщение' in temp_text:
         temp_text = delete_text_from_str(temp_text)
     if temp_text not in ['', ' ']:
-        print('---', date, '-', temp_text)
+        r.write(date + '-' + temp_text+'\n')
 
 
 def taking_sorted_messages(saved_number=0):
@@ -38,6 +38,7 @@ def taking_sorted_messages(saved_number=0):
         By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
         find_elements(By.XPATH, '//div[@data-id]')
     sm = []
+    r = open('stuf/photo_names.txt', 'w', encoding='utf8')
     if saved_number != 0:
         for mes in messages:
             text_date = str(''.join(''.join(mes.text.splitlines())))
@@ -47,10 +48,10 @@ def taking_sorted_messages(saved_number=0):
                     temp = text_date.split('**')
                     if len(temp[1].split(':')[0]) > 2:
                         # print('+', end='')
-                        split_text_date(text_date)
+                        split_text_date(text_date, r)
             else:
                 # print('-', end='')
-                split_text_date(text_date)
+                split_text_date(text_date, r)
         # надо сохранить еще сообщения
         return sm
     else:
