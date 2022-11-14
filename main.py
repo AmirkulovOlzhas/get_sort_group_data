@@ -60,7 +60,10 @@ def archive_open():
 
 def find_mes_in_chat():
     # расчет сообщений -> меню -> выбор сообщений
-    select('//span[@class="{}"]',"_3K42l", clicked=1)
+    try:
+        select('//span[@class="{}"]',"_3K42l", clicked=1)
+    except:
+        print('нет кнопки вниз')
     click()
     return message_count(group_flag, saved_number)
 
@@ -94,15 +97,14 @@ def select_messages():
 def main():
     create_driver()
     archive_open()
-    while str(input('Начинается новый выбор. Напишите "stop" для остановки \n' \
-                    'или просто нажмите "Enter" что бы продолжить: ')).lower() != 'stop':
+    while input('wirte "stop" to stop the app: ') != 'stop':
+        input_text = ''
         time_begin = time.time()
         choose_chat()
         select_chat()
         time.sleep(5)
         try:
             if find_mes_in_chat() != 0:
-                print('before sm')
                 select_messages()
             else:
                 print('Нет сообщений для выделения')
@@ -110,15 +112,29 @@ def main():
         except Exception as e:
             print('main-103: ', e)
         print('time for 1 role: ', time_begin - time.time())
+        print('input_text: ')
+
+        while input_text not in ['close']:
+            print('-------  -------  Доп функцийй  -------  -------')
+            input_text = str(input('print "close" to close this window: ')).lower()
+            if input_text == 'take names':
+                print("names writen to park mes name")
+                start_park_rename()
+            elif input_text == 'download':
+                select('//span[@data-testid="{}"]', class_name='download', clicked=1)
+            elif input_text == 'help':
+                print("""
+                download
+                take names
+                close
+                stop
+                """)
+        print('-------  -------  -------  -------  -------  -------')
 
 
 if __name__ == "__main__":
     main()
 
-if input("take names? ") == '1':
-    start_park_rename()
-if input("Download? 1-yes everything else - no: ") == '1':
-    select('//span[@data-testid="{}"]', class_name='download', clicked=1)
-    # if group_flag == 0:
+
 input()
 driver.quit()
