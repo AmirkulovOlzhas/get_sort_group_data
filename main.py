@@ -1,7 +1,8 @@
 import time
 import sys, os
+# import requests
 import pyautogui as pg
-from lxml import etree, html
+# from lxml import etree, html
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -59,6 +60,7 @@ def archive_open():
 
 def find_mes_in_chat():
     # расчет сообщений -> меню -> выбор сообщений
+    select('//span[@class="{}"]',"_3K42l", clicked=1)
     click()
     return message_count(group_flag, saved_number)
 
@@ -85,7 +87,6 @@ def select_messages():
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                 print(exc_type, fname, exc_tb.tb_lineno)
-                print('j_text=-', j_text, '\n', mes.get_attribute('innerHTML'))
             txt_list.remove(j_text)
     print(time.time() - time_a)
 
@@ -95,6 +96,7 @@ def main():
     archive_open()
     while str(input('Начинается новый выбор. Напишите "stop" для остановки \n' \
                     'или просто нажмите "Enter" что бы продолжить: ')).lower() != 'stop':
+        time_begin = time.time()
         choose_chat()
         select_chat()
         time.sleep(5)
@@ -107,6 +109,7 @@ def main():
             print("------------------------------------------")
         except Exception as e:
             print('main-103: ', e)
+        print('time for 1 role: ', time_begin - time.time())
 
 
 if __name__ == "__main__":
