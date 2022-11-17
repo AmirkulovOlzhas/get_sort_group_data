@@ -1,5 +1,5 @@
 def take_name_data():
-    r = open('stuf/text.txt', 'r', encoding='utf8')
+    r = open('stuf/all_messages.txt', 'r', encoding='utf8')
     book_r = []
     abc = "0123456789+:"
     for word in r:
@@ -15,7 +15,7 @@ def take_name_data():
 
 def check_data(nd):
     sum = 0
-    mes_name = open('stuf/park_mes_name.txt', 'w', encoding='utf8')
+    mes_name = open('stuf/mes_contact_names.txt', 'w', encoding='utf8')
     lines = ''
     for line in nd:
         line_count = line[1].count(":")
@@ -37,6 +37,6 @@ def check_data(nd):
     print(sum)
 
 
-def start_park_rename():
+def write_names_to_txt():
     name_data = take_name_data()
     check_data(name_data)

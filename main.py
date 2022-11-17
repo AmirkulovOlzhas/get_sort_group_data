@@ -10,10 +10,13 @@ from selenium.webdriver.support import expected_conditions as EC
 from fuctions import taking_sorted_messages, select, write_to_file, click, \
     message_count, sorted_text_list, set_driver_by
 from bs4_code import req_url
-from test import start_park_rename
+from sort_all_messages import write_names_to_txt
 from config import contact, archive, select_ico, argument1, argument2, msg_cont_class, chat
+from folder_works import start_folder_work
+from rename_files_names import start_renaming
 
 
+# noinspection PyGlobalUndefined
 def create_driver():
     options = webdriver.ChromeOptions();
     options.add_argument(argument1);
@@ -30,13 +33,21 @@ def create_driver():
 
 
 def choose_chat():
-    global group_flag, saved_number
+    # noinspection PyGlobalUndefined
+    global \
+        group_flag, saved_number, group_name
     while True:
         try:
             group_flag = int(input("park-0, enb-1, abai-2: "))
             saved_number = int(input("0 - not saved numbers mes, 1 saved: "))
             if group_flag in [0, 1, 2] and saved_number in [0, 1]:
                 print("Selected {}".format(group_flag))
+                if group_flag == 0:
+                    group_name = 'park'
+                elif group_flag == 1:
+                    group_name = 'enb'
+                else:
+                    group_name = 'abai'
                 break
             else:
                 print('set one of 012')
@@ -61,7 +72,7 @@ def archive_open():
 def find_mes_in_chat():
     # расчет сообщений -> меню -> выбор сообщений
     try:
-        select('//span[@class="{}"]',"_3K42l", clicked=1)
+        select('//span[@class="{}"]', "_3K42l", clicked=1)
     except:
         print('нет кнопки вниз')
     click()
@@ -87,9 +98,10 @@ def select_messages():
                     action.move_to_element(mes).perform()
                 driver.execute_script("arguments[0].click();",
                                       mes.find_element(By.CLASS_NAME, select_ico))
-                exc_type, exc_obj, exc_tb = sys.exc_info()
-                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                print(exc_type, fname, exc_tb.tb_lineno)
+                if e != 'NoSuchElementException':
+                    exc_type, exc_obj, exc_tb = sys.exc_info()
+                    fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                    print(exc_type, fname, exc_tb.tb_lineno)
             txt_list.remove(j_text)
     print(time.time() - time_a)
 
@@ -113,15 +125,19 @@ def main():
             print('main-103: ', e)
         print('time for 1 role: ', time_begin - time.time())
         print('input_text: ')
+        if saved_number == 1:
+            print("names writen to park mes name")
+            write_names_to_txt()
 
         while input_text not in ['close']:
             print('-------  -------  Доп функцийй  -------  -------')
             input_text = str(input('print "close" to close this window: ')).lower()
-            if input_text == 'take names':
-                print("names writen to park mes name")
-                start_park_rename()
-            elif input_text == 'download':
+            if input_text == 'download':
                 select('//span[@data-testid="{}"]', class_name='download', clicked=1)
+            elif input_text == 'rename':
+                print(group_name)
+                file_dir = start_folder_work(group_name)
+                start_renaming(group_name, file_dir)
             elif input_text == 'help':
                 print("""
                 download
@@ -134,7 +150,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 input()
 driver.quit()

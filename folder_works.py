@@ -10,10 +10,10 @@ global parent_dir
 parent_dir = r"D:\\Wa_photo\\"
 
 
-def create_folder(contact):
-    if contact == 'park':
+def create_folder(ct):
+    if ct == 'park':
         folder_flag = 'P'
-    elif contact == 'enb':
+    elif ct == 'enb':
         folder_flag = '-'
     else:
         folder_flag = ''
@@ -23,15 +23,16 @@ def create_folder(contact):
 
     path = os.path.join(parent_dir, folder_name)
     os.mkdir(path)
+    print('folder created')
     return folder_name
 
 
 def extract_rar(rar_file, extract_dir):
     patoolib.extract_archive(r'D:\\WA_photo\\downloads\\' + rar_file, outdir=extract_dir)
+    print('rar file extracted')
+    # delete archive
+    return extract_dir
 
 
-def start_folder_work(contact):
-    extract_rar(listdir(r'D:\\WA_photo\\downloads\\')[0], parent_dir + create_folder(contact))
-
-
-start_folder_work('park')
+def start_folder_work(ct):
+    return extract_rar(listdir(r'D:\\WA_photo\\downloads\\')[0], parent_dir + create_folder(ct))

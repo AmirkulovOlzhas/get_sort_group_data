@@ -3,6 +3,7 @@ import pyautogui as pg
 from bs4_code import req_url
 
 
+# noinspection PyGlobalUndefined
 def set_driver_by(d, B):
     global driver
     global By
@@ -38,7 +39,7 @@ def taking_sorted_messages(saved_number=0):
         By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
         find_elements(By.XPATH, '//div[@data-id]')
     sm = []
-    r = open('stuf/photo_names.txt', 'w', encoding='utf8')
+    r = open('stuf/sorted_messages_list.txt', 'w', encoding='utf8')
     if saved_number != 0:
         for mes in messages:
             text_date = str(''.join(''.join(mes.text.splitlines())))
@@ -68,7 +69,7 @@ def select(xpath, class_name, text='NULL', clicked=0):
 
 
 def write_to_file(message_list):
-    r = open('stuf/text.txt', 'w', encoding='utf8')
+    r = open('stuf/all_messages.txt', 'w', encoding='utf8')
     for i in range(len(message_list)):
         r.write(message_list[i])
         if i + 1 != len(message_list):
@@ -99,7 +100,7 @@ def message_count(flag, saved_number):
 
 
 def sorted_text_list():
-    r = open('stuf/text.txt', 'r', encoding='utf8')
+    r = open('stuf/all_messages.txt', 'r', encoding='utf8')
     txt_list = []
     click(2)
     for i in r:
