@@ -2,6 +2,7 @@ import time
 import sys, os
 # import requests
 import pyautogui as pg
+import selenium.common.exceptions
 # from lxml import etree, html
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -21,8 +22,7 @@ def create_driver():
     options = webdriver.ChromeOptions();
     options.add_argument(argument1);
     options.add_argument(argument2)
-    global driver
-    global action
+    global driver, action
     driver = webdriver.Chrome \
         (executable_path=r'C:\Users\OFFICE\PycharmProjects\whatsapp-project\stuf\chromedriver.exe',
          options=options)
@@ -34,8 +34,7 @@ def create_driver():
 
 def choose_chat():
     # noinspection PyGlobalUndefined
-    global \
-        group_flag, saved_number, group_name
+    global group_flag, saved_number, group_name
     while True:
         try:
             group_flag = int(input("park-0, enb-1, abai-2: "))
@@ -82,27 +81,28 @@ def find_mes_in_chat():
 def select_messages():
     select('//div[@class="{}"]', '_28_W0', clicked=1)
     select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1)
-    sorted_messages = taking_sorted_messages(saved_number=saved_number)
+    sorted_messages, sorted_messages_text = taking_sorted_messages(saved_number=saved_number)
     txt_list = sorted_text_list()
-    print('len sorted_m: ', len(sorted_messages))
+    print('len sorted_m, txt_mes: ', len(sorted_messages), ' - ', len(txt_list))
     time_a = time.time()
-    for mes in sorted_messages:
-        j_text = str(''.join(''.join(mes.text.splitlines())))
-        if j_text in txt_list:
-            try:
 
-                driver.execute_script("arguments[0].click();",
-                                      mes.find_element(By.CLASS_NAME, select_ico))
-            except Exception as e:
-                if j_text.count(':') > 2:
-                    action.move_to_element(mes).perform()
-                driver.execute_script("arguments[0].click();",
-                                      mes.find_element(By.CLASS_NAME, select_ico))
-                if e != 'NoSuchElementException':
-                    exc_type, exc_obj, exc_tb = sys.exc_info()
-                    fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                    print(exc_type, fname, exc_tb.tb_lineno)
-            txt_list.remove(j_text)
+    for text in txt_list:
+        for j_text in sorted_messages_text:
+            if text == str(j_text):
+                index = sorted_messages_text.index(text)
+                try:
+
+                    driver.execute_script("arguments[0].click();",
+                                          sorted_messages[index].find_element(By.CLASS_NAME, select_ico))
+
+                except selenium.common.exceptions.NoSuchElementException:
+                    if text.count(':') > 2:
+                        action.move_to_element(sorted_messages[index]).perform()
+                        driver.execute_script("arguments[0].click();",
+                                              sorted_messages[index].find_element(By.CLASS_NAME, select_ico))
+                sorted_messages_text.remove(j_text)
+                sorted_messages.remove(sorted_messages[index])
+                break
     print(time.time() - time_a)
 
 
@@ -114,7 +114,7 @@ def main():
         time_begin = time.time()
         choose_chat()
         select_chat()
-        time.sleep(5)
+        time.sleep(2)
         try:
             if find_mes_in_chat() != 0:
                 select_messages()
@@ -122,14 +122,15 @@ def main():
                 print('Нет сообщений для выделения')
             print("------------------------------------------")
         except Exception as e:
-            print('main-103: ', e)
-        print('time for 1 role: ', time_begin - time.time())
-        print('input_text: ')
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(exc_type, fname, exc_tb.tb_lineno, e)
+        print('time for 1 role: ', time.time() - time_begin)
         if saved_number == 1:
             print("names writen to park mes name")
             write_names_to_txt()
 
-        while input_text not in ['close']:
+        while input_text != 'close':
             print('-------  -------  Доп функцийй  -------  -------')
             input_text = str(input('print "close" to close this window: ')).lower()
             if input_text == 'download':
@@ -141,7 +142,7 @@ def main():
             elif input_text == 'help':
                 print("""
                 download
-                take names
+                rename
                 close
                 stop
                 """)

@@ -34,6 +34,7 @@ def start_renaming(a, folder_name):
 
     # mypath = r"C:\Users\OFFICE\Desktop\test"
 
+    # noinspection PyGlobalUndefined
     global mypath
     mypath = folder_name
 
@@ -48,18 +49,23 @@ def start_renaming(a, folder_name):
 
     # rename
     with open('stuf/mes_contact_names.txt', 'r', encoding='utf8') as f:
+        this_photo, ex_photo = 1, 0
+        data_symbol = ''
         for line in f:
             temp_line = line.replace('\n', '').split(' ')
             temp_value = 1
             while True:
+                ex_photo = this_photo
+                this_photo = int(temp_line[1].replace('_', ''))
+                if this_photo < ex_photo:
+                    data_symbol += 'l'
                 try:
                     file_type = '.' + str(all_files_name[i][-4:].replace('.', ''))
                     os.rename(mypath + '\\' + all_files_name[i],
-                              mypath + '\\' + temp_line[
+                              mypath + '\\' + data_symbol + temp_line[
                                   1] + f' {temp_line[0][contact:]} - {str(temp_value) + file_type}')
                     break
                 except Exception as e:
                     print('tsm-57: ', e)
                     temp_value += 1
             i += 1
-
