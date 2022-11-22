@@ -1,6 +1,7 @@
 import os
 from os import listdir
 from os.path import isfile, join
+from folder_works import copy_address_text
 
 
 def rename_file(this_line, pr, outside):
@@ -69,3 +70,7 @@ def start_renaming(a, folder_name):
                     print('tsm-57: ', e)
                     temp_value += 1
             i += 1
+    copy_address_text()
+
+
+

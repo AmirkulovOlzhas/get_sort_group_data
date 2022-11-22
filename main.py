@@ -109,33 +109,36 @@ def select_messages():
 def main():
     create_driver()
     archive_open()
-    while input('wirte "stop" to stop the app: ') != 'stop':
-        input_text = ''
-        time_begin = time.time()
+    while True:
+        print('wirte "stop" to stop the app: ')
+        input_text = input()
         choose_chat()
-        select_chat()
-        time.sleep(2)
-        try:
-            if find_mes_in_chat() != 0:
-                select_messages()
-            else:
-                print('Нет сообщений для выделения')
-            print("------------------------------------------")
-        except Exception as e:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print(exc_type, fname, exc_tb.tb_lineno, e)
-        print('time for 1 role: ', time.time() - time_begin)
-        if saved_number == 1:
-            print("names writen to park mes name")
-            write_names_to_txt()
+        if input_text != 'skip':
+            time_begin = time.time()
+            select_chat()
+            time.sleep(2)
+            try:
+                if find_mes_in_chat() != 0:
+                    select_messages()
+                else:
+                    print('Нет сообщений для выделения')
+                print("------------------------------------------")
+            except Exception as e:
+                exc_type, exc_obj, exc_tb = sys.exc_info()
+                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                print(exc_type, fname, exc_tb.tb_lineno, e)
+            print('time for 1 role: ', time.time() - time_begin)
+            if saved_number == 1:
+                print("names writen to park mes name")
+                write_names_to_txt()
+                select('//span[@data-testid="{}"]', class_name='download', clicked=1)
+        elif input_text == 'stop':
+            break
 
         while input_text != 'close':
             print('-------  -------  Доп функцийй  -------  -------')
             input_text = str(input('print "close" to close this window: ')).lower()
-            if input_text == 'download':
-                select('//span[@data-testid="{}"]', class_name='download', clicked=1)
-            elif input_text == 'rename':
+            if input_text == 'rename':
                 print(group_name)
                 file_dir = start_folder_work(group_name)
                 start_renaming(group_name, file_dir)

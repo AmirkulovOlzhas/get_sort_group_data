@@ -99,7 +99,9 @@ def message_count(flag, saved_number):
         else:
             result_repeated = 0
         mes_cunt += 1
+    a = time.time()
     write_to_file(req_url(driver.page_source, key=1, flag=flag, saved_number=saved_number))
+    print(time.time()-a)
     return message_div_sum
 
 

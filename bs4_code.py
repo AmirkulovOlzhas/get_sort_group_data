@@ -53,7 +53,7 @@ def req_url(url, key=0, flag=0, saved_number=0):
                     messages_list, sum = number_list_append(
                         div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
 
-        print('sum = {}'.format(sum))
+        print('\nmessages to select = {}'.format(sum))
         return messages_list
     else:
         return len(messages)
