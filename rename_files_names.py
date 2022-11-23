@@ -60,7 +60,9 @@ def start_renaming(a, folder_name):
     #                     break
     #             except Exception as e:
     #                 print(e)
-    input()
+
+
+    # input()
     # rename
     with open('stuf/mes_contact_names.txt', 'r', encoding='utf8') as f:
         this_photo, ex_photo = 1, 0

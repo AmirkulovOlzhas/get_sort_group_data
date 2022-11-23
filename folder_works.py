@@ -27,7 +27,8 @@ def create_folder(ct):
     folder_number = 0
     while True:
         try:
-            path += str(folder_number)
+            if folder_number != 0:
+                path += str(folder_number)
             os.mkdir(path)
             break
         except:
