@@ -132,6 +132,13 @@ def main():
                 print("names writen to park mes name")
                 write_names_to_txt()
                 select('//span[@data-testid="{}"]', class_name='download', clicked=1)
+            else:
+                try:
+                    select('//span[@data-testid="{}"]', class_name='delete', clicked=1)
+                    time.sleep(1.2)
+                    select('//div[@data-testid="{}"]', class_name='popup-controls-delete', clicked=1)
+                except Exception as e:
+                    print('no mess to delete', e)
         elif input_text == 'stop':
             break
 

@@ -4,11 +4,12 @@ from os.path import isfile, join
 from folder_works import copy_address_text
 
 
-def rename_file(this_line, pr, outside):
-    if pr == 1:
-        temp_line_name = this_line.replace(' (', '-')
+def rename_file(this_line, outside):
+    try:
+        temp_line_name = this_line.replace(' (', '--')
         temp_line_name = temp_line_name.replace(')', '')
-    else:
+    except Exception as e:
+        print(e)
         temp_line_name = this_line
     if not outside:
         os.rename(mypath + '\\' + this_line, mypath + '\\' + '00' + temp_line_name[29:])
@@ -18,10 +19,7 @@ def rename_file(this_line, pr, outside):
 
 def rename_all_files(afn, outside=False):
     for this_line in afn:
-        p = 0
-        if ('(' in this_line) & (')' in this_line):
-            p = 1
-        rename_file(this_line, p, outside)
+        rename_file(this_line, outside)
 
 
 def start_renaming(a, folder_name):
@@ -33,8 +31,6 @@ def start_renaming(a, folder_name):
     else:
         contact = 4
 
-    # mypath = r"C:\Users\OFFICE\Desktop\test"
-
     # noinspection PyGlobalUndefined
     global mypath
     mypath = folder_name
@@ -45,9 +41,26 @@ def start_renaming(a, folder_name):
 
     rename_all_files(all_files_name, outside=True)
     # taking updated photo names from folder
-    all_files_name = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+    changed_files_name = [f for f in listdir(mypath) if isfile(join(mypath, f))]
     i, temp_value = 0, 0
-
+    for j in range(len(changed_files_name)):
+        print(all_files_name[j], '  |  ', changed_files_name[j])
+    print('---------------- --------------- ----------------- -----------------')
+    # for name in range(len(changed_files_name)):
+    #     if '-' in changed_files_name[i]:
+    #         while True:
+    #             try:
+    #                 if changed_files_name[i][:37] == changed_files_name[i+1][:37]:
+    #                     if '--' in changed_files_name[i+1]:
+    #                         print('.')
+    #                     else:
+    #                         changed_files_name[i], changed_files_name[i+1] = changed_files_name[i+1], changed_files_name[i]
+    #                     break
+    #                 else:
+    #                     break
+    #             except Exception as e:
+    #                 print(e)
+    input()
     # rename
     with open('stuf/mes_contact_names.txt', 'r', encoding='utf8') as f:
         this_photo, ex_photo = 1, 0
@@ -61,16 +74,14 @@ def start_renaming(a, folder_name):
                 if this_photo < ex_photo:
                     data_symbol += 'l'
                 try:
-                    file_type = '.' + str(all_files_name[i][-4:].replace('.', ''))
-                    os.rename(mypath + '\\' + all_files_name[i],
+                    file_type = '.' + str(changed_files_name[i][-4:].replace('.', ''))
+                    os.rename(mypath + '\\' + changed_files_name[i],
                               mypath + '\\' + data_symbol + temp_line[
                                   1] + f' {temp_line[0][contact:]} - {str(temp_value) + file_type}')
                     break
-                except Exception as e:
-                    print('tsm-57: ', e)
+                except WindowsError:
                     temp_value += 1
+                except Exception as e:
+                    print(e)
             i += 1
     copy_address_text()
-
-
-

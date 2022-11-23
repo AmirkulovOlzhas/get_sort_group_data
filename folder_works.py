@@ -1,9 +1,9 @@
 import os
-import shutil
 from datetime import date
 from os import listdir
 
 import patoolib
+
 global parent_dir
 global ext_dir
 # noinspection PyRedeclaration
@@ -24,7 +24,15 @@ def create_folder(ct):
     folder_name = str(today.day) + '-' + str(today.month) + '-' + str(today.year) + folder_flag
 
     path = os.path.join(parent_dir, folder_name)
-    os.mkdir(path)
+    folder_number = 0
+    while True:
+        try:
+            path += str(folder_number)
+            os.mkdir(path)
+            break
+        except:
+            folder_number += 1
+
     print('folder created')
     print(folder_name)
     print('path: ', path)
@@ -47,7 +55,9 @@ def start_folder_work(ct):
 def copy_address_text():
     try:
         print(ext_dir)
-        with open('stuf/sorted_messages_list.txt', 'rb') as src, open(ext_dir + r'\\0Address.txt', 'wb') as dst: dst.write(
-            src.read())
-    except:
-        print('no address file')
+        with open('stuf/sorted_messages_list.txt', 'rb') as src, \
+                open(ext_dir + r'\\0Address.txt', 'wb') as dst:
+            dst.write(
+                src.read())
+    except Exception as e:
+        print('no address file', e)
