@@ -35,10 +35,12 @@ def create_driver():
 def choose_chat():
     # noinspection PyGlobalUndefined
     global group_flag, saved_number, group_name
+    return_number = 0
     while True:
         try:
-            group_flag = int(input("park-0, enb-1, abai-2: "))
-            saved_number = int(input("0 - not saved numbers mes, 1 saved: "))
+            group_flag = input("park-0, enb-1, abai-2: ")
+            saved_number = input("0 - not saved numbers mes, 1 saved: ")
+            group_flag, saved_number = int(group_flag), int(saved_number)
             if group_flag in [0, 1, 2] and saved_number in [0, 1]:
                 print("Selected {}".format(group_flag))
                 if group_flag == 0:
@@ -51,7 +53,14 @@ def choose_chat():
             else:
                 print('set one of 012')
         except:
+            if 'stop' in [group_flag, saved_number]:
+                return_number = 1
+                break
+            elif 'skip' in [group_flag, saved_number]:
+                return_number = 2
+                break
             print('set only corrtect info')
+    return return_number
 
 
 def select_chat():
@@ -112,51 +121,49 @@ def main():
     while True:
         print('wirte "stop" to stop the app: ')
         input_text = input()
-        choose_chat()
-        if input_text != 'skip':
-            time_begin = time.time()
-            select_chat()
-            time.sleep(2)
-            try:
-                if find_mes_in_chat() != 0:
-                    select_messages()
-                else:
-                    print('Нет сообщений для выделения')
-                print("------------------------------------------")
-            except Exception as e:
-                exc_type, exc_obj, exc_tb = sys.exc_info()
-                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                print(exc_type, fname, exc_tb.tb_lineno, e)
-            print('time for 1 role: ', time.time() - time_begin)
-            if saved_number == 1:
-                print("names writen to park mes name")
-                write_names_to_txt()
-                select('//span[@data-testid="{}"]', class_name='download', clicked=1)
-            else:
-                try:
-                    select('//span[@data-testid="{}"]', class_name='delete', clicked=1)
-                    time.sleep(1.2)
-                    select('//div[@data-testid="{}"]', class_name='popup-controls-delete', clicked=1)
-                except Exception as e:
-                    print('no mess to delete', e)
-        elif input_text == 'stop':
+        control = choose_chat()
+        if control == 1:
             break
+        elif control == 2:
+            print('skiped')
+        else:
+            if input_text != 'skip':
+                time_begin = time.time()
+                select_chat()
+                time.sleep(2)
+                try:
+                    if find_mes_in_chat() != 0:
+                        select_messages()
+                    else:
+                        print('Нет сообщений для выделения')
+                    print("------------------------------------------")
+                except Exception as e:
+                    exc_type, exc_obj, exc_tb = sys.exc_info()
+                    fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                    print(exc_type, fname, exc_tb.tb_lineno, e)
+                print('time for 1 role: ', time.time() - time_begin)
+                if saved_number == 1:
+                    print("names writen to park mes name")
+                    write_names_to_txt()
+                    select('//span[@data-testid="{}"]', class_name='download', clicked=1)
+                else:
+                    try:
+                        select('//span[@data-testid="{}"]', class_name='delete', clicked=1)
+                        time.sleep(1.2)
+                        select('//div[@data-testid="{}"]', class_name='popup-controls-delete', clicked=1)
+                    except Exception as e:
+                        print('no mess to delete', e)
+            elif input_text == 'stop':
+                break
 
-        while input_text != 'close':
-            print('-------  -------  Доп функцийй  -------  -------')
-            input_text = str(input('print "close" to close this window: ')).lower()
-            if input_text == 'rename':
-                print(group_name)
-                file_dir = start_folder_work(group_name)
-                start_renaming(group_name, file_dir)
-            elif input_text == 'help':
-                print("""
-                download
-                rename
-                close
-                stop
-                """)
-        print('-------  -------  -------  -------  -------  -------')
+            while input_text != 'close':
+                print('-------  -------  Доп функцийй  -------  -------')
+                input_text = str(input('print "close" to close this window: ')).lower()
+                if input_text == 'rename':
+                    print(group_name)
+                    file_dir = start_folder_work(group_name)
+                    start_renaming(group_name, file_dir)
+            print('-------  -------  -------  -------  -------  -------')
 
 
 if __name__ == "__main__":

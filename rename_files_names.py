@@ -6,7 +6,7 @@ from folder_works import copy_address_text
 
 def rename_file(this_line, outside):
     try:
-        temp_line_name = this_line.replace(' (', '--')
+        temp_line_name = this_line.replace(' (', '')
         temp_line_name = temp_line_name.replace(')', '')
     except Exception as e:
         print(e)
@@ -43,26 +43,8 @@ def start_renaming(a, folder_name):
     # taking updated photo names from folder
     changed_files_name = [f for f in listdir(mypath) if isfile(join(mypath, f))]
     i, temp_value = 0, 0
-    for j in range(len(changed_files_name)):
-        print(all_files_name[j], '  |  ', changed_files_name[j])
-    print('---------------- --------------- ----------------- -----------------')
-    # for name in range(len(changed_files_name)):
-    #     if '-' in changed_files_name[i]:
-    #         while True:
-    #             try:
-    #                 if changed_files_name[i][:37] == changed_files_name[i+1][:37]:
-    #                     if '--' in changed_files_name[i+1]:
-    #                         print('.')
-    #                     else:
-    #                         changed_files_name[i], changed_files_name[i+1] = changed_files_name[i+1], changed_files_name[i]
-    #                     break
-    #                 else:
-    #                     break
-    #             except Exception as e:
-    #                 print(e)
+    changed_files_name.sort()
 
-
-    # input()
     # rename
     with open('stuf/mes_contact_names.txt', 'r', encoding='utf8') as f:
         this_photo, ex_photo = 1, 0
