@@ -69,7 +69,7 @@ def rename_files(contact, changed_files_name):
 
 
 def start_renaming(a, folder_name):
-    contact_index = {'park': 0, 'abai': 5, 'enb': 4}
+    contact_index = {'park': 0, 'abai': 5, 'enb': 4, 'tbo': 4}
 
     # noinspection PyGlobalUndefined
     global mypath

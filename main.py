@@ -1,9 +1,7 @@
 import time
 import sys, os
-# import requests
 import pyautogui as pg
 import selenium.common.exceptions
-# from lxml import etree, html
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -12,7 +10,7 @@ from fuctions import taking_sorted_messages, select, write_to_file, click, \
     message_count, sorted_text_list, set_driver_by
 from bs4_code import req_url
 from sort_all_messages import write_names_to_txt
-from config import contact, archive, select_ico, argument1, argument2, msg_cont_class, chat
+from config import contact_list, archive, select_ico, argument1, argument2, msg_cont_class, chat
 from folder_works import start_folder_work
 from rename_files_names import start_renaming
 
@@ -33,22 +31,19 @@ def create_driver():
 
 
 def choose_chat():
+    group_dict = {0: 'park', 1: 'enb', 2: 'abai', 3: 'tbo'}
     # noinspection PyGlobalUndefined
     global group_flag, saved_number, group_name
     return_number = 0
+
     while True:
         try:
             group_flag = input("park-0, enb-1, abai-2: ")
             saved_number = input("0 - not saved numbers mes, 1 saved: ")
             group_flag, saved_number = int(group_flag), int(saved_number)
-            if group_flag in [0, 1, 2] and saved_number in [0, 1]:
+            if group_flag in [0, 1, 2, 3] and saved_number in [0, 1]:
                 print("Selected {}".format(group_flag))
-                if group_flag == 0:
-                    group_name = 'park'
-                elif group_flag == 1:
-                    group_name = 'enb'
-                else:
-                    group_name = 'abai'
+                group_name = group_dict[group_flag]
                 break
             else:
                 print('set one of 012')
@@ -64,7 +59,7 @@ def choose_chat():
 
 
 def select_chat():
-    select('//span[@title="{}"]', contact[group_flag], "contact opened", clicked=1)
+    select('//span[@title="{}"]', contact_list[group_flag], "contact opened", clicked=1)
 
 
 def archive_open():
@@ -100,7 +95,6 @@ def select_messages():
             if text == str(j_text):
                 index = sorted_messages_text.index(text)
                 try:
-
                     driver.execute_script("arguments[0].click();",
                                           sorted_messages[index].find_element(By.CLASS_NAME, select_ico))
 
@@ -126,7 +120,6 @@ def main():
         elif control == 2:
             print('skiped')
         else:
-
             if input_text != 'skip':
                 time_begin = time.time()
                 select_chat()

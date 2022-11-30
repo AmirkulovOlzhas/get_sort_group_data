@@ -25,7 +25,6 @@ def check_data(nd):
         line_count = line[1].count(":")
         if '+' in line[1]:
             line_count += int(line[1][line[1].index('+') + 1:])
-        print(line, '- ', line_count)
         sum += int(line_count)
 
         while line_count > 0:
@@ -35,7 +34,6 @@ def check_data(nd):
                 else:
                     dot_index = line[1].index(':')
                     line[1] = line[1][dot_index - 2:dot_index + 3]
-            # if line[1] empty :
             try:
                 lines += line[0] + ' ' + line[1].replace(":", "_") + '\n'
             except:

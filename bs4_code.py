@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup as bs
-from config import message_class_list, list_p, chat, list_en, list_ab, text_message
+from config import message_class_list, list_p, chat, list_en, list_ab, list_tbo, text_message
 
 
 def number_list_append(div_mes, flag, messages_list, sum, saved_number, key=0):
@@ -26,6 +26,8 @@ def number_check(div_mes, flag):
                 this_list = list_en
             case 2:
                 this_list = list_ab
+            case 3:
+                this_list = list_tbo
         for key, value in this_list.items():
             if value in div_mes.get('data-id'):
                 check = 1
@@ -35,25 +37,27 @@ def number_check(div_mes, flag):
 
 def req_url(url, key=0, flag=0, saved_number=0):
     soup = bs(url, 'lxml')
+    class_list = []
     messages = soup.find('div', class_=chat).find_all('div')
     if key == 1:
         messages_list, sum = [], 0
         for div_mes in messages:
             if div_mes.get('class'):
                 i_class = " ".join(map(str, div_mes.get('class')))
-            else:
-                i_class = "+"
-            # number check
-            if saved_number == 1:
-                if (text_message not in str(div_mes.find_all('div'))) & (i_class in message_class_list):
-                    messages_list, sum = number_list_append(
-                        div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
-            else:
-                if i_class in message_class_list:
-                    messages_list, sum = number_list_append(
-                        div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
+                # number check
+                if saved_number == 1:
+                    if (text_message not in str(div_mes.find_all('div'))) & (i_class in message_class_list):
+                        if i_class not in class_list:
+                            class_list.append(i_class)
+                        messages_list, sum = number_list_append(
+                            div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
+                else:
+                    if i_class in message_class_list:
+                        messages_list, sum = number_list_append(
+                            div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
 
         print('\nmessages to select = {}'.format(sum))
+        print('class_list: ', class_list)
         return messages_list
     else:
         return len(messages)

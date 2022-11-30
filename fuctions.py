@@ -43,7 +43,8 @@ def taking_sorted_messages(saved_number=0):
     if saved_number != 0:
         for mes in messages:
             text_date = str(''.join(''.join(mes.text.splitlines())))
-            if '_1-lf9 _3mSPV' not in mes.get_attribute('innerHTML'):
+            # if '_1-lf9 _3mSPV' not in mes.get_attribute('innerHTML'):
+            if any(a not in mes.get_attribute('innerHTML') for a in ['_1-lf9 _3mSPV', '_1-lf9 _25eIs']):
                 sm.append(mes)
                 smt.append(text_date)
                 if '**' in text_date:
@@ -52,7 +53,7 @@ def taking_sorted_messages(saved_number=0):
                         # print('+', end='')
                         split_text_date(text_date, r)
             else:
-                # print('-', end='')
+                print('-')
                 split_text_date(text_date, r)
         # надо сохранить еще сообщения
         return sm, smt
