@@ -145,6 +145,7 @@ def main():
                 if saved_number == 1:
                     print("names writen to park mes name")
                     write_names_to_txt()
+                    time.sleep(1)
                     select('//span[@data-testid="{}"]', class_name='download', clicked=1)
                 else:
                     try:

@@ -8,13 +8,18 @@ def rename_file(this_line, outside):
     try:
         temp_line_name = this_line.replace(' (', '')
         temp_line_name = temp_line_name.replace(')', '')
+        # если в файле видео, то он оказывается внизу, этот иф меняет слова из за чего при сортировке все меняется
+        if temp_line_name[-4:] == '.mp4':
+            temp_line_name = temp_line_name.replace('Video', 'Image')
+            print(temp_line_name)
+        else:
+            temp_line_name = temp_line_name
+        if not outside:
+            os.rename(mypath + '\\' + this_line, mypath + '\\' + '00' + temp_line_name[29:])
+        else:
+            os.rename(mypath + '\\' + this_line, mypath + '\\' + temp_line_name)
     except Exception as e:
         print(e)
-        temp_line_name = this_line
-    if not outside:
-        os.rename(mypath + '\\' + this_line, mypath + '\\' + '00' + temp_line_name[29:])
-    else:
-        os.rename(mypath + '\\' + this_line, mypath + '\\' + temp_line_name)
 
 
 def rename_all_files(afn, outside=False):
@@ -43,7 +48,9 @@ def start_renaming(a, folder_name):
     # taking updated photo names from folder
     changed_files_name = [f for f in listdir(mypath) if isfile(join(mypath, f))]
     i, temp_value = 0, 0
+    # сортируем по убыванию
     changed_files_name.sort()
+    print(changed_files_name)
 
     # rename
     with open('stuf/mes_contact_names.txt', 'r', encoding='utf8') as f:
