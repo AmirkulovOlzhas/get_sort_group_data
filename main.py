@@ -119,14 +119,14 @@ def main():
     create_driver()
     archive_open()
     while True:
-        print('wirte "stop" to stop the app: ')
-        input_text = input()
+        input_text = input('wirte "stop" to stop the app: ')
         control = choose_chat()
         if control == 1:
             break
         elif control == 2:
             print('skiped')
         else:
+
             if input_text != 'skip':
                 time_begin = time.time()
                 select_chat()
@@ -145,26 +145,38 @@ def main():
                 if saved_number == 1:
                     print("names writen to park mes name")
                     write_names_to_txt()
-                    time.sleep(1)
                     select('//span[@data-testid="{}"]', class_name='download', clicked=1)
+                    time.sleep(7)
+                    while True:
+                        try:
+                            start_renaming(group_name, start_folder_work(group_name))
+                            break
+                        except Exception as e:
+                            time.sleep(2)
                 else:
                     try:
                         select('//span[@data-testid="{}"]', class_name='delete', clicked=1)
                         time.sleep(1.2)
                         select('//div[@data-testid="{}"]', class_name='popup-controls-delete', clicked=1)
                     except Exception as e:
-                        print('no mess to delete', e)
+                        print('no mess to delete: ')
+                        exc_type, exc_obj, exc_tb = sys.exc_info()
+                        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                        print(exc_type, fname, exc_tb.tb_lineno, e)
+
             elif input_text == 'stop':
                 break
 
-            while input_text != 'close':
-                print('-------  -------  Доп функцийй  -------  -------')
-                input_text = str(input('print "close" to close this window: ')).lower()
-                if input_text == 'rename':
-                    print(group_name)
-                    file_dir = start_folder_work(group_name)
-                    start_renaming(group_name, file_dir)
-            print('-------  -------  -------  -------  -------  -------')
+            else:
+                while input_text != 'close':
+                    print('-------  -------  Доп функцийй  -------  -------')
+                    input_text = str(input('print "close" to close this window: ')).lower()
+                    if input_text == 'rename':
+                        try:
+                            start_renaming(group_name, start_folder_work(group_name))
+                        except IndexError:
+                            print('was downloaded wrong')
+                print('-------  -------  -------  -------  -------  -------')
 
 
 if __name__ == "__main__":

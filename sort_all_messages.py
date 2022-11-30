@@ -1,3 +1,6 @@
+import time
+
+
 def take_name_data():
     r = open('stuf/all_messages.txt', 'r', encoding='utf8')
     book_r = []
@@ -49,3 +52,4 @@ def check_data(nd):
 def write_names_to_txt():
     name_data = take_name_data()
     check_data(name_data)
+    time.sleep(2)

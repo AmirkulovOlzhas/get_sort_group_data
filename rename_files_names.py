@@ -1,7 +1,12 @@
 import os
+import sys
 from os import listdir
 from os.path import isfile, join
 from folder_works import copy_address_text
+
+
+def get_files_name():
+    return [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
 
 def rename_file(this_line, outside):
@@ -19,43 +24,23 @@ def rename_file(this_line, outside):
         else:
             os.rename(mypath + '\\' + this_line, mypath + '\\' + temp_line_name)
     except Exception as e:
-        print(e)
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print(exc_type, fname, exc_tb.tb_lineno, e)
 
 
-def rename_all_files(afn, outside=False):
+def convert_all_files(afn, outside=False):
+    # to correct sort list
     for this_line in afn:
         rename_file(this_line, outside)
 
 
-def start_renaming(a, folder_name):
-    # a = input("park, abai, enb :")
-    if a == 'park':
-        contact = 0
-    elif a == 'abai':
-        contact = 5
-    else:
-        contact = 4
-
-    # noinspection PyGlobalUndefined
-    global mypath
-    mypath = folder_name
-
-    # taking photo names from folder
-    all_files_name = [f for f in listdir(mypath) if isfile(join(mypath, f))]
-    print("len", len(all_files_name))
-
-    rename_all_files(all_files_name, outside=True)
-    # taking updated photo names from folder
-    changed_files_name = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+def rename_files(contact, changed_files_name):
     i, temp_value = 0, 0
-    # сортируем по убыванию
-    changed_files_name.sort()
-    print(changed_files_name)
-
+    this_photo, ex_photo = 1, 0
+    data_symbol = ''
     # rename
     with open('stuf/mes_contact_names.txt', 'r', encoding='utf8') as f:
-        this_photo, ex_photo = 1, 0
-        data_symbol = ''
         for line in f:
             temp_line = line.replace('\n', '').split(' ')
             temp_value = 1
@@ -72,7 +57,29 @@ def start_renaming(a, folder_name):
                     break
                 except WindowsError:
                     temp_value += 1
+                except IndexError:
+                    break
                 except Exception as e:
-                    print(e)
+                    exc_type, exc_obj, exc_tb = sys.exc_info()
+                    fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                    print(exc_type, fname, exc_tb.tb_lineno, e)
+
             i += 1
     copy_address_text()
+
+
+def start_renaming(a, folder_name):
+    contact_index = {'park': 0, 'abai': 5, 'enb': 4}
+
+    # noinspection PyGlobalUndefined
+    global mypath
+    mypath = folder_name
+    # taking photo names from folder
+    all_files_name = get_files_name()
+    print("len", len(all_files_name))
+
+    convert_all_files(all_files_name, outside=True)
+    changed_files_name = get_files_name()
+    changed_files_name.sort()
+
+    rename_files(contact_index[a], changed_files_name)

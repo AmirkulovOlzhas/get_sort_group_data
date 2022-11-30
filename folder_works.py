@@ -1,4 +1,5 @@
 import os
+import sys
 from datetime import date
 from os import listdir
 
@@ -41,12 +42,17 @@ def create_folder(ct):
 
 
 def extract_rar(rar_file, extract_dir):
-    patoolib.extract_archive(r'D:\\WA_photo\\downloads\\' + rar_file, outdir=extract_dir)
-    global ext_dir
-    ext_dir = extract_dir
-    print('rar file extracted')
-    # delete archive
-    return extract_dir
+    if rar_file[-4:] == '.zip':
+        patoolib.extract_archive(r'D:\\WA_photo\\downloads\\' + rar_file, outdir=extract_dir)
+        global ext_dir
+        ext_dir = extract_dir
+        print('rar file extracted')
+        delete_rar(rar_file)
+        return extract_dir
+
+
+def delete_rar(rar_file):
+    os.remove(r'D:\\WA_photo\\downloads\\' + rar_file)
 
 
 def start_folder_work(ct):
@@ -61,4 +67,7 @@ def copy_address_text():
             dst.write(
                 src.read())
     except Exception as e:
-        print('no address file', e)
+        print('no address file')
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print(exc_type, fname, exc_tb.tb_lineno, e)
