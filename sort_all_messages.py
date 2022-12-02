@@ -34,14 +34,15 @@ def check_data(nd):
                 else:
                     dot_index = line[1].index(':')
                     line[1] = line[1][dot_index - 2:dot_index + 3]
-            try:
-                lines += line[0] + ' ' + line[1].replace(":", "_") + '\n'
-            except:
-                if every_second == 0:
-                    lines += line[0] + ' ' + 'Video' + '\n'
-                    every_second += 1
-                else:
-                    every_second = 0
+            if ':' in line[1]:
+                try:
+                    lines += line[0] + ' ' + line[1].replace(":", "_") + '\n'
+                except:
+                    if every_second == 0:
+                        lines += line[0] + ' ' + 'Video' + '\n'
+                        every_second += 1
+                    else:
+                        every_second = 0
             line_count -= 1
     mes_name.write(lines[:-1])
     print(sum)

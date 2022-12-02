@@ -83,30 +83,38 @@ def find_mes_in_chat():
 
 
 def select_messages():
-    select('//div[@class="{}"]', '_28_W0', clicked=1)
-    select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1)
-    sorted_messages, sorted_messages_text = taking_sorted_messages(saved_number=saved_number)
-    txt_list = sorted_text_list()
-    print('len sorted_m, txt_mes: ', len(sorted_messages), ' - ', len(txt_list))
-    time_a = time.time()
+    try:
+        select('//div[@class="{}"]', '_28_W0', clicked=1)
+        select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1)
+        time_88 = time.time()
+        sorted_messages, sorted_messages_text = taking_sorted_messages(saved_number=saved_number)
+        time_89 = time.time()
+        txt_list = sorted_text_list()
+        print('91: ', time.time()-time_89, '\n88: ', time.time()-time_88)
+        print('len sorted_m, txt_mes: ', len(sorted_messages), ' - ', len(txt_list))
+        time_a = time.time()
 
-    for text in txt_list:
-        for j_text in sorted_messages_text:
-            if text == str(j_text):
-                index = sorted_messages_text.index(text)
-                try:
-                    driver.execute_script("arguments[0].click();",
-                                          sorted_messages[index].find_element(By.CLASS_NAME, select_ico))
-
-                except selenium.common.exceptions.NoSuchElementException:
-                    if text.count(':') > 2:
-                        action.move_to_element(sorted_messages[index]).perform()
+        for text in txt_list:
+            for j_text in sorted_messages_text:
+                if text == str(j_text):
+                    index = sorted_messages_text.index(text)
+                    try:
                         driver.execute_script("arguments[0].click();",
                                               sorted_messages[index].find_element(By.CLASS_NAME, select_ico))
-                sorted_messages_text.remove(j_text)
-                sorted_messages.remove(sorted_messages[index])
-                break
-    print(time.time() - time_a)
+
+                    except selenium.common.exceptions.NoSuchElementException:
+                        if text.count(':') > 2:
+                            action.move_to_element(sorted_messages[index]).perform()
+                            driver.execute_script("arguments[0].click();",
+                                                  sorted_messages[index].find_element(By.CLASS_NAME, select_ico))
+                    sorted_messages_text.remove(j_text)
+                    sorted_messages.remove(sorted_messages[index])
+                    break
+        print(time.time() - time_a)
+    except Exception as e:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print(exc_type, fname, exc_tb.tb_lineno, e)
 
 
 def main():
@@ -146,6 +154,7 @@ def main():
                             break
                         except Exception as e:
                             time.sleep(2)
+                            print('loop')
                 else:
                     try:
                         select('//span[@data-testid="{}"]', class_name='delete', clicked=1)

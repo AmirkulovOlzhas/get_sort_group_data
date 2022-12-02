@@ -37,18 +37,26 @@ def number_check(div_mes, flag):
 
 def req_url(url, key=0, flag=0, saved_number=0):
     soup = bs(url, 'lxml')
-    class_list = []
     messages = soup.find('div', class_=chat).find_all('div')
-    if key == 1:
+    if key == 0:
+        return len(messages)
+    else:
         messages_list, sum = [], 0
         for div_mes in messages:
             if div_mes.get('class'):
                 i_class = " ".join(map(str, div_mes.get('class')))
                 # number check
                 if saved_number == 1:
-                    if (text_message not in str(div_mes.find_all('div'))) & (i_class in message_class_list):
-                        if i_class not in class_list:
-                            class_list.append(i_class)
+                    classes = []
+                    for element in div_mes.find_all(class_=True):
+                        classes.extend(element["class"])
+                    if '_1-FMR _15WYQ focusable-list-item' in classes:
+                        print(div_mes.text)
+                    # if (text_message not in str(div_mes.find_all('div'))) & (i_class in message_class_list):
+                    # тексты записывает в алл мес
+                    if all(a not in classes for a in
+                           [text_message, '_36Yw-', '_36Yw- _18q-J', '_2JmX4', '_1-FMR _15WYQ focusable-list-item',
+                            '_2BJ4G']) & (i_class in message_class_list):
                         messages_list, sum = number_list_append(
                             div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
                 else:
@@ -57,7 +65,4 @@ def req_url(url, key=0, flag=0, saved_number=0):
                             div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
 
         print('\nmessages to select = {}'.format(sum))
-        print('class_list: ', class_list)
         return messages_list
-    else:
-        return len(messages)

@@ -58,6 +58,7 @@ def rename_files(contact, changed_files_name):
                 except WindowsError:
                     temp_value += 1
                 except IndexError:
+                    print('.', end='')
                     break
                 except Exception as e:
                     exc_type, exc_obj, exc_tb = sys.exc_info()

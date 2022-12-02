@@ -14,15 +14,9 @@ ext_dir = ''
 
 
 def create_folder(ct):
-    if ct == 'park':
-        folder_flag = 'P'
-    elif ct == 'enb':
-        folder_flag = '-'
-    else:
-        folder_flag = ''
-
+    contact_dict = {'park': 'P', 'enb': '-', 'abai': '', 'tbo': 'T'}
     today = date.today()
-    folder_name = str(today.day) + '-' + str(today.month) + '-' + str(today.year) + folder_flag
+    folder_name = str(today.day) + '-' + str(today.month) + '-' + str(today.year) + contact_dict[ct]
 
     path = os.path.join(parent_dir, folder_name)
     folder_number = 0

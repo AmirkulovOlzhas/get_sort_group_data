@@ -1,3 +1,5 @@
+import os
+import sys
 import time
 import pyautogui as pg
 from bs4_code import req_url
@@ -21,6 +23,7 @@ def delete_text_from_str(tt):
 
 
 def split_text_date(td, r):
+    # print(td)
     ti = td.index(':')
     date = td[ti - 2:ti + 3]
     text = td[:ti - 2]
@@ -35,41 +38,58 @@ def split_text_date(td, r):
 
 
 def taking_sorted_messages(saved_number=0):
-    messages = driver.find_element(
-        By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
-        find_elements(By.XPATH, '//div[@data-id]')
-    sm, smt = [], []
-    r = open('stuf/sorted_messages_list.txt', 'w', encoding='utf8')
-    if saved_number != 0:
-        for mes in messages:
-            text_date = str(''.join(''.join(mes.text.splitlines())))
-            # if '_1-lf9 _3mSPV' not in mes.get_attribute('innerHTML'):
-            if any(a not in mes.get_attribute('innerHTML') for a in ['_1-lf9 _3mSPV', '_1-lf9 _25eIs']):
-                sm.append(mes)
-                smt.append(text_date)
-                if '**' in text_date:
-                    temp = text_date.split('**')
-                    if len(temp[1].split(':')[0]) > 2:
-                        # print('+', end='')
+    try:
+        tsm_time = time.time()
+        messages = driver.find_element(
+            By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
+            find_elements(By.XPATH, '//div[@data-id]')
+        sm, smt = [], []
+        r = open('stuf/sorted_messages_list.txt', 'w', encoding='utf8')
+        if saved_number != 0:
+            for mes in messages:
+                text_date = str(''.join(''.join(mes.text.splitlines())))
+                mes_html = mes.get_attribute('innerHTML')
+                if '_1-lf9 _3mSPV' not in mes_html:
+                    if '_1-lf9 _25eIs' not in mes_html:
+                        # if any(a not in mes.get_attribute('innerHTML') for a in ['_1-lf9 _3mSPV', '_1-lf9 _25eIs']):
+                        sm.append(mes)
+                        smt.append(text_date)
+                        if '**' in text_date:
+                            temp = text_date.split('**')
+                            if len(temp[1].split(':')[0]) > 2:
+                                try:
+                                    split_text_date(text_date, r)
+                                except:
+                                    print('f63: {}'.format(text_date))
+                else:
+                    try:
                         split_text_date(text_date, r)
-            else:
-                print('-')
-                split_text_date(text_date, r)
-        # надо сохранить еще сообщения
-        return sm, smt
-    else:
-        for mes in messages:
-            text_date = str(''.join(''.join(mes.text.splitlines())))
-            smt.append(text_date)
-        return messages, smt
+                    except:
+                        print('f68: {}'.format(text_date))
+            # надо сохранить еще сообщения
+            print("saved, number = {}, time = ".format(saved_number), time.time()-tsm_time)
+            temp_text = open('stuf/temp_text.txt', 'w', encoding='utf8')
+            for s in sm:
+                temp_text.write(s.text)
+            return sm, smt
+        else:
+            for mes in messages:
+                text_date = str(''.join(''.join(mes.text.splitlines())))
+                smt.append(text_date)
+            print("saved, number = {}, time = ".format(saved_number), time.time()-tsm_time)
+            return messages, smt
+    except Exception as e:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print('f84: ', exc_type, fname, exc_tb.tb_lineno, e)
 
 
 def select(xpath, class_name, text='NULL', clicked=0):
     selected_element = driver.find_element(By.XPATH, xpath.format(class_name))
     if clicked == 1:
         selected_element.click()
-    if text != 'NULL':
-        print(text)
+    # if text != 'NULL':
+    #     print(text)
     time.sleep(0.1)
 
 
@@ -85,10 +105,10 @@ def write_to_file(message_list):
 def message_count(flag, saved_number):
     mes_cunt, message_div_sum, message_div_sum2 = 0, 99, 100
     result_repeated = 0
-    while result_repeated < 5:
+    while result_repeated < 7:
         pg.press('home')
         print("{}...".format(mes_cunt), end='')
-        time.sleep(0.2)
+        time.sleep(0.5)
         if mes_cunt % 5 == 0:
             pg.scroll(7)
             pg.scroll(-2)
@@ -109,7 +129,9 @@ def message_count(flag, saved_number):
 def sorted_text_list():
     r = open('stuf/all_messages.txt', 'r', encoding='utf8')
     txt_list = []
-    click(2)
     for i in r:
-        txt_list.append(str(''.join(i.splitlines())))
+        try:
+            txt_list.append(str(''.join(i.splitlines())))
+        except:
+            print('exc136: ', str(''.join(i.splitlines())))
     return txt_list
