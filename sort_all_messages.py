@@ -29,20 +29,21 @@ def check_data(nd):
 
         while line_count > 0:
             if line[1]:
-                if line[1][2] == ':':
-                    line[1] = line[1][:5]
-                else:
+                if line[1].count(':') == 1:
+                    print(line[1], ' 1 ":"')
                     dot_index = line[1].index(':')
                     line[1] = line[1][dot_index - 2:dot_index + 3]
+
+                elif line[1].count(':') > 1:
+                    # мб проблема тут видео сохранются в mes_contact_names по два раза
+                    print(line[1], ' 2 ":"')
+                    dot_index = line[1].index(':')
+                    line[1] = line[1][dot_index+3:]
+                    dot_index = line[1].index(':')
+                    line[1] = line[1][dot_index - 2:dot_index + 3]
+
             if ':' in line[1]:
-                try:
-                    lines += line[0] + ' ' + line[1].replace(":", "_") + '\n'
-                except:
-                    if every_second == 0:
-                        lines += line[0] + ' ' + 'Video' + '\n'
-                        every_second += 1
-                    else:
-                        every_second = 0
+                lines += line[0] + ' ' + line[1].replace(":", "_") + '\n'
             line_count -= 1
     mes_name.write(lines[:-1])
     print(sum)
