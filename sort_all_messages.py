@@ -23,6 +23,8 @@ def check_data(nd):
     for line in nd:
         line_count = line[1].count(":")
         if line_count > 1:
+            # если на линий  2 ':' но второй элемент не ':' это значит что на линий виедо
+            # а видео могут дублировать линию
             if line[1].index(':') != 2:
                 line_count -= 1
 
@@ -32,8 +34,8 @@ def check_data(nd):
 
         while line_count > 0:
             if line[1]:
+
                 if line[1].count(':') == 1:
-                    #     print(line[1], ' 1 ":"')
                     dot_index = line[1].index(':')
                     line[1] = line[1][dot_index - 2:dot_index + 3]
 
