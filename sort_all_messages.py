@@ -20,9 +20,12 @@ def check_data(nd):
     sum = 0
     mes_name = open('stuf/mes_contact_names.txt', 'w', encoding='utf8')
     lines = ''
-    every_second = 0
     for line in nd:
         line_count = line[1].count(":")
+        if line_count > 1:
+            if line[1].index(':') != 2:
+                line_count -= 1
+
         if '+' in line[1]:
             line_count += int(line[1][line[1].index('+') + 1:])
         sum += int(line_count)
@@ -30,20 +33,19 @@ def check_data(nd):
         while line_count > 0:
             if line[1]:
                 if line[1].count(':') == 1:
-                    print(line[1], ' 1 ":"')
+                    #     print(line[1], ' 1 ":"')
                     dot_index = line[1].index(':')
                     line[1] = line[1][dot_index - 2:dot_index + 3]
 
                 elif line[1].count(':') > 1:
-                    # мб проблема тут видео сохранются в mes_contact_names по два раза
-                    print(line[1], ' 2 ":"')
+                    # # мб проблема тут видео сохранются в mes_contact_names по два раза
+                    # print(line[1], ' 2 ":"')
                     dot_index = line[1].index(':')
-                    line[1] = line[1][dot_index+3:]
+                    line[1] = line[1][dot_index + 3:]
                     dot_index = line[1].index(':')
                     line[1] = line[1][dot_index - 2:dot_index + 3]
-
-            if ':' in line[1]:
-                lines += line[0] + ' ' + line[1].replace(":", "_") + '\n'
+                if ':' in line[1]:
+                    lines += line[0] + ' ' + line[1].replace(":", "_") + '\n'
             line_count -= 1
     mes_name.write(lines[:-1])
     print(sum)

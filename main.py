@@ -143,6 +143,7 @@ def main():
                     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                     print(exc_type, fname, exc_tb.tb_lineno, e)
                 print('time for 1 role: ', time.time() - time_begin)
+                input()
                 if saved_number == 1:
                     print("names writen to park mes name")
                     write_names_to_txt()
