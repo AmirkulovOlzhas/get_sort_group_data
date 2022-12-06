@@ -38,7 +38,7 @@ def choose_chat():
 
     while True:
         try:
-            group_flag = input("park-0, enb-1, abai-2: ")
+            group_flag = input("park-0, enb-1, abai-2, tbo-3: ")
             saved_number = input("0 - not saved numbers mes, 1 saved: ")
             group_flag, saved_number = int(group_flag), int(saved_number)
             if group_flag in [0, 1, 2, 3] and saved_number in [0, 1]:
@@ -60,6 +60,7 @@ def choose_chat():
 
 def select_chat():
     select('//span[@title="{}"]', contact_list[group_flag], "contact opened", clicked=1)
+    time.sleep(2)
 
 
 def archive_open():
@@ -117,69 +118,70 @@ def select_messages():
         print(exc_type, fname, exc_tb.tb_lineno, e)
 
 
+def downloadr_or_delete():
+    if saved_number == 1:
+        print("names writen to park mes name")
+        write_names_to_txt()
+        try:
+            select('//span[@data-testid="{}"]', class_name='download', clicked=1)
+            time.sleep(7)
+            while True:
+                try:
+                    start_renaming(group_name, start_folder_work(group_name))
+                    break
+                except Exception as e:
+                    time.sleep(2)
+                    print('loop')
+        except:
+            select('//span[@data-testid="{}"]', class_name='x', clicked=1)
+
+    else:
+        try:
+            select('//span[@data-testid="{}"]', class_name='delete', clicked=1)
+            time.sleep(1.2)
+            select('//div[@data-testid="{}"]', class_name='popup-controls-delete', clicked=1)
+        except:
+            select('//span[@data-testid="{}"]', class_name='x', clicked=1)
+
 def main():
     create_driver()
     archive_open()
     while True:
-        input_text = input('wirte "stop" to stop the app: ')
-        control = choose_chat()
-        if control == 1:
-            break
-        elif control == 2:
-            print('skiped')
-        else:
-            if input_text != 'skip':
-                time_begin = time.time()
-                select_chat()
-                time.sleep(2)
-                try:
+        try:
+            input_text = input('wirte "stop" to stop the app: ')
+            control = choose_chat()
+            if control == 1:
+                break
+            elif control == 2:
+                print('skiped')
+            else:
+
+                if input_text != 'skip':
+                    time_begin = time.time()
+                    select_chat()
                     if find_mes_in_chat() != 0:
                         select_messages()
                     else:
                         print('Нет сообщений для выделения')
-                    print("------------------------------------------")
-                except Exception as e:
-                    exc_type, exc_obj, exc_tb = sys.exc_info()
-                    fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                    print(exc_type, fname, exc_tb.tb_lineno, e)
-                print('time for 1 role: ', time.time() - time_begin)
-                input()
-                if saved_number == 1:
-                    print("names writen to park mes name")
-                    write_names_to_txt()
-                    select('//span[@data-testid="{}"]', class_name='download', clicked=1)
-                    time.sleep(7)
-                    while True:
-                        try:
-                            start_renaming(group_name, start_folder_work(group_name))
-                            break
-                        except Exception as e:
-                            time.sleep(2)
-                            print('loop')
+                    print('time for 1 role: ', time.time() - time_begin)
+                    downloadr_or_delete()
+                elif input_text == 'stop':
+                    break
                 else:
-                    try:
-                        select('//span[@data-testid="{}"]', class_name='delete', clicked=1)
-                        time.sleep(1.2)
-                        select('//div[@data-testid="{}"]', class_name='popup-controls-delete', clicked=1)
-                    except Exception as e:
-                        print('no mess to delete: ')
-                        exc_type, exc_obj, exc_tb = sys.exc_info()
-                        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                        print(exc_type, fname, exc_tb.tb_lineno, e)
+                    while input_text != 'close':
+                        print('-------  -------  Доп функцийй  -------  -------')
+                        input_text = str(input('print "close" to close this window: ')).lower()
+                        if input_text == 'rename':
+                            try:
+                                start_renaming(group_name, start_folder_work(group_name))
+                            except IndexError:
+                                print('was downloaded wrong')
+                    print('-------  -------  -------  -------  -------  -------')
 
-            elif input_text == 'stop':
-                break
-
-            else:
-                while input_text != 'close':
-                    print('-------  -------  Доп функцийй  -------  -------')
-                    input_text = str(input('print "close" to close this window: ')).lower()
-                    if input_text == 'rename':
-                        try:
-                            start_renaming(group_name, start_folder_work(group_name))
-                        except IndexError:
-                            print('was downloaded wrong')
-                print('-------  -------  -------  -------  -------  -------')
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(exc_type, fname, exc_tb.tb_lineno, e)
 
 
 if __name__ == "__main__":

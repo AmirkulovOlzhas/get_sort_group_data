@@ -19,6 +19,14 @@ def number_check(div_mes, flag):
     if div_mes.get('data-id'):
         check, this_list = 0, 0
         # убрать условия со словарем
+        # if flag == 0:
+        #     this_list = list_p
+        # elif flag == 1:
+        #     this_list = list_en
+        # elif flag == 2:
+        #     this_list = list_ab
+        # else:
+        #     this_list = list_tbo
         match flag:
             case 0:
                 this_list = list_p
@@ -42,6 +50,7 @@ def req_url(url, key=0, flag=0, saved_number=0):
         return len(messages)
     else:
         messages_list, sum = [], 0
+        date_list = []
         for div_mes in messages:
             if div_mes.get('class'):
                 i_class = " ".join(map(str, div_mes.get('class')))
@@ -56,10 +65,14 @@ def req_url(url, key=0, flag=0, saved_number=0):
                             '_2BJ4G', '_3mSPV', '_25eIs']) & (i_class in message_class_list):
                         messages_list, sum = number_list_append(
                             div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
+                    if '_1-FMR _15WYQ focusable-list-item' in classes:
+                        if 'Сообщения' not in div_mes.text:
+                            date_list.append(div_mes.text)
                 else:
                     if i_class in message_class_list:
                         messages_list, sum = number_list_append(
                             div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
 
         print('\nmessages to select = {}'.format(sum))
+        print(date_list)
         return messages_list

@@ -21,12 +21,26 @@ def check_data(nd):
     mes_name = open('stuf/mes_contact_names.txt', 'w', encoding='utf8')
     lines = ''
     for line in nd:
+        # print(line[1])
         line_count = line[1].count(":")
+        # если на линий  2 ':' но второй элемент не ':' это значит что на линий виедо
+        # а видео могут дублировать линию
         if line_count > 1:
-            # если на линий  2 ':' но второй элемент не ':' это значит что на линий виедо
-            # а видео могут дублировать линию
-            if line[1].index(':') != 2:
-                line_count -= 1
+            if '+' in line[1]:
+                line_1 = line[1][:line[1].index('+')]
+            else:
+                line_1 = line[1]
+            print(line_1)
+            s=0
+            for i in range(line_count):
+                if ':' not in line_1:
+                    break
+                if line_1.index(':') != 2:
+                    line_1 = line_1[((i + 1) * 5) + 4:]
+                    s += 1
+                else:
+                    line_1 = line_1[(i + 1) * 5:]
+            line_count -= s
 
         if '+' in line[1]:
             line_count += int(line[1][line[1].index('+') + 1:])
