@@ -6,8 +6,6 @@ select_ico = "_3BK98"
 select_ico_input = "lhggkp7q cxec7x23 kanlod6e gfz4du6o r7fjleex nmeg1xfo okm7a8wg le5p0ye3"
 msg_cont_class = ['_1-lf9 _1pC3e', ' _1-lf9 _1pC3e _18q-J', '_1-lf9 _18q-J _1uBlg']
 
-
-
 chat = "n5hs2j7m oq31bsqd gx1rr48f qh5tioqs"
 message_class = "i0jNr selectable-text copyable-text"
 photo_class = "jciay5ix tvf2evcx oq44ahr5 lb5m6g5c"
@@ -54,3 +52,5 @@ list_tbo = {"Куат": "77786460481",
             "Асылхан": "77052478390",
             "Бакыт": "77013946513"
             }
+
+contacts_dict = {0: list_p, 1: list_en, 2: list_ab, 3: list_tbo}

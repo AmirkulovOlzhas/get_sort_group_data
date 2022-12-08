@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup as bs
-from config import message_class_list, list_p, chat, list_en, list_ab, list_tbo, text_message
+from config import message_class_list, list_p, chat, list_en, \
+                   list_ab, list_tbo, text_message, contact_list
 
 
 def number_list_append(div_mes, flag, messages_list, sum, saved_number, key=0):
@@ -19,14 +20,7 @@ def number_check(div_mes, flag):
     if div_mes.get('data-id'):
         check, this_list = 0, 0
         # убрать условия со словарем
-        # if flag == 0:
-        #     this_list = list_p
-        # elif flag == 1:
-        #     this_list = list_en
-        # elif flag == 2:
-        #     this_list = list_ab
-        # else:
-        #     this_list = list_tbo
+        # this_list = contact_list[flag]
         match flag:
             case 0:
                 this_list = list_p
@@ -36,6 +30,8 @@ def number_check(div_mes, flag):
                 this_list = list_ab
             case 3:
                 this_list = list_tbo
+        # print(this_list)
+        # print(type(this_list))
         for key, value in this_list.items():
             if value in div_mes.get('data-id'):
                 check = 1

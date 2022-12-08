@@ -88,8 +88,6 @@ def select(xpath, class_name, text='NULL', clicked=0):
     selected_element = driver.find_element(By.XPATH, xpath.format(class_name))
     if clicked == 1:
         selected_element.click()
-    # if text != 'NULL':
-    #     print(text)
     time.sleep(0.1)
 
 
