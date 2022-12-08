@@ -1,61 +1,58 @@
-import time
+class Solution:
+    def lenLongestFibSubseq(self, arr) -> int:
+        i = 0
+        sum = 0
+        while i != len(arr) - 1:
+            print('----- ------- ------- -------')
+            temp_var1 = arr[i]
+            for j in range(len(arr[i:]) - 1):
+                temp_var2 = arr[i + j + 1]
+                sum_i = 1
+                while True:
+                    temp_var = temp_var1 + temp_var2
+                    print(f'{temp_var1} + {temp_var2} = {temp_var}')
+                    if temp_var in arr:
+                        temp_var1 = temp_var2
+                        temp_var2 = temp_var
+                        sum_i += 1
+                    else:
+                        if sum_i > sum:
+                            sum = sum_i + 1
+                        print('sum_i = ', sum_i)
+                        print('----- ------- ------- -------')
+                        break
+            i += 1
+        return sum
+
+    def lenLongestFibSubseq1(self, arr) -> int:
+        sum_result = 0
+        for i in range(len(arr) - 1, 0, -1):
+            sum = 1
+            print('-- -------- ------- ------- ----')
+            j = i
+            var1 = arr[j]
+            for j in range(i-1, 0, -1):
+                var2 = arr[j]
+                print(f'---{arr[j]}---')
+
+                while True:
+                    var_result = var1 - var2
+                    if var_result> var1/2:
+                        print(f'{var1}-{var2}={var_result}', end=' | ')
+                    if var_result in arr:
+                        var1, var2 = var2, var_result
+                        sum += 1
+
+                    else:
+                        if sum > sum_result:
+                            sum_result = sum
+                        break
+
+                print()
+        return sum_result
 
 
-def take_name_data():
-    r = open('all_messages.txt', 'r', encoding='utf8')
-    book_r = []
-    abc = "0123456789+:"
-    for word in r:
-        name = word.split('**')
-        if len(name) > 1:
-            data = name[len(name) - 1]
-            while ':' in data:
-                if data[data.index(':') - 2] not in abc[:-2]:
-                    data = data[data.index(':') + 3:]
-                else:
-                    break
-            data = data[data.index(':') - 2:].replace('\n', '')
-            book_r.append([name[0], data])
-    return book_r
-
-
-def check_data(nd):
-    mes_name = open('mes_contact_names.txt', 'w', encoding='utf8')
-    lines = ''
-    for line in nd:
-        line_count = line[1].count(":")
-        s = 0
-
-        if line_count > 1:
-            if '+' in line[1]:
-                line_1 = line[1][:line[1].index('+')]
-            else:
-                line_1 = line[1]
-            for i in range(line_count):
-                if ':' not in line_1:
-                    break
-                if line_1.index(':') != 2:
-                    line_1 = line_1[((i + 1) * 5) + 4:]
-                    s += 1
-                else:
-                    line_1 = line_1[(i + 1) * 5:]
-        line_count -= s
-
-        if '+' in line[1]:
-            line_count += int(line[1][line[1].index('+') + 1:])
-
-        while line_count > 0:
-            if line[1]:
-                dot_index = line[1].index(':')
-                line[1] = line[1][dot_index - 2:dot_index + 3]
-
-                if ':' in line[1]:
-                    lines += line[0] + ' ' + line[1].replace(":", "_") + '\n'
-            line_count -= 1
-    mes_name.write(lines[:-1])
-
-
-def write_names_to_txt():
-    name_data = take_name_data()
-    check_data(name_data)
-    time.sleep(2)
+b = [1, 2, 3, 4, 5, 6, 7, 8]
+c = [2, 4, 7, 8, 9, 10, 14, 15, 18, 23, 32, 50]
+# print('sum = ', Solution.lenLongestFibSubseq(self=Solution, arr=b))
+print('sum = ', Solution.lenLongestFibSubseq1(self=Solution, arr=b))
