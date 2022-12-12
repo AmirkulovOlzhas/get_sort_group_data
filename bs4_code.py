@@ -41,7 +41,8 @@ def number_check(div_mes, flag):
 
 def req_url(url, key=0, flag=0, saved_number=0):
     soup = bs(url, 'lxml')
-    messages = soup.find('div', class_=chat).find_all('div')
+    if soup.find('div', class_=chat):
+        messages = soup.find('div', class_=chat).find_all('div')
     if key == 0:
         return len(messages)
     else:
