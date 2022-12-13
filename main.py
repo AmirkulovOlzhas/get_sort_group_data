@@ -58,11 +58,6 @@ def choose_chat():
     return return_number
 
 
-def select_chat():
-    select('//span[@title="{}"]', contact_list[group_flag], "contact opened", clicked=1)
-    time.sleep(2)
-
-
 def archive_open():
     print("Подождите")
     while True:  # waiting for wa
@@ -73,28 +68,29 @@ def archive_open():
             time.sleep(1)
 
 
+def select_chat():
+    select('//span[@title="{}"]', contact_list[group_flag], "contact opened", clicked=1)
+    time.sleep(2)
+
+
 def find_mes_in_chat():
     # расчет сообщений -> меню -> выбор сообщений
     try:
         select('//span[@class="{}"]', "_3K42l", clicked=1)
     except:
         print('нет кнопки вниз')
+    select('//div[@class="{}"]', '_28_W0', clicked=1)
+    select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1)
     click()
     return message_count(group_flag, saved_number)
 
 
 def select_messages():
     try:
-        select('//div[@class="{}"]', '_28_W0', clicked=1)
-        select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1)
-        time_88 = time.time()
         sorted_messages, sorted_messages_text = taking_sorted_messages(saved_number=saved_number)
-        time_89 = time.time()
+        # sorted_messages[i].text можно получить время отдельно
         txt_list = sorted_text_list()
-        print('91: ', time.time()-time_89, '\n88: ', time.time()-time_88)
         print('len sorted_m, txt_mes: ', len(sorted_messages), ' - ', len(txt_list))
-        time_a = time.time()
-
         for text in txt_list:
             for j_text in sorted_messages_text:
                 if text == str(j_text):
@@ -111,7 +107,6 @@ def select_messages():
                     sorted_messages_text.remove(j_text)
                     sorted_messages.remove(sorted_messages[index])
                     break
-        print(time.time() - time_a)
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -120,7 +115,7 @@ def select_messages():
 
 def downloadr_or_delete():
     if saved_number == 1:
-        print("names writen to park mes name")
+        print("---------------------------\nnames writen to park mes name\n------------------------------------")
         write_names_to_txt()
         try:
             select('//span[@data-testid="{}"]', class_name='download', clicked=1)
@@ -143,6 +138,19 @@ def downloadr_or_delete():
         except:
             select('//span[@data-testid="{}"]', class_name='x', clicked=1)
 
+
+def additional_features(input_t):
+    while input_t != 'close':
+        print('-------  -------  Доп функцийй  -------  -------')
+        input_t = str(input('print "close" to close this window: ')).lower()
+        if input_t == 'rename':
+            try:
+                start_renaming(group_name, start_folder_work(group_name))
+            except IndexError:
+                print('was downloaded wrong')
+    print('-------  -------  -------  -------  -------  -------')
+
+
 def main():
     create_driver()
     archive_open()
@@ -151,32 +159,28 @@ def main():
             input_text = input('wirte "stop" to stop the app: ')
             control = choose_chat()
             if control == 1:
+                #input = stop
                 break
             elif control == 2:
+                #input = skip
                 print('skiped')
             else:
-
+                #input = contact_info
                 if input_text != 'skip':
                     time_begin = time.time()
                     select_chat()
+
                     if find_mes_in_chat() != 0:
                         select_messages()
                     else:
                         print('Нет сообщений для выделения')
+
                     print('time for 1 role: ', time.time() - time_begin)
                     downloadr_or_delete()
                 elif input_text == 'stop':
                     break
                 else:
-                    while input_text != 'close':
-                        print('-------  -------  Доп функцийй  -------  -------')
-                        input_text = str(input('print "close" to close this window: ')).lower()
-                        if input_text == 'rename':
-                            try:
-                                start_renaming(group_name, start_folder_work(group_name))
-                            except IndexError:
-                                print('was downloaded wrong')
-                    print('-------  -------  -------  -------  -------  -------')
+                    additional_features(input_text)
 
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()

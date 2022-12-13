@@ -39,7 +39,6 @@ def split_text_date(td, r):
 
 def taking_sorted_messages(saved_number=0):
     try:
-        tsm_time = time.time()
         messages = driver.find_element(
             By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
             find_elements(By.XPATH, '//div[@data-id]')
@@ -67,7 +66,6 @@ def taking_sorted_messages(saved_number=0):
                     except:
                         print('f68: {}'.format(text_date))
             # надо сохранить еще сообщения
-            print("saved, number = {}, time = ".format(saved_number), time.time()-tsm_time)
             temp_text = open('stuf/temp_text.txt', 'w', encoding='utf8')
             for s in sm:
                 temp_text.write(s.text)
@@ -76,7 +74,6 @@ def taking_sorted_messages(saved_number=0):
             for mes in messages:
                 text_date = str(''.join(''.join(mes.text.splitlines())))
                 smt.append(text_date)
-            print("saved, number = {}, time = ".format(saved_number), time.time()-tsm_time)
             return messages, smt
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -118,9 +115,7 @@ def message_count(flag, saved_number):
         else:
             result_repeated = 0
         mes_cunt += 1
-    a = time.time()
     write_to_file(req_url(driver.page_source, key=1, flag=flag, saved_number=saved_number))
-    print(time.time()-a)
     return message_div_sum
 
 

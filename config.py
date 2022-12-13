@@ -1,25 +1,39 @@
-contact_list = ["Содержание парков", "Еңбекші ішкі орам", "Build stroi Ішкі орам", "Нурсат ТБО"]
 archive = "_3hD9c"
-text_message = "_1-lf9 _3mSPV"
-
 select_ico = "_3BK98"
-select_ico_input = "lhggkp7q cxec7x23 kanlod6e gfz4du6o r7fjleex nmeg1xfo okm7a8wg le5p0ye3"
-msg_cont_class = ['_1-lf9 _1pC3e', ' _1-lf9 _1pC3e _18q-J', '_1-lf9 _18q-J _1uBlg']
-
 chat = "n5hs2j7m oq31bsqd gx1rr48f qh5tioqs"
-message_class = "i0jNr selectable-text copyable-text"
-photo_class = "jciay5ix tvf2evcx oq44ahr5 lb5m6g5c"
+chat_open_select = "n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj"
 
+# for chrome
 argument1 = r'--user-data-dir=C:\Users\OFFICE\AppData\Local\Google\Chrome\User Data\Default'
 argument2 = '--profile-directory=Default'
 
-message_class_list = ('_1-FMR _3Zpy8 message-in focusable-list-item',
-                      '_1-FMR _3Zpy8 j-md4 message-in focusable-list-item',
-                      '_1-FMR j-md4 message-in focusable-list-item',
-                      '_1-FMR message-in focusable-list-item')
+# not for select
+text_message = "_1-lf9 _3mSPV"
+not_select_messages = [text_message, '_36Yw-', '_36Yw- _18q-J', '_2JmX4', '_1-FMR _15WYQ focusable-list-item',
+                            '_2BJ4G', '_3mSPV', '_25eIs']
 
+# фото
+# коллаж
+# сообщения
+# еще что то
+message_class = '_7GVCb'
+message_class_list = (
+    '_1-FMR _3Zpy8 message-in focusable-list-item _7GVCb',
+    '_1-FMR _3Zpy8 j-md4 message-in focusable-list-item _7GVCb',
+    '_1-FMR j-md4 message-in focusable-list-item _7GVCb',
+    '_1-FMR message-in focusable-list-item _7GVCb')
+message_class_list_old = (
+    '_1-FMR _3Zpy8 message-in focusable-list-item',
+    '_1-FMR _3Zpy8 j-md4 message-in focusable-list-item',
+    '_1-FMR j-md4 message-in focusable-list-item',
+    '_1-FMR message-in focusable-list-item',
+)
 message_class_list_with_text = ('1-FMR message-in focusable-list-item',
                                 '_1-FMR _3Zpy8 message-in focusable-list-item')
+
+# contact
+msg_cont_class = ['_1-lf9 _1pC3e', ' _1-lf9 _1pC3e _18q-J', '_1-lf9 _18q-J _1uBlg']
+contact_list = ["Содержание парков", "Еңбекші ішкі орам", "Build stroi Ішкі орам", "Нурсат ТБО"]
 
 list_p = {"alatau": "77476001065",
           "kasiret": "77750261982",

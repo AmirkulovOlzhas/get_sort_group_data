@@ -75,9 +75,10 @@ def start_renaming(a, folder_name):
     # noinspection PyGlobalUndefined
     global mypath
     mypath = folder_name
+    print('mypath: ', mypath)
     # taking photo names from folder
     all_files_name = get_files_name()
-    print("len", len(all_files_name))
+    print("Photo count: ", len(all_files_name))
 
     convert_all_files(all_files_name, outside=True)
     changed_files_name = get_files_name()

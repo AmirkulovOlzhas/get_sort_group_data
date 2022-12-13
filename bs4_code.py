@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup as bs
 from config import message_class_list, list_p, chat, list_en, \
-                   list_ab, list_tbo, text_message, contact_list
+                   list_ab, list_tbo, text_message, contact_list, chat_open_select, not_select_messages, message_class
 
 
 def number_list_append(div_mes, flag, messages_list, sum, saved_number, key=0):
@@ -41,7 +41,7 @@ def number_check(div_mes, flag):
 
 def req_url(url, key=0, flag=0, saved_number=0):
     soup = bs(url, 'lxml')
-    messages = soup.find('div', class_=chat).find_all('div')
+    messages = soup.find('div', class_=chat_open_select).find_all('div')
     if key == 0:
         return len(messages)
     else:
@@ -50,25 +50,23 @@ def req_url(url, key=0, flag=0, saved_number=0):
         for div_mes in messages:
             if div_mes.get('class'):
                 i_class = " ".join(map(str, div_mes.get('class')))
-                # number check
+                # проверка сохранен ли контакт, сохранение сообщений которые можно выделить
                 if saved_number == 1:
                     classes = []
                     for element in div_mes.find_all(class_=True):
                         classes.extend(element["class"])
-                    # if (text_message not in str(div_mes.find_all('div'))) & (i_class in message_class_list):
-                    if all(a not in classes for a in
-                           [text_message, '_36Yw-', '_36Yw- _18q-J', '_2JmX4', '_1-FMR _15WYQ focusable-list-item',
-                            '_2BJ4G', '_3mSPV', '_25eIs']) & (i_class in message_class_list):
+                    if all(a not in classes for a in not_select_messages) & (i_class[-6:] == message_class):
+                        #(i_class in message_class_list):
                         messages_list, sum = number_list_append(
                             div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
-                    if '_1-FMR _15WYQ focusable-list-item' in classes:
+                    if 'NQl4z' in classes:
                         if 'Сообщения' not in div_mes.text:
                             date_list.append(div_mes.text)
                 else:
-                    if i_class in message_class_list:
+                    if i_class[-6:] == message_class:
                         messages_list, sum = number_list_append(
                             div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
-
-        print('\nmessages to select = {}'.format(sum))
-        print(date_list)
+        if date_list:
+            print('data list(bs4_code 76): ', date_list)
+        print('messages to select = {}'.format(sum), '\n-----------------------------')
         return messages_list
