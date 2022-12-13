@@ -108,7 +108,7 @@ def message_count(flag, saved_number):
             pg.scroll(7)
             pg.scroll(-2)
             message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag,
-                                                                         saved_number=saved_number)
+                                                                             saved_number=saved_number)
             print('found mes sum: ', message_div_sum)
         if message_div_sum == message_div_sum2:
             result_repeated += 1
