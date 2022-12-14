@@ -4,8 +4,10 @@ import pyautogui as pg
 import selenium.common.exceptions
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 from fuctions import taking_sorted_messages, select, write_to_file, click, \
     message_count, sorted_text_list, set_driver_by
 from bs4_code import req_url
@@ -21,9 +23,10 @@ def create_driver():
     options.add_argument(argument1);
     options.add_argument(argument2)
     global driver, action
-    driver = webdriver.Chrome \
-        (executable_path=r'C:\Users\OFFICE\PycharmProjects\whatsapp-project\stuf\chromedriver.exe',
-         options=options)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    # driver = webdriver.Chrome \
+    #     (executable_path=r'C:\Users\OFFICE\PycharmProjects\whatsapp-project\stuf\chromedriver.exe',
+    #      options=options)
     driver.get("https://web.whatsapp.com")
     action = webdriver.ActionChains(driver)
     # send driver&By to fuctions.py
@@ -169,12 +172,10 @@ def main():
                 if input_text != 'skip':
                     time_begin = time.time()
                     select_chat()
-
                     if find_mes_in_chat() != 0:
                         select_messages()
                     else:
                         print('Нет сообщений для выделения')
-
                     print('time for 1 role: ', time.time() - time_begin)
                     downloadr_or_delete()
                 elif input_text == 'stop':

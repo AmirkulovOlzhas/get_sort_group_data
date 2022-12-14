@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 from datetime import date
 from os import listdir
 
@@ -20,6 +21,7 @@ def create_folder(ct):
 
     path = os.path.join(parent_dir, folder_name)
     folder_number = 0
+    time.sleep(1)
     while True:
         try:
             if folder_number != 0:
