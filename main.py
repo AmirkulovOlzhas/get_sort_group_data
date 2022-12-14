@@ -72,7 +72,8 @@ def archive_open():
 
 
 def select_chat():
-    select('//span[@title="{}"]', contact_list[group_flag], "contact opened", clicked=1)
+    select('//span[@title="{}"]', contact_list[group_flag],
+           "contact opened", clicked=1)
     time.sleep(2)
 
 
@@ -103,10 +104,10 @@ def select_messages():
                                               sorted_messages[index].find_element(By.CLASS_NAME, select_ico))
 
                     except selenium.common.exceptions.NoSuchElementException:
-                        # if text.count(':') > 2:
-                        action.move_to_element(sorted_messages[index]).perform()
-                        driver.execute_script("arguments[0].click();",
-                                              sorted_messages[index].find_element(By.CLASS_NAME, select_ico))
+                        if text.count(':') > 2:
+                            action.move_to_element(sorted_messages[index]).perform()
+                            driver.execute_script("arguments[0].click();",
+                                                  sorted_messages[index].find_element(By.CLASS_NAME, select_ico))
                     sorted_messages_text.remove(j_text)
                     sorted_messages.remove(sorted_messages[index])
                     break
@@ -191,6 +192,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-input()
-driver.quit()
+    driver.quit()

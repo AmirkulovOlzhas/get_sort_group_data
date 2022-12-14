@@ -69,13 +69,13 @@ def rename_files(contact, changed_files_name):
     copy_address_text()
 
 
-def start_renaming(a, folder_name):
+def start_renaming(a, folder_dir):
     contact_index = {'park': 0, 'abai': 5, 'enb': 4, 'tbo': 4}
 
     # noinspection PyGlobalUndefined
     global mypath
-    mypath = folder_name
-    print('mypath: ', mypath)
+    mypath = folder_dir
+    print('mypath (rgn): ', mypath)
     # taking photo names from folder
     all_files_name = get_files_name()
     print("Photo count: ", len(all_files_name))

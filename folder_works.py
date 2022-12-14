@@ -50,10 +50,6 @@ def delete_rar(rar_file):
     os.remove(r'D:\\WA_photo\\downloads\\' + rar_file)
 
 
-def start_folder_work(ct):
-    return extract_rar(listdir(r'D:\\WA_photo\\downloads\\')[0], create_folder(ct))
-
-
 def copy_address_text():
     try:
         print(ext_dir)
@@ -66,3 +62,7 @@ def copy_address_text():
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         print(exc_type, fname, exc_tb.tb_lineno, e)
+
+
+def start_folder_work(ct):
+    return extract_rar(listdir(r'D:\\WA_photo\\downloads\\')[0], create_folder(ct))
