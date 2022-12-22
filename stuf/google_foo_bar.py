@@ -1,30 +1,36 @@
-# def combos(l, l_index):
-#     print('--------- ---------', l_index, '----------- ----------')
-#     temp_l = l.copy()
-#     for i in range(l_index, len(l)):
-#         print(temp_l[i - 1], temp_l[i])
-#         temp_l[i - 1], temp_l[i] = temp_l[i], temp_l[i - 1]
-#         print(temp_l)
-#     l_index -= 1
+# import numpy as np
 #
-#     if l_index > 0:
-#         combos(l, l_index)
+# vac_nums = [0, 0, 0, 0, 0,
+#             1, 1, 1, 1, 1, 1, 1, 1,
+#             2, 2, 2, 2,
+#             3, 3, 3
+#             ]
+# mean = sum(vac_nums) / len(vac_nums)
+# variance = sum(list(map(lambda x: (x - mean) ** 2, vac_nums))) / (len(vac_nums))
+# print(variance)
+#
+# a = np.array(vac_nums)
+# mean1 = np.sum(a) / a.size
+# v = np.sum((a - mean1) ** 2) / a.size
+# print(v)
 
 
-def combos1(l, l_index):
-    temp_l = l.copy()
-    tll = l_index
-    while tll != len(l):
-        temp_l[l_index - 1], temp_l[tll] = temp_l[tll], temp_l[l_index - 1]
-        print(temp_l)
-        tll += 1
-    l_index -= 1
 
-    if l_index > 0:
-        print('--------- ---------', l_index, '----------- ----------')
-        combos1(l, l_index)
+# players = [180, 172, 178, 185, 190, 195, 192, 200, 210, 190]
+# m = sum(players) / len(players)
+# deviations = [(x - m) ** 2 for x in players]
+# variance = (sum(deviations) / len(players)) ** (1 / 2)
+# print('---', variance)
+# v = (sum(list(map(lambda x: (m - x) ** 2, players))) / (len(players)))**(1/2)
+# result = list(filter(lambda x: abs(x - m) <= int(v), players))
+# print(m, ' - ', int(v), '\n', result)
 
-
-l = [6, 5, 4, 3, 2, 1]
-print(l)
-combos1(l, len(l) - 1)
+#
+# a = []
+# al = 'DEFGHIJKLMNOPQRSTUVWXYZ'
+# alb = ['AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH']
+# for i in range(len(al)):
+#     a.append(f'{al[i]}11:{al[i]}40')
+# for i in range(len(alb)):
+#     a.append(f'{alb[i]}11:{alb[i]}40')
+# print(a)

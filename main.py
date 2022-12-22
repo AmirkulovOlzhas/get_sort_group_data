@@ -1,5 +1,7 @@
 import time
 import sys, os
+
+import numpy as np
 import pyautogui as pg
 import selenium.common.exceptions
 from selenium import webdriver
@@ -110,6 +112,8 @@ def select_messages():
                                                   sorted_messages[index].find_element(By.CLASS_NAME, select_ico))
                     sorted_messages_text.remove(j_text)
                     sorted_messages.remove(sorted_messages[index])
+                    # sorted_messages = np.delete(sorted_messages, index)
+
                     break
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -163,13 +167,10 @@ def main():
             input_text = input('wirte "stop" to stop the app: ')
             control = choose_chat()
             if control == 1:
-                #input = stop
                 break
             elif control == 2:
-                #input = skip
                 print('skiped')
             else:
-                #input = contact_info
                 if input_text != 'skip':
                     time_begin = time.time()
                     select_chat()
@@ -178,6 +179,7 @@ def main():
                     else:
                         print('Нет сообщений для выделения')
                     print('time for 1 role: ', time.time() - time_begin)
+                    input()
                     downloadr_or_delete()
                 elif input_text == 'stop':
                     break

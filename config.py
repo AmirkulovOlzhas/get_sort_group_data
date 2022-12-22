@@ -10,7 +10,7 @@ argument2 = '--profile-directory=Default'
 # not for select
 text_message = "_1-lf9 _3mSPV"
 not_select_messages = [text_message, '_36Yw-', '_36Yw- _18q-J', '_2JmX4', '_1-FMR _15WYQ focusable-list-item',
-                            '_2BJ4G', '_3mSPV', '_25eIs']
+                            '_2BJ4G', '_3mSPV', '_25eIs', '_3mSPV', '_1-lf9 _3mSPV _18q-J', '_3mSPV _18q-J']
 
 # фото
 # коллаж
@@ -21,7 +21,8 @@ message_class_list = (
     '_1-FMR _3Zpy8 message-in focusable-list-item _7GVCb',
     '_1-FMR _3Zpy8 j-md4 message-in focusable-list-item _7GVCb',
     '_1-FMR j-md4 message-in focusable-list-item _7GVCb',
-    '_1-FMR message-in focusable-list-item _7GVCb')
+    '_1-FMR message-in focusable-list-item _7GVCb',
+    '_1pC3e')
 message_class_list_old = (
     '_1-FMR _3Zpy8 message-in focusable-list-item',
     '_1-FMR _3Zpy8 j-md4 message-in focusable-list-item',

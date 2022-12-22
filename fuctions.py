@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import pyautogui as pg
+import numpy as np
 from bs4_code import req_url
 
 
@@ -39,9 +40,12 @@ def split_text_date(td, r):
 
 def taking_sorted_messages(saved_number=0):
     try:
+        # messages = np.array(driver.find_element(
+        #     By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
+        #     find_elements(By.XPATH, '//div[@data-id]'))
         messages = driver.find_element(
             By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
-            find_elements(By.XPATH, '//div[@data-id]')
+                            find_elements(By.XPATH, '//div[@data-id]')
         sm, smt = [], []
         r = open('stuf/sorted_messages_list.txt', 'w', encoding='utf8')
         if saved_number != 0:
@@ -115,6 +119,7 @@ def message_count(flag, saved_number):
         else:
             result_repeated = 0
         mes_cunt += 1
+
     write_to_file(req_url(driver.page_source, key=1, flag=flag, saved_number=saved_number))
     return message_div_sum
 
