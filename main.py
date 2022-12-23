@@ -96,24 +96,26 @@ def select_messages():
         sorted_messages, sorted_messages_text = taking_sorted_messages(saved_number=saved_number)
         # sorted_messages[i].text можно получить время отдельно
         txt_list = sorted_text_list()
-        print('len sorted_m, txt_mes: ', len(sorted_messages), ' - ', len(txt_list))
+        print('sm, smt, tm: ', len(sorted_messages), ' - ', len(sorted_messages_text), ' - ', len(txt_list))
         for text in txt_list:
             for j_text in sorted_messages_text:
                 if text == str(j_text):
-                    index = sorted_messages_text.index(text)
+                    # index = sorted_messages_text.index(text)
+                    index = np.where(sorted_messages_text == text)[0][0]
                     try:
                         driver.execute_script("arguments[0].click();",
-                                              sorted_messages[index].find_element(By.CLASS_NAME, select_ico))
+                                              # sorted_messages[index].find_element(By.CLASS_NAME, select_ico))
+                                              sorted_messages.item(index).find_element(By.CLASS_NAME, select_ico))
 
                     except selenium.common.exceptions.NoSuchElementException:
                         if text.count(':') > 2:
-                            action.move_to_element(sorted_messages[index]).perform()
+                            action.move_to_element(sorted_messages.item(index)).perform()
                             driver.execute_script("arguments[0].click();",
-                                                  sorted_messages[index].find_element(By.CLASS_NAME, select_ico))
-                    sorted_messages_text.remove(j_text)
-                    sorted_messages.remove(sorted_messages[index])
-                    # sorted_messages = np.delete(sorted_messages, index)
-
+                                                  sorted_messages.item(index).find_element(By.CLASS_NAME, select_ico))
+                    # sorted_messages_text = np.delete(sorted_messages_text, j_text)
+                    sorted_messages_text = np.delete(sorted_messages_text, index)
+                    # sorted_messages.remove(sorted_messages[index])
+                    sorted_messages = np.delete(sorted_messages, index)
                     break
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()

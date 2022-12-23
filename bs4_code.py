@@ -43,15 +43,15 @@ def number_check(div_mes, flag):
 
 
 def req_url(url, key=0, flag=0, saved_number=0):
-    soup = bs(url, 'lxml')
-    messages = soup.find('div', class_=chat_open_select).find_all('div')
+    # np
+    messages = bs(url, 'lxml').find('div', class_=chat_open_select).find_all('div')
     if key == 0:
         return len(messages)
     else:
         messages_list, sum = [], 0
-        # date_list = np.array([])
         for div_mes in messages:
             if div_mes.get('class'):
+                # np
                 classes = []
                 for element in div_mes.find_all(class_=True):
                     classes.append(element["class"])
@@ -64,18 +64,13 @@ def req_url(url, key=0, flag=0, saved_number=0):
                     # if not any(a in classes for a in not_select_messages):
                     #     print('+')
                     if any((not any(wrong_class in un_class for wrong_class in not_select_messages))&
-                           ('_1-lf9' in un_class) for un_class in classes):
+                                                    ('_1-lf9' in un_class) for un_class in classes):
                         messages_list, sum = number_list_append(
                             div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
-                    # if 'NQl4z' in classes:
-                    #     if 'Сообщения' not in div_mes.text:
-                    #         date_list.append(date_list, div_mes.text)
                 else:
                     i_class = " ".join(map(str, div_mes.get('class')))
                     if i_class[-6:] == message_class:
                         messages_list, sum = number_list_append(
                             div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
-        # if date_list:
-        #     print('data list(bs4_code 76): ', date_list)
         print('messages to select = {}'.format(sum), '\n-----------------------------')
         return messages_list

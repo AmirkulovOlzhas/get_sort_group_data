@@ -40,13 +40,13 @@ def split_text_date(td, r):
 
 def taking_sorted_messages(saved_number=0):
     try:
-        # messages = np.array(driver.find_element(
-        #     By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
-        #     find_elements(By.XPATH, '//div[@data-id]'))
-        messages = driver.find_element(
+        messages = np.array(driver.find_element(
             By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
-            find_elements(By.XPATH, '//div[@data-id]')
-        sm, smt = [], []
+            find_elements(By.XPATH, '//div[@data-id]'))
+        # messages = driver.find_element(
+        #     By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
+        #     find_elements(By.XPATH, '//div[@data-id]')
+        sm, smt = np.array([]), np.array([])
         r = open('stuf/sorted_messages_list.txt', 'w', encoding='utf8')
         if saved_number != 0:
             for mes in messages:
@@ -55,8 +55,8 @@ def taking_sorted_messages(saved_number=0):
                 if '_1-lf9 _3mSPV' not in mes_html:
                     if '_1-lf9 _25eIs' not in mes_html:
                         # if any(a not in mes.get_attribute('innerHTML') for a in ['_1-lf9 _3mSPV', '_1-lf9 _25eIs']):
-                        sm.append(mes)
-                        smt.append(text_date)
+                        sm = np.append(sm, mes)
+                        smt = np.append(smt, text_date)
                         if '**' in text_date:
                             temp = text_date.split('**')
                             if len(temp[1].split(':')[0]) > 2:
@@ -73,11 +73,14 @@ def taking_sorted_messages(saved_number=0):
             temp_text = open('stuf/temp_text.txt', 'w', encoding='utf8')
             for s in sm:
                 temp_text.write(s.text)
+            if 'Сообщения защищены сквозным шифрованием.' in sm[0].text:
+                sm = np.delete(sm, 0)
+                smt = np.delete(smt, 0)
             return sm, smt
         else:
             for mes in messages:
                 text_date = str(''.join(''.join(mes.text.splitlines())))
-                smt.append(text_date)
+                smt = np.append(smt, text_date)
             return messages, smt
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -133,4 +136,6 @@ def sorted_text_list():
             txt_list.append(str(''.join(i.splitlines())))
         except:
             print('exc136: ', str(''.join(i.splitlines())))
+    if 'Сообщения защищены сквозным шифрованием.'in txt_list[0]:
+        txt_list.remove(txt_list[0])
     return txt_list
