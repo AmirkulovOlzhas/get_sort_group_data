@@ -18,11 +18,16 @@ not_select_messages = [text_message, '_36Yw-', '_36Yw- _18q-J', '_2JmX4', '_1-FM
 # еще что то
 message_class = '_7GVCb'
 message_class_list = (
-    '_1-FMR _3Zpy8 message-in focusable-list-item _7GVCb',
-    '_1-FMR _3Zpy8 j-md4 message-in focusable-list-item _7GVCb',
+    # '_1-FMR _3Zpy8 message-in focusable-list-item _7GVCb',
+    '_1-lf9 _1pC3e _18q-J',
+    '_1-lf9 _1pC3e',
+    '_1-lf9 _1uBlg',
+    '_1-lf9 _18q-J _1uBlg',
+    # '_1-FMR _3Zpy8 j-md4 message-in focusable-list-item _7GVCb',
     '_1-FMR j-md4 message-in focusable-list-item _7GVCb',
     '_1-FMR message-in focusable-list-item _7GVCb',
     '_1pC3e')
+# _1-lf9 _1uBlg , _1-lf9 _1pC3e, _1-lf9 _18q-J _1uBlg, _1-lf9 _1pC3e
 message_class_list_old = (
     '_1-FMR _3Zpy8 message-in focusable-list-item',
     '_1-FMR _3Zpy8 j-md4 message-in focusable-list-item',

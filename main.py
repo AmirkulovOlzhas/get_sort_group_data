@@ -47,8 +47,8 @@ def choose_chat():
             saved_number = input("0 - not saved numbers mes, 1 saved: ")
             group_flag, saved_number = int(group_flag), int(saved_number)
             if group_flag in [0, 1, 2, 3] and saved_number in [0, 1]:
-                print("Selected {}".format(group_flag))
                 group_name = group_dict[group_flag]
+                print("----------------------{}----------------------".format(group_name))
                 break
             else:
                 print('set one of 012')
@@ -84,7 +84,7 @@ def find_mes_in_chat():
     try:
         select('//span[@class="{}"]', "_3K42l", clicked=1)
     except:
-        print('нет кнопки вниз')
+        print("----------------------нет кнопки вниз----------------------")
     select('//div[@class="{}"]', '_28_W0', clicked=1)
     select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1)
     click()
@@ -123,7 +123,7 @@ def select_messages():
 
 def downloadr_or_delete():
     if saved_number == 1:
-        print("---------------------------\nnames writen to park mes name\n------------------------------------")
+        print("----------------------names writen to sorted_messages_list.txt----------------------")
         write_names_to_txt()
         try:
             select('//span[@data-testid="{}"]', class_name='download', clicked=1)
@@ -179,7 +179,7 @@ def main():
                     else:
                         print('Нет сообщений для выделения')
                     print('time for 1 role: ', time.time() - time_begin)
-                    input()
+                    # input()
                     downloadr_or_delete()
                 elif input_text == 'stop':
                     break

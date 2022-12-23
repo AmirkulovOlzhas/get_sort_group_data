@@ -35,7 +35,7 @@ def split_text_date(td, r):
     if 'Пересланное сообщение' in temp_text:
         temp_text = delete_text_from_str(temp_text)
     if temp_text not in ['', ' ']:
-        r.write(date + '-' + temp_text+'\n')
+        r.write(date + '-' + temp_text + '\n')
 
 
 def taking_sorted_messages(saved_number=0):
@@ -45,7 +45,7 @@ def taking_sorted_messages(saved_number=0):
         #     find_elements(By.XPATH, '//div[@data-id]'))
         messages = driver.find_element(
             By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
-                            find_elements(By.XPATH, '//div[@data-id]')
+            find_elements(By.XPATH, '//div[@data-id]')
         sm, smt = [], []
         r = open('stuf/sorted_messages_list.txt', 'w', encoding='utf8')
         if saved_number != 0:
@@ -106,14 +106,15 @@ def message_count(flag, saved_number):
     result_repeated = 0
     while result_repeated < 7:
         pg.press('home')
-        print("{}...".format(mes_cunt), end='')
         time.sleep(0.5)
         if mes_cunt % 5 == 0:
             pg.scroll(7)
             pg.scroll(-2)
             message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag,
-                                                                             saved_number=saved_number)
-            print('found mes sum: ', message_div_sum)
+                                                                         saved_number=saved_number)
+            print(' - ', message_div_sum)
+        else:
+            print(".", end='')
         if message_div_sum == message_div_sum2:
             result_repeated += 1
         else:

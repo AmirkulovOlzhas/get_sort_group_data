@@ -16,7 +16,7 @@ def rename_file(this_line, outside):
         # если в файле видео, то он оказывается внизу, этот иф меняет слова из за чего при сортировке все меняется
         if temp_line_name[-4:] == '.mp4':
             temp_line_name = temp_line_name.replace('Video', 'Image')
-            print(temp_line_name)
+            # print(temp_line_name)
         else:
             temp_line_name = temp_line_name
         if not outside:
@@ -75,7 +75,7 @@ def start_renaming(a, folder_dir):
     # noinspection PyGlobalUndefined
     global mypath
     mypath = folder_dir
-    print('mypath (rgn): ', mypath)
+    # print('mypath (rgn): ', mypath)
     # taking photo names from folder
     all_files_name = get_files_name()
     print("Photo count: ", len(all_files_name))

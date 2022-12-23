@@ -21,7 +21,7 @@ def create_folder(ct):
 
     path = os.path.join(parent_dir, folder_name)
     folder_number = 0
-    time.sleep(1)
+    time.sleep(2)
     while True:
         try:
             if folder_number != 0:
@@ -31,8 +31,8 @@ def create_folder(ct):
         except:
             folder_number += 1
 
-    print('------------------------------------\nfolder created')
-    print('path: ', path, '\n------------------------------------')
+    print('----------------------folder created----------------------')
+    # print('path: ', path)
     return path
 
 
@@ -41,7 +41,7 @@ def extract_rar(rar_file, extract_dir):
         patoolib.extract_archive(r'D:\\WA_photo\\downloads\\' + rar_file, outdir=extract_dir)
         global ext_dir
         ext_dir = extract_dir
-        print('------------------------------------\nrar file extracted\n------------------------------------')
+        print('----------------------rar file extracted----------------------')
         delete_rar(rar_file)
         return extract_dir
 
