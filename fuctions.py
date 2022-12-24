@@ -24,7 +24,6 @@ def delete_text_from_str(tt):
 
 
 def split_text_date(td, r):
-    # print(td)
     ti = td.index(':')
     date = td[ti - 2:ti + 3]
     text = td[:ti - 2]
@@ -43,9 +42,6 @@ def taking_sorted_messages(saved_number=0):
         messages = np.array(driver.find_element(
             By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
             find_elements(By.XPATH, '//div[@data-id]'))
-        # messages = driver.find_element(
-        #     By.XPATH, '//div[@class="{}"]'.format("n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj")). \
-        #     find_elements(By.XPATH, '//div[@data-id]')
         sm, smt = np.array([]), np.array([])
         r = open('stuf/sorted_messages_list.txt', 'w', encoding='utf8')
         if saved_number != 0:
@@ -54,13 +50,14 @@ def taking_sorted_messages(saved_number=0):
                 mes_html = mes.get_attribute('innerHTML')
                 if '_1-lf9 _3mSPV' not in mes_html:
                     if '_1-lf9 _25eIs' not in mes_html:
-                        # if any(a not in mes.get_attribute('innerHTML') for a in ['_1-lf9 _3mSPV', '_1-lf9 _25eIs']):
+                        # set message selenium into sm, text into smt
                         sm = np.append(sm, mes)
                         smt = np.append(smt, text_date)
                         if '**' in text_date:
                             temp = text_date.split('**')
                             if len(temp[1].split(':')[0]) > 2:
                                 try:
+                                    # write string to txt
                                     split_text_date(text_date, r)
                                 except:
                                     print('f63: {}'.format(text_date))
@@ -69,10 +66,6 @@ def taking_sorted_messages(saved_number=0):
                         split_text_date(text_date, r)
                     except:
                         print('f68: {}'.format(text_date))
-            # надо сохранить еще сообщения
-            temp_text = open('stuf/temp_text.txt', 'w', encoding='utf8')
-            for s in sm:
-                temp_text.write(s.text)
             if 'Сообщения защищены сквозным шифрованием.' in sm[0].text:
                 sm = np.delete(sm, 0)
                 smt = np.delete(smt, 0)
