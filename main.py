@@ -126,16 +126,15 @@ def select_messages():
 def downloadr_or_delete():
     if saved_number == 1:
         print("----------------------names writen to sorted_messages_list.txt----------------------")
-        write_names_to_txt()
+        name_lines = write_names_to_txt()
         try:
             select('//span[@data-testid="{}"]', class_name='download', clicked=1)
-            time.sleep(7)
             while True:
                 try:
-                    start_renaming(group_name, start_folder_work(group_name))
+                    time.sleep(2)
+                    start_renaming(group_name, start_folder_work(group_name), name_lines)
                     break
                 except Exception as e:
-                    time.sleep(2)
                     print('loop')
         except:
             select('//span[@data-testid="{}"]', class_name='x', clicked=1)

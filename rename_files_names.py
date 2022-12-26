@@ -13,10 +13,8 @@ def rename_file(this_line, outside):
     try:
         temp_line_name = this_line.replace(' (', '')
         temp_line_name = temp_line_name.replace(')', '')
-        # если в файле видео, то он оказывается внизу, этот иф меняет слова из за чего при сортировке все меняется
         if temp_line_name[-4:] == '.mp4':
             temp_line_name = temp_line_name.replace('Video', 'Image')
-            # print(temp_line_name)
         else:
             temp_line_name = temp_line_name
         if not outside:
@@ -35,47 +33,45 @@ def convert_all_files(afn, outside=False):
         rename_file(this_line, outside)
 
 
-def rename_files(contact, changed_files_name):
+def rename_files(contact_index, changed_files_name, name_lines):
     i, temp_value = 0, 0
     this_photo, ex_photo = 1, 0
     data_symbol = ''
     # rename
-    with open('stuf/mes_contact_names.txt', 'r', encoding='utf8') as f:
-        for line in f:
-            temp_line = line.replace('\n', '').split(' ')
-            temp_value = 1
-            while True:
-                ex_photo = this_photo
-                this_photo = int(temp_line[1].replace('_', ''))
-                if this_photo < ex_photo:
-                    data_symbol += 'l'
-                try:
-                    file_type = '.' + str(changed_files_name[i][-4:].replace('.', ''))
-                    os.rename(mypath + '\\' + changed_files_name[i],
-                              mypath + '\\' + data_symbol + temp_line[
-                                  1] + f' {temp_line[0][contact:]} - {str(temp_value) + file_type}')
-                    break
-                except WindowsError:
-                    temp_value += 1
-                except IndexError:
-                    print('.', end='')
-                    break
-                except Exception as e:
-                    exc_type, exc_obj, exc_tb = sys.exc_info()
-                    fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                    print(exc_type, fname, exc_tb.tb_lineno, e)
+    for line in name_lines:
+        temp_line = line.replace('\n', '').split(' ')
+        temp_value = 1
+        while True:
+            ex_photo = this_photo
+            this_photo = int(temp_line[1].replace('_', ''))
+            if this_photo < ex_photo:
+                data_symbol += 'l'
+            try:
+                file_type = '.' + str(changed_files_name[i][-4:].replace('.', ''))
+                os.rename(mypath + '\\' + changed_files_name[i],
+                          mypath + '\\' + data_symbol + temp_line[
+                              1] + f' {temp_line[0][contact_index:]} - {str(temp_value) + file_type}')
+                break
+            except WindowsError:
+                temp_value += 1
+            except IndexError:
+                print('.', end='')
+                break
+            except Exception as e:
+                exc_type, exc_obj, exc_tb = sys.exc_info()
+                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                print(exc_type, fname, exc_tb.tb_lineno, e)
 
-            i += 1
+        i += 1
     copy_address_text()
 
 
-def start_renaming(a, folder_dir):
+def start_renaming(a, folder_dir, name_lines):
     contact_index = {'park': 0, 'abai': 5, 'enb': 4, 'tbo': 4}
 
     # noinspection PyGlobalUndefined
     global mypath
     mypath = folder_dir
-    # print('mypath (rgn): ', mypath)
     # taking photo names from folder
     all_files_name = get_files_name()
     print("Photo count: ", len(all_files_name))
@@ -84,4 +80,4 @@ def start_renaming(a, folder_dir):
     changed_files_name = get_files_name()
     changed_files_name.sort()
 
-    rename_files(contact_index[a], changed_files_name)
+    rename_files(contact_index[a], changed_files_name, name_lines)

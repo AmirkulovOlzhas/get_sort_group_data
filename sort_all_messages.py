@@ -21,11 +21,11 @@ def take_name_data():
 
 def check_data(nd):
     mes_name = open('stuf/mes_contact_names.txt', 'w', encoding='utf8')
-    lines = ''
+    lines = []
+    print('cam25: ', len(nd))
     for line in nd:
         line_count = line[1].count(":")
         s = 0
-
         if line_count > 1:
             if '+' in line[1]:
                 line_1 = line[1][:line[1].index('+')]
@@ -50,12 +50,12 @@ def check_data(nd):
                 line[1] = line[1][dot_index - 2:dot_index + 3]
 
                 if ':' in line[1]:
-                    lines += line[0] + ' ' + line[1].replace(":", "_") + '\n'
+                    temp = line[0] + ' ' + line[1].replace(":", "_")
+                    lines.append(temp)
             line_count -= 1
-    mes_name.write(lines[:-1])
+    return lines
 
 
 def write_names_to_txt():
     name_data = take_name_data()
-    check_data(name_data)
-    time.sleep(2)
+    return check_data(name_data)
