@@ -20,7 +20,6 @@ def take_name_data():
 
 
 def check_data(nd):
-    mes_name = open('stuf/mes_contact_names.txt', 'w', encoding='utf8')
     lines = []
     print('cam25: ', len(nd))
     for line in nd:

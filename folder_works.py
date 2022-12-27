@@ -1,10 +1,9 @@
 import os
 import sys
 import time
+import patoolib
 from datetime import date
 from os import listdir
-
-import patoolib
 
 global parent_dir
 global ext_dir
@@ -24,15 +23,13 @@ def create_folder(ct):
     time.sleep(2)
     while True:
         try:
-            if folder_number != 0:
-                path += str(folder_number)
             os.mkdir(path)
             break
         except:
             folder_number += 1
+            path += str(folder_number)
 
     print('----------------------folder created----------------------')
-    # print('path: ', path)
     return path
 
 
@@ -52,11 +49,10 @@ def delete_rar(rar_file):
 
 def copy_address_text():
     try:
-        print(ext_dir)
+        print('cat54: ', ext_dir)
         with open('stuf/sorted_messages_list.txt', 'rb') as src, \
                 open(ext_dir + r'\\0Address.txt', 'wb') as dst:
-            dst.write(
-                src.read())
+            dst.write(src.read())
     except Exception as e:
         print('no address file')
         exc_type, exc_obj, exc_tb = sys.exc_info()

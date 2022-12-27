@@ -7,10 +7,6 @@ import matplotlib.pyplot as plt
 
 def show_stat(result_dict):
     for folder_name, values in result_dict.items():
-        # for contact, values2 in values.items():
-        #     print(contact, '\n********** ********** *********')
-        #     print(values2)
-        # print('----- -------- --------')
         contact_count = {}
         for name, count in values.items():
             contact_count.update({name: count['count']})

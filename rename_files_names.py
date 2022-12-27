@@ -9,7 +9,7 @@ def get_files_name():
     return [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
 
-def rename_file(this_line, outside):
+def rename_file(this_line):
     try:
         temp_line_name = this_line.replace(' (', '')
         temp_line_name = temp_line_name.replace(')', '')
@@ -17,20 +17,17 @@ def rename_file(this_line, outside):
             temp_line_name = temp_line_name.replace('Video', 'Image')
         else:
             temp_line_name = temp_line_name
-        if not outside:
-            os.rename(mypath + '\\' + this_line, mypath + '\\' + '00' + temp_line_name[29:])
-        else:
-            os.rename(mypath + '\\' + this_line, mypath + '\\' + temp_line_name)
+        os.rename(mypath + '\\' + this_line, mypath + '\\' + temp_line_name)
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         print(exc_type, fname, exc_tb.tb_lineno, e)
 
 
-def convert_all_files(afn, outside=False):
+def convert_all_files(afn):
     # to correct sort list
     for this_line in afn:
-        rename_file(this_line, outside)
+        rename_file(this_line)
 
 
 def rename_files(contact_index, changed_files_name, name_lines):
@@ -78,7 +75,7 @@ def start_renaming(a, folder_dir, name_lines):
     all_files_name = get_files_name()
     print("Photo count: ", len(all_files_name))
 
-    convert_all_files(all_files_name, outside=True)
+    convert_all_files(all_files_name)
     changed_files_name = get_files_name()
     changed_files_name.sort(reverse=True)
 

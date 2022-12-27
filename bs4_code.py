@@ -1,8 +1,7 @@
 import time
 
 from bs4 import BeautifulSoup as bs
-from config import message_class_list, list_p, chat, list_en, \
-    list_ab, list_tbo, text_message, contacts_dict, chat_open_select, not_select_messages, message_class
+from config import chat, contacts_dict, chat, not_select_messages, message_class
 import numpy as np
 
 
@@ -30,7 +29,7 @@ def number_check(div_mes, flag):
 
 def req_url(url, key=0, flag=0, saved_number=0):
     # np
-    messages = bs(url, 'lxml').find('div', class_=chat_open_select).find_all('div')
+    messages = bs(url, 'lxml').find('div', class_=chat).find_all('div')
     if key == 0:
         return len(messages)
     else:
@@ -44,8 +43,8 @@ def req_url(url, key=0, flag=0, saved_number=0):
                 classes = list(filter(None, classes))
                 # проверка сохранен ли контакт, сохранение сообщений которые можно выделить
                 if saved_number == 1:
-                    if any((not any(wrong_class in un_class for wrong_class in not_select_messages))&
-                                                    ('_1-lf9' in un_class) for un_class in classes):
+                    if any((not any(wrong_class in un_class for wrong_class in not_select_messages)) &
+                           ('_1-lf9' in un_class) for un_class in classes):
                         messages_list, sum = number_list_append(
                             div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
                 else:
