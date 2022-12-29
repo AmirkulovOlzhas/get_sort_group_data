@@ -20,7 +20,7 @@ def create_folder(ct):
 
     path = os.path.join(parent_dir, folder_name)
     folder_number = 0
-    time.sleep(2)
+    time.sleep(3)
     while True:
         try:
             os.mkdir(path)

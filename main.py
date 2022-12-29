@@ -12,7 +12,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from fuctions import taking_sorted_messages, select, click, message_count, sorted_text_list, set_driver_by
 from bs4_code import req_url
 from sort_all_messages import write_names_to_txt
-from config import contact_list, archive, select_ico, argument1, argument2
+from config import contact_list, archive, select_ico, argument1, argument2, chat
 from folder_works import start_folder_work
 from rename_files_names import start_renaming
 
@@ -80,6 +80,9 @@ def archive_open():
 def select_chat():
     select('//span[@title="{}"]', contact_list[group_flag],
            "contact opened", clicked=1)
+    time.sleep(1)
+    select('//span[@title="{}"]', contact_list[group_flag],
+           "contact opened", clicked=1)
     time.sleep(2)
 
 
@@ -91,6 +94,8 @@ def find_mes_in_chat():
         print("----------------------нет кнопки вниз----------------------")
     select('//div[@class="{}"]', '_28_W0', clicked=1)
     select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1)
+    # chat_element = driver.find_element(By.XPATH, '//div[@class="{}"]'.format(chat))
+    # action.move_to_element(chat_element).perform()
     click()
     return message_count(group_flag, saved_number)
 

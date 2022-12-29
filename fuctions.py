@@ -27,6 +27,7 @@ def split_text_date(td, r):
         text = text.replace('Пересланное сообщение', '')
         text = text.replace('Данное сообщение удалено', '')
         if text:
+            print(end='.')
             r.write(date + '-' + text + '\n')
     except:
         pass
@@ -60,7 +61,7 @@ def taking_sorted_messages(saved_number=0):
             if 'Сообщения защищены сквозным шифрованием.' in sm[0].text:
                 sm = np.delete(sm, 0)
                 smt = np.delete(smt, 0)
-            print('-------------------------------\ntime for tsm: ', time.time() - a,
+            print('\n-------------------------------\ntime for tsm: ', time.time() - a,
                   '\n-----------------------------------')
             return sm, smt
         else:
