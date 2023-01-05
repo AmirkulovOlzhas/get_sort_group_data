@@ -26,9 +26,17 @@ def split_text_date(td, r):
         text = td[:ti - 2]
         text = text.replace('Пересланное сообщение', '')
         text = text.replace('Данное сообщение удалено', '')
+        if '**' in text:
+            try:
+                text = text.split('**')[1]
+            except:
+                print(text)
+                text = ''
         if text:
             print(end='.')
-            r.write(date + '-' + text + '\n')
+            s = date + '-' + text + '\n'
+            r.write(s)
+            return s
     except:
         pass
 
@@ -41,6 +49,7 @@ def taking_sorted_messages(saved_number=0):
                             find_elements(By.XPATH, '//div[@data-id]'))
         sm, smt = np.array([]), np.array([])
         r = open('stuf/sorted_messages_list.txt', 'w', encoding='utf8')
+        text_arr = []
         if saved_number:
             for mes in messages:
                 text_date = str(''.join(''.join(mes.text.splitlines())))
@@ -55,20 +64,20 @@ def taking_sorted_messages(saved_number=0):
                         if '**' in text_date:
                             text_date = text_date.split('**')[1]
                         if len(text_date.split(':')[0]) > 2:
-                            split_text_date(text_date, r)
+                            text_arr.append(split_text_date(text_date, r))
                 else:
-                    split_text_date(text_date, r)
+                    text_arr.append(split_text_date(text_date, r))
             if 'Сообщения защищены сквозным шифрованием.' in sm[0].text:
                 sm = np.delete(sm, 0)
                 smt = np.delete(smt, 0)
             print('\n-------------------------------\ntime for tsm: ', time.time() - a,
                   '\n-----------------------------------')
-            return sm, smt
+            return sm, smt, text_arr
         else:
             for mes in messages:
                 text_date = str(''.join(''.join(mes.text.splitlines())))
                 smt = np.append(smt, text_date)
-            return messages, smt
+            return messages, smt, text_arr
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]

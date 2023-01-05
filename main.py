@@ -24,9 +24,6 @@ def create_driver():
     options.add_argument(argument2)
     global driver, action
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    # driver = webdriver.Chrome \
-    #     (executable_path=r'C:\Users\OFFICE\PycharmProjects\whatsapp-project\stuf\chromedriver.exe',
-    #      options=options)
     driver.get("https://web.whatsapp.com")
     action = webdriver.ActionChains(driver)
     # send driver&By to fuctions.py
@@ -102,7 +99,7 @@ def find_mes_in_chat():
 
 def select_messages():
     try:
-        sorted_messages, sorted_messages_text = taking_sorted_messages(saved_number=saved_number)
+        sorted_messages, sorted_messages_text, text_arr = taking_sorted_messages(saved_number=saved_number)
         # sorted_messages[i].text можно получить время отдельно
         txt_list = sorted_text_list()
         print('sm, smt, tm: ', len(sorted_messages), ' - ', len(sorted_messages_text), ' - ', len(txt_list))
@@ -122,13 +119,14 @@ def select_messages():
                     sorted_messages_text = np.delete(sorted_messages_text, index)
                     sorted_messages = np.delete(sorted_messages, index)
                     break
+        return text_arr
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         print(exc_type, fname, exc_tb.tb_lineno, e)
 
 
-def downloadr_or_delete():
+def downloadr_or_delete(text_arr):
     if saved_number == 1:
         print("----------------------names writen to sorted_messages_list.txt----------------------")
         name_lines = write_names_to_txt()
@@ -137,7 +135,7 @@ def downloadr_or_delete():
             while True:
                 try:
                     time.sleep(2)
-                    start_renaming(group_name, start_folder_work(group_name), name_lines)
+                    start_renaming(group_name, start_folder_work(group_name), name_lines, text_arr)
                     break
                 except Exception as e:
                     print('loop')
@@ -172,12 +170,12 @@ def main():
                 time_begin = time.time()
                 select_chat()
                 if find_mes_in_chat() != 0:
-                    select_messages()
+                    text_arr = select_messages()
                 else:
                     print('Нет сообщений для выделения')
                 print('time for 1 role: ', time.time() - time_begin)
                 # input()
-                downloadr_or_delete()
+                downloadr_or_delete(text_arr)
 
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()

@@ -30,7 +30,7 @@ def convert_all_files(afn):
         rename_file(this_line)
 
 
-def rename_files(contact_index, changed_files_name, name_lines):
+def rename_files(contact_index, changed_files_name, name_lines, text_arr):
     i, temp_value = 0, 0
     this_photo, ex_photo = 9999, 0
     data_symbol = ''
@@ -61,10 +61,10 @@ def rename_files(contact_index, changed_files_name, name_lines):
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                 print(exc_type, fname, exc_tb.tb_lineno, e)
         i += 1
-    copy_address_text()
+    copy_address_text(text_arr)
 
 
-def start_renaming(a, folder_dir, name_lines):
+def start_renaming(a, folder_dir, name_lines, text_arr):
     contact_index = {'park': 0, 'abai': 5, 'enb': 4, 'tbo': 4}
 
     # noinspection PyGlobalUndefined
@@ -79,4 +79,4 @@ def start_renaming(a, folder_dir, name_lines):
     changed_files_name = get_files_name()
     changed_files_name.sort(reverse=True)
 
-    rename_files(contact_index[a], changed_files_name, name_lines)
+    rename_files(contact_index[a], changed_files_name, name_lines, text_arr)
