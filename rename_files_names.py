@@ -73,10 +73,14 @@ def start_renaming(a, folder_dir, name_lines, text_arr):
     print(mypath)
     # taking photo names from folder
     all_files_name = get_files_name()
-    print("Photo count: ", len(all_files_name))
+    print("Photo count: ", len(all_files_name), ' - ', len(name_lines))
+    if len(all_files_name) != len(name_lines):
+        print('Не все фото загрузились')
+        return 1
+    else:
+        convert_all_files(all_files_name)
+        changed_files_name = get_files_name()
+        changed_files_name.sort(reverse=True)
 
-    convert_all_files(all_files_name)
-    changed_files_name = get_files_name()
-    changed_files_name.sort(reverse=True)
-
-    rename_files(contact_index[a], changed_files_name, name_lines, text_arr)
+        rename_files(contact_index[a], changed_files_name, name_lines, text_arr)
+        return 0

@@ -52,5 +52,5 @@ def req_url(url, key=0, flag=0, saved_number=0):
                     if i_class[-6:] == message_class:
                         messages_list, sum = number_list_append(
                             div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
-        print('messages to select = {}'.format(sum), '\n-----------------------------')
+        print('messages to select = {}'.format(sum))
         return messages_list

@@ -49,12 +49,9 @@ def delete_rar(rar_file):
 
 def copy_address_text(text_mes_arr):
     try:
-        print('cat54: ', ext_dir)
-        # with open('stuf/sorted_messages_list.txt', 'rb') as src, \
-        #         open(ext_dir + r'\\0Address.txt', 'wb') as dst:
-        # print(text_mes_arr)
-        with open(ext_dir + r'\\0Address.txt', 'w', encoding='utf-8') as dst:
-            for text in text_mes_arr:
+        text_arr = list(filter(None, text_mes_arr))
+        with open(ext_dir + r'\\0Address.txt', 'w', encoding='utf8') as dst:
+            for text in text_arr:
                 dst.write(text)
     except Exception as e:
         print('no address file')

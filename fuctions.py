@@ -17,25 +17,24 @@ def set_driver_by(d, B):
 def click(click_c=1):
     for i in range(click_c):
         pg.click(389, 777, button='middle')
+        
 
 
-def split_text_date(td, r):
+def split_text_date(td):
     try:
         ti = td.index(':')
         date = td[ti - 2:ti + 3]
         text = td[:ti - 2]
         text = text.replace('Пересланное сообщение', '')
         text = text.replace('Данное сообщение удалено', '')
-        if '**' in text:
+        while '**' in text:
             try:
                 text = text.split('**')[1]
             except:
-                print(text)
                 text = ''
         if text:
             print(end='.')
             s = date + '-' + text + '\n'
-            r.write(s)
             return s
     except:
         pass
@@ -48,26 +47,15 @@ def taking_sorted_messages(saved_number=0):
             By.XPATH, '//div[@class="{}"]'.format(chat)). \
                             find_elements(By.XPATH, '//div[@data-id]'))
         sm, smt = np.array([]), np.array([])
-        r = open('stuf/sorted_messages_list.txt', 'w', encoding='utf8')
         text_arr = []
         if saved_number:
             for mes in messages:
                 text_date = str(''.join(''.join(mes.text.splitlines())))
-                # get_attribute class
-                mes_html = mes.get_attribute('innerHTML')
-                # mes_html = mes.get_attribute('class')
-                if '_3mSPV' not in mes_html:
-                    if '_25eIs' not in mes_html:
-                        # set message selenium into sm, text into smt
-                        sm = np.append(sm, mes)
-                        smt = np.append(smt, text_date)
-                        if '**' in text_date:
-                            text_date = text_date.split('**')[1]
-                        if len(text_date.split(':')[0]) > 2:
-                            text_arr.append(split_text_date(text_date, r))
-                else:
-                    text_arr.append(split_text_date(text_date, r))
-            if 'Сообщения защищены сквозным шифрованием.' in sm[0].text:
+                sm = np.append(sm, mes)
+                smt = np.append(smt, text_date)
+                if len(text_date.split(':')[0]) > 2:
+                    text_arr.append(split_text_date(text_date))
+            if 'Сообщения защищены' in sm[0].text:
                 sm = np.delete(sm, 0)
                 smt = np.delete(smt, 0)
             print('\n-------------------------------\ntime for tsm: ', time.time() - a,
@@ -75,8 +63,7 @@ def taking_sorted_messages(saved_number=0):
             return sm, smt, text_arr
         else:
             for mes in messages:
-                text_date = str(''.join(''.join(mes.text.splitlines())))
-                smt = np.append(smt, text_date)
+                smt = np.append(smt, str(''.join(''.join(mes.text.splitlines()))))
             return messages, smt, text_arr
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -106,14 +93,14 @@ def message_count(flag, saved_number):
     while result_repeated < 7:
         pg.press('home')
         time.sleep(0.5)
-        if mes_cunt % 5 == 0:
+        if mes_cunt % 5 != 0:
+            print(".", end='')
+        else:
             pg.scroll(7)
             pg.scroll(-2)
             message_div_sum2, message_div_sum = message_div_sum, req_url(driver.page_source, flag=flag,
                                                                          saved_number=saved_number)
             print(' - ', message_div_sum)
-        else:
-            print(".", end='')
         if message_div_sum == message_div_sum2:
             result_repeated += 1
         else:

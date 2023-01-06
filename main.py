@@ -30,7 +30,7 @@ def create_driver():
     set_driver_by(driver, By)
 
 
-def choose_chat(ch = 9 ,saved = 9):
+def choose_chat(ch=9, saved=9):
     group_dict = {0: 'park', 1: 'enb', 2: 'abai', 3: 'tbo'}
     # noinspection PyGlobalUndefined
     global group_flag, saved_number, group_name
@@ -51,9 +51,6 @@ def choose_chat(ch = 9 ,saved = 9):
             except:
                 if 'stop' in [group_flag, saved_number]:
                     return_number = 1
-                    break
-                elif 'skip' in [group_flag, saved_number]:
-                    return_number = 2
                     break
                 print('set only corrtect info')
         return return_number
@@ -91,8 +88,6 @@ def find_mes_in_chat():
         print("----------------------нет кнопки вниз----------------------")
     select('//div[@class="{}"]', '_28_W0', clicked=1)
     select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1)
-    # chat_element = driver.find_element(By.XPATH, '//div[@class="{}"]'.format(chat))
-    # action.move_to_element(chat_element).perform()
     click()
     return message_count(group_flag, saved_number)
 
@@ -135,8 +130,7 @@ def downloadr_or_delete(text_arr):
             while True:
                 try:
                     time.sleep(2)
-                    start_renaming(group_name, start_folder_work(group_name), name_lines, text_arr)
-                    break
+                    return start_renaming(group_name, start_folder_work(group_name), name_lines, text_arr)
                 except Exception as e:
                     print('loop')
         except:
@@ -149,8 +143,10 @@ def downloadr_or_delete(text_arr):
             select('//div[@data-testid="{}"]', class_name='popup-controls-delete', clicked=1)
         except:
             select('//span[@data-testid="{}"]', class_name='x', clicked=1)
+        return 0
 
-def main():
+
+def main(g=None, f=None):
     create_driver()
     archive_open()
     while True:
@@ -160,10 +156,9 @@ def main():
                 control = choose_chat(int(input_text), 1)
             else:
                 control = choose_chat()
+
             if control == 1:
                 break
-            elif control == 2:
-                print('skiped')
             else:
                 if input_text == 'stop':
                     break
@@ -175,7 +170,13 @@ def main():
                     print('Нет сообщений для выделения')
                 print('time for 1 role: ', time.time() - time_begin)
                 # input()
-                downloadr_or_delete(text_arr)
+                while True:
+                    if downloadr_or_delete(text_arr) == 0:
+                        break
+                    else:
+                        select('//div[@class="{}"]', '_28_W0', clicked=1)
+                        select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1)
+                        text_arr = select_messages()
 
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()

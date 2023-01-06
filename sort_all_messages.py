@@ -21,7 +21,6 @@ def take_name_data():
 
 def check_data(nd):
     lines = []
-    print('cam25: ', len(nd))
     for line in nd:
         line_count = line[1].count(":")
         s = 0
