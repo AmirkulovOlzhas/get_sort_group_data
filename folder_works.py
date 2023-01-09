@@ -28,7 +28,6 @@ def create_folder(ct):
         except:
             folder_number += 1
             path += str(folder_number)
-
     print('----------------------folder created----------------------')
     return path
 
@@ -61,4 +60,7 @@ def copy_address_text(text_mes_arr):
 
 
 def start_folder_work(ct):
-    return extract_rar(listdir(r'D:\\WA_photo\\downloads\\')[0], create_folder(ct))
+    try:
+        return extract_rar(listdir(r'D:\\WA_photo\\downloads\\')[0], create_folder(ct))
+    except:
+        print('66')

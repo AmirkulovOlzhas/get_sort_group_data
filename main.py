@@ -176,6 +176,7 @@ def main(g=None, f=None):
                     else:
                         select('//div[@class="{}"]', '_28_W0', clicked=1)
                         select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1)
+                        # вниз + find_mes
                         text_arr = select_messages()
 
         except Exception as e:
