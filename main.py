@@ -123,18 +123,19 @@ def select_messages():
 
 def downloadr_or_delete(text_arr):
     if saved_number == 1:
-        print("----------------------names writen to sorted_messages_list.txt----------------------")
         name_lines = write_names_to_txt()
+        print("----------------------names saved----------------------")
         try:
             select('//span[@data-testid="{}"]', class_name='download', clicked=1)
             while True:
                 try:
                     time.sleep(2)
                     return start_renaming(group_name, start_folder_work(group_name), name_lines, text_arr)
-                except Exception as e:
-                    print('loop')
+                except:
+                    pass
         except:
-            select('//span[@data-testid="{}"]', class_name='x', clicked=1)
+            select('//button[@aria-label="{}"]', class_name='Отменить пересылку', clicked=1)
+
 
     else:
         try:
@@ -142,9 +143,8 @@ def downloadr_or_delete(text_arr):
             time.sleep(1.2)
             select('//div[@data-testid="{}"]', class_name='popup-controls-delete', clicked=1)
         except:
-            select('//span[@data-testid="{}"]', class_name='x', clicked=1)
+            select('//button[@aria-label="{}"]', class_name='Отменить пересылку', clicked=1)
         return 0
-
 
 def main(g=None, f=None):
     create_driver()
@@ -176,7 +176,7 @@ def main(g=None, f=None):
                     else:
                         select('//div[@class="{}"]', '_28_W0', clicked=1)
                         select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1)
-                        # вниз + find_mes
+                        # вниз + find_mes + если соообщений нет
                         text_arr = select_messages()
 
         except Exception as e:

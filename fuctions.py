@@ -5,6 +5,7 @@ import pyautogui as pg
 import numpy as np
 from bs4_code import req_url
 from config import chat
+from selenium.webdriver import ActionChains
 
 
 # noinspection PyGlobalUndefined
@@ -17,7 +18,6 @@ def set_driver_by(d, B):
 def click(click_c=1):
     for i in range(click_c):
         pg.click(389, 777, button='middle')
-        
 
 
 def split_text_date(td):
@@ -41,34 +41,41 @@ def split_text_date(td):
 
 
 def taking_sorted_messages(saved_number=0):
-    try:
-        a = time.time()
-        messages = np.array(driver.find_element(
-            By.XPATH, '//div[@class="{}"]'.format(chat)). \
-                            find_elements(By.XPATH, '//div[@data-id]'))
-        sm, smt = np.array([]), np.array([])
-        text_arr = []
-        if saved_number:
-            for mes in messages:
-                text_date = str(''.join(''.join(mes.text.splitlines())))
-                sm = np.append(sm, mes)
-                smt = np.append(smt, text_date)
+    a = time.time()
+    messages_classes = np.array(driver.find_element(
+        By.XPATH, '//div[@class="{}"]'.format(chat)). \
+                        find_elements(By.XPATH, '//div[@data-id]//div[contains(@class, "_1-lf9")]'))
+    messages = np.array(driver.find_element(
+        By.XPATH, '//div[@class="{}"]'.format(chat)). \
+                        find_elements(By.XPATH, '//div[@data-id]'))
+    sm, smt = np.array([]), np.array([])
+    text_arr = []
+    if saved_number:
+        for i in range(len(messages)):
+            try:
+                text_date = str(''.join(''.join(messages[i].text.splitlines())))
+                mes_class = messages_classes[i].get_attribute("class")
+                mes_class = mes_class.split()
+                #not_select_mess
+                if '_3mSPV' not in mes_class:
+                    sm = np.append(sm, messages[i])
+                    smt = np.append(smt, text_date)
                 if len(text_date.split(':')[0]) > 2:
                     text_arr.append(split_text_date(text_date))
-            if 'Сообщения защищены' in sm[0].text:
-                sm = np.delete(sm, 0)
-                smt = np.delete(smt, 0)
-            print('\n-------------------------------\ntime for tsm: ', time.time() - a,
-                  '\n-----------------------------------')
-            return sm, smt, text_arr
-        else:
-            for mes in messages:
-                smt = np.append(smt, str(''.join(''.join(mes.text.splitlines()))))
-            return messages, smt, text_arr
-    except Exception as e:
-        exc_type, exc_obj, exc_tb = sys.exc_info()
-        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-        print(exc_type, fname, exc_tb.tb_lineno, e)
+            except Exception as e:
+                exc_type, exc_obj, exc_tb = sys.exc_info()
+                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                print(exc_type, fname, exc_tb.tb_lineno, e)
+        if 'Сообщения защищены' in sm[0].text:
+            sm = np.delete(sm, 0)
+            smt = np.delete(smt, 0)
+        print('\n-------------------------------\ntime for tsm: ', time.time() - a,
+              '\n-----------------------------------')
+        return sm, smt, text_arr
+    else:
+        for mes in messages:
+            smt = np.append(smt, str(''.join(''.join(mes.text.splitlines()))))
+        return messages, smt, text_arr
 
 
 def select(xpath, class_name, text='NULL', clicked=0):

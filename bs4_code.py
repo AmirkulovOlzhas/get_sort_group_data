@@ -1,8 +1,11 @@
 import time
+import sys, os
+import warnings
 
 from bs4 import BeautifulSoup as bs
 from config import chat, contacts_dict, chat, not_select_messages, message_class
 import numpy as np
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
 def number_list_append(div_mes, flag, messages_list, sum, saved_number, key=0):
@@ -36,17 +39,16 @@ def req_url(url, key=0, flag=0, saved_number=0):
         messages_list, sum = np.array([]), 0
         for div_mes in messages:
             if div_mes.get('class'):
-                # np
-                classes = []
+                classes = np.array([])
                 for element in div_mes.find_all(class_=True):
-                    classes.append(element["class"])
-                classes = list(filter(None, classes))
+                    classes = np.append(classes, element["class"])
+                classes = classes[classes != None]
                 # проверка сохранен ли контакт, сохранение сообщений которые можно выделить
                 if saved_number == 1:
-                    if any((not any(wrong_class in un_class for wrong_class in not_select_messages)) &
-                           ('_1-lf9' in un_class) for un_class in classes):
-                        messages_list, sum = number_list_append(
-                            div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
+                    if not any(wrong_class in classes for wrong_class in not_select_messages):
+                        if '_1-lf9' in classes:
+                            messages_list, sum = number_list_append(div_mes, flag, messages_list, sum=sum,
+                                                                    saved_number=saved_number, key=key)
                 else:
                     i_class = " ".join(map(str, div_mes.get('class')))
                     if i_class[-6:] == message_class:

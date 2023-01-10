@@ -8,9 +8,7 @@ argument1 = r'--user-data-dir=C:\Users\OFFICE\AppData\Local\Google\Chrome\User D
 argument2 = '--profile-directory=Default'
 
 # not for select
-text_message = "_1-lf9 _3mSPV"
-not_select_messages = [text_message, '_36Yw-', '_36Yw- _18q-J', '_2JmX4', '_1-FMR _15WYQ focusable-list-item',
-                            '_2BJ4G', '_3mSPV', '_25eIs', '_3mSPV', '_1-lf9 _3mSPV _18q-J', '_3mSPV _18q-J']
+not_select_messages = ['_36Yw-', '_36Yw- _18q-J', '_2JmX4', '_2BJ4G', '_3mSPV', '_25eIs','_3mSPV', 'NQl4z']
 
 # фото
 # коллаж

@@ -1,5 +1,4 @@
-import os
-import sys
+import os, sys
 import time
 import patoolib
 from datetime import date
@@ -62,5 +61,9 @@ def copy_address_text(text_mes_arr):
 def start_folder_work(ct):
     try:
         return extract_rar(listdir(r'D:\\WA_photo\\downloads\\')[0], create_folder(ct))
-    except:
-        print('66')
+    except IndexError:
+        print('Фотографий загружаются...')
+    except Exception as e:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print('+', exc_type, fname, exc_tb.tb_lineno, e)
