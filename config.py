@@ -1,5 +1,5 @@
-archive = "_3hD9c"
-select_ico = "_3BK98"
+archive = "_2O4d9" #"_3hD9c"
+select_ico = "_30oSb" #"_3BK98"
 # chat = "n5hs2j7m oq31bsqd gx1rr48f qh5tioqs"
 chat = "n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj"
 
@@ -8,7 +8,8 @@ argument1 = r'--user-data-dir=C:\Users\OFFICE\AppData\Local\Google\Chrome\User D
 argument2 = '--profile-directory=Default'
 
 # not for select
-not_select_messages = ['_36Yw-', '_36Yw- _18q-J', '_2JmX4', '_2BJ4G', '_3mSPV', '_25eIs','_3mSPV', 'NQl4z']
+not_select_messages = ['_2JmX4',  '_36Yw- _18q-J', '_2JmX4', '_2BJ4G', '_3mSPV', '_25eIs', 'NQl4z']
+#not_select_messages olzh = ['_36Yw-',   ]
 
 # фото
 # коллаж
@@ -38,7 +39,7 @@ message_class_list_with_text = ('1-FMR message-in focusable-list-item',
 # p357zi0d ktfrpxia nu7pwgvd fhf7t426 sap93d0t r15c9g6i   -  удаленное
 # contact
 # msg_cont_class = ['_1-lf9 _1pC3e', ' _1-lf9 _1pC3e _18q-J', '_1-lf9 _18q-J _1uBlg']
-contact_list = ["Содержание парков", "Еңбекші ішкі орам", "Build stroi Ішкі орам", "Нурсат ТБО"]
+contact_list = ["Содержание парков", "Еңбекші ішкі орам", "ТҰРАН САНИТАРЛЫҚ ТАЗАЛЫҚ", "Нурсат ТБО"]
 
 list_p = {"alatau": "77476001065",
           "kasiret": "77750261982",
@@ -55,11 +56,9 @@ list_en = {"Азиза": "77024280471",
            "Ольга": "77763080260"
            }
 
-list_ab = {"Маржан": "77056969603",
+list_tr = {"Маржан": "77056969603",
            "Бегара": "77078735909",
-           "Суюндик": "77716607163",
-           "Лайла": "77759349223",
-           "Ольга": "77763080260"
+           "Суюндик": "77716607163"
            }
 
 list_tbo = {"Куат": "77786460481",
@@ -72,4 +71,4 @@ list_tbo = {"Куат": "77786460481",
             "Бакыт": "77013946513"
             }
 
-contacts_dict = {0: list_p, 1: list_en, 2: list_ab, 3: list_tbo}
+contacts_dict = {0: list_p, 1: list_en, 2: list_tr, 3: list_tbo}

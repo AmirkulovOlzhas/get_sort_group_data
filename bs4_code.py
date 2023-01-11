@@ -32,9 +32,11 @@ def number_check(div_mes, flag):
 
 def req_url(url, key=0, flag=0, saved_number=0):
     # np
-    messages = bs(url, 'lxml').find('div', class_=chat).find_all('div')
+    messages = np.array(bs(url, 'lxml').find('div', class_=chat).find_all('div'))
     if key == 0:
-        return len(messages)
+        temp = len(messages)
+        messages.clear()
+        return temp
     else:
         messages_list, sum = np.array([]), 0
         for div_mes in messages:
@@ -51,6 +53,8 @@ def req_url(url, key=0, flag=0, saved_number=0):
                                                                     saved_number=saved_number, key=key)
                 else:
                     i_class = " ".join(map(str, div_mes.get('class')))
+                    # if div_mes.text[0:2] == '+7':
+                    #     print(i_class, ' ', div_mes.text)
                     if i_class[-6:] == message_class:
                         messages_list, sum = number_list_append(
                             div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)

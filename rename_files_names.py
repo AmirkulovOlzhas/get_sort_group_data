@@ -62,11 +62,12 @@ def rename_files(contact_index, changed_files_name, name_lines, text_arr):
                     1] + f' {temp_line[0][contact_index:]} - {str(photo_number) + file_type}')
                 break
         i += 1
-    copy_address_text(text_arr)
+    if contact_index != 0:
+        copy_address_text(text_arr)
 
 
 def start_renaming(a, folder_dir, name_lines, text_arr):
-    contact_index = {'park': 0, 'abai': 5, 'enb': 4, 'tbo': 4}
+    contact_index = {'park': 0, 'turan': 5, 'enb': 4, 'tbo': 4}
 
     # noinspection PyGlobalUndefined
     global mypath

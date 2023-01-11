@@ -31,7 +31,7 @@ def create_driver():
 
 
 def choose_chat(ch=9, saved=9):
-    group_dict = {0: 'park', 1: 'enb', 2: 'abai', 3: 'tbo'}
+    group_dict = {0: 'park', 1: 'enb', 2: 'turan', 3: 'tbo'}
     # noinspection PyGlobalUndefined
     global group_flag, saved_number, group_name
     return_number = 0
@@ -39,7 +39,7 @@ def choose_chat(ch=9, saved=9):
     if (ch == 9) & (saved == 9):
         while True:
             try:
-                group_flag = input("park-0, enb-1, abai-2, tbo-3: ")
+                group_flag = input("park-0, enb-1, turan-2, tbo-3: ")
                 saved_number = input("0 - not saved numbers mes, 1 saved: ")
                 group_flag, saved_number = int(group_flag), int(saved_number)
                 if group_flag in [0, 1, 2, 3] and saved_number in [0, 1]:
@@ -68,6 +68,9 @@ def archive_open():
             select('//button[@class="{}"]', archive, "archive opened", clicked=1)
             break
         except:
+            # exc_type, exc_obj, exc_tb = sys.exc_info()
+            # fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            # print(exc_type, fname, exc_tb.tb_lineno, e)
             time.sleep(1)
 
 
@@ -121,6 +124,19 @@ def select_messages():
         print(exc_type, fname, exc_tb.tb_lineno, e)
 
 
+def find_select(time_begin=0):
+    if find_mes_in_chat() != 0:
+        b_time = time.time() - time_begin
+        text_arr = select_messages()
+        if time_begin != 0:
+            return text_arr, b_time
+        else:
+            return text_arr
+    else:
+        print('Нет сообщений для выделения')
+        return 0, time.time() - time_begin
+
+
 def downloadr_or_delete(text_arr):
     if saved_number == 1:
         name_lines = write_names_to_txt()
@@ -129,24 +145,24 @@ def downloadr_or_delete(text_arr):
             select('//span[@data-testid="{}"]', class_name='download', clicked=1)
             while True:
                 try:
-                    time.sleep(2)
                     return start_renaming(group_name, start_folder_work(group_name), name_lines, text_arr)
-                except Exception as e:
-                    exc_type, exc_obj, exc_tb = sys.exc_info()
-                    fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                    print(exc_type, fname, exc_tb.tb_lineno, e)
-        except:
-            select('//button[@aria-label="{}"]', class_name='Отменить пересылку', clicked=1)
+                except:
+                    time.sleep(2)
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(exc_type, fname, exc_tb.tb_lineno, e)
 
 
     else:
-        try:
-            select('//span[@data-testid="{}"]', class_name='delete', clicked=1)
-            time.sleep(1.2)
-            select('//div[@data-testid="{}"]', class_name='popup-controls-delete', clicked=1)
-        except:
-            select('//button[@aria-label="{}"]', class_name='Отменить пересылку', clicked=1)
+        # try:
+        select('//span[@data-testid="{}"]', class_name='delete', clicked=1)
+        time.sleep(1.2)
+        select('//div[@data-testid="{}"]', class_name='popup-controls-delete', clicked=1)
+        # except:
+        #     select('//button[@aria-label="{}"]', class_name='Отменить пересылку', clicked=1)
         return 0
+
 
 def main(g=None, f=None):
     create_driver()
@@ -166,20 +182,20 @@ def main(g=None, f=None):
                     break
                 time_begin = time.time()
                 select_chat()
-                if find_mes_in_chat() != 0:
-                    text_arr = select_messages()
+                text_arr, b_time = find_select(time_begin)
+                print('time for 1 role: ', time.time() - time_begin, ' - ', b_time, ' = ',
+                      time.time() - time_begin - b_time-3)
+                if type(text_arr) != "<class 'numpy.ndarray'>":
+                    input()
+                    while True:
+                        if downloadr_or_delete(text_arr) == 0:
+                            break
+                        else:
+                            # вниз + find_mes + если соообщений нет
+                            text_arr = find_select()
                 else:
-                    print('Нет сообщений для выделения')
-                print('time for 1 role: ', time.time() - time_begin)
-                # input()
-                while True:
-                    if downloadr_or_delete(text_arr) == 0:
-                        break
-                    else:
-                        select('//div[@class="{}"]', '_28_W0', clicked=1)
-                        select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1)
-                        # вниз + find_mes + если соообщений нет
-                        text_arr = select_messages()
+                    print('Нет сообщений для скачивания')
+                    select('//button[@aria-label="{}"]', class_name='Отменить пересылку', clicked=1)
 
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
