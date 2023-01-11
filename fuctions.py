@@ -33,9 +33,10 @@ def split_text_date(td):
             except:
                 text = ''
         if text:
-            print(end='.')
-            s = date + '-' + text + '\n'
-            return s
+            if text[0:2] != '+7':
+                print(end='.')
+                s = date + '-' + text + '\n'
+                return s
     except:
         pass
 

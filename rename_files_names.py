@@ -43,7 +43,14 @@ def rename_files(contact_index, changed_files_name, name_lines, text_arr):
         ex_photo = this_photo
         this_photo = int(temp_line[1].replace('_', ''))
         if this_photo > ex_photo:
-            second_folder += 'l'
+            temp_folder_name = second_folder.split(r'\\')[-1]
+            temp_day = temp_folder_name.split('-')[0]
+            if temp_day == '1':
+                # не тестировалось
+                temp_mounth = temp_folder_name.split('-')[1]
+                second_folder = second_folder.replace(temp_day + '-' + temp_mounth, '31-' + str(int(temp_mounth) - 1))
+            else:
+                second_folder = second_folder.replace(temp_day, str(int(temp_day) - 1))
             os.mkdir(second_folder)
         while True:
             file_type = '.' + str(changed_files_name[i][-4:].replace('.', ''))

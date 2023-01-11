@@ -131,8 +131,10 @@ def downloadr_or_delete(text_arr):
                 try:
                     time.sleep(2)
                     return start_renaming(group_name, start_folder_work(group_name), name_lines, text_arr)
-                except:
-                    pass
+                except Exception as e:
+                    exc_type, exc_obj, exc_tb = sys.exc_info()
+                    fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                    print(exc_type, fname, exc_tb.tb_lineno, e)
         except:
             select('//button[@aria-label="{}"]', class_name='Отменить пересылку', clicked=1)
 
