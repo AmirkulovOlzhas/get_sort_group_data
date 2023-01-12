@@ -34,14 +34,3 @@
 # for i in range(len(alb)):
 #     a.append(f'{alb[i]}11:{alb[i]}40')
 # print(a)
-
-import msvcrt, time
-i = 0
-while True:
-    i = i + 1
-    if msvcrt.kbhit():
-        print(msvcrt.getwche())
-        if msvcrt.getwche() == 'a':
-            break
-    time.sleep(0.1)
-print(i)

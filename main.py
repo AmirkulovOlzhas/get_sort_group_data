@@ -68,9 +68,6 @@ def archive_open():
             select('//button[@class="{}"]', archive, "archive opened", clicked=1)
             break
         except:
-            # exc_type, exc_obj, exc_tb = sys.exc_info()
-            # fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            # print(exc_type, fname, exc_tb.tb_lineno, e)
             time.sleep(1)
 
 
@@ -101,9 +98,12 @@ def select_messages():
         # sorted_messages[i].text можно получить время отдельно
         txt_list = sorted_text_list()
         print('sm, smt, tm: ', len(sorted_messages), ' - ', len(sorted_messages_text), ' - ', len(txt_list))
+        check_result = []
         for text in txt_list:
+            check = 0
             for j_text in sorted_messages_text:
                 if text == str(j_text):
+                    check = 1
                     index = np.where(sorted_messages_text == text)[0][0]
                     try:
                         driver.execute_script("arguments[0].click();",
@@ -117,6 +117,11 @@ def select_messages():
                     sorted_messages_text = np.delete(sorted_messages_text, index)
                     sorted_messages = np.delete(sorted_messages, index)
                     break
+            if check == 0:
+                check_result.append(text)
+            if check_result:
+                print(check_result, '\n-------------------------\n', sorted_messages_text)
+        # print(len(check_result), ' - ', len(sorted_messages_text))
         return text_arr
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -137,30 +142,20 @@ def find_select(time_begin=0):
         return 0, time.time() - time_begin
 
 
-def downloadr_or_delete(text_arr):
+def download_or_delete(text_arr):
     if saved_number == 1:
         name_lines = write_names_to_txt()
         print("----------------------names saved----------------------")
-        try:
-            select('//span[@data-testid="{}"]', class_name='download', clicked=1)
-            while True:
-                try:
-                    return start_renaming(group_name, start_folder_work(group_name), name_lines, text_arr)
-                except:
-                    time.sleep(2)
-        except Exception as e:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print(exc_type, fname, exc_tb.tb_lineno, e)
-
-
+        select('//span[@data-testid="{}"]', class_name='download', clicked=1)
+        while True:
+            try:
+                return start_renaming(group_name, start_folder_work(group_name), name_lines, text_arr)
+            except:
+                time.sleep(2)
     else:
-        # try:
         select('//span[@data-testid="{}"]', class_name='delete', clicked=1)
         time.sleep(1.2)
         select('//div[@data-testid="{}"]', class_name='popup-controls-delete', clicked=1)
-        # except:
-        #     select('//button[@aria-label="{}"]', class_name='Отменить пересылку', clicked=1)
         return 0
 
 
@@ -184,11 +179,11 @@ def main(g=None, f=None):
                 select_chat()
                 text_arr, b_time = find_select(time_begin)
                 print('time for 1 role: ', time.time() - time_begin, ' - ', b_time, ' = ',
-                      time.time() - time_begin - b_time-3)
+                      time.time() - time_begin - b_time - 3)
                 if type(text_arr) != "<class 'numpy.ndarray'>":
                     input()
                     while True:
-                        if downloadr_or_delete(text_arr) == 0:
+                        if download_or_delete(text_arr) == 0:
                             break
                         else:
                             # вниз + find_mes + если соообщений нет

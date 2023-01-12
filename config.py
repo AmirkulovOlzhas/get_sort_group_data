@@ -8,7 +8,7 @@ argument1 = r'--user-data-dir=C:\Users\OFFICE\AppData\Local\Google\Chrome\User D
 argument2 = '--profile-directory=Default'
 
 # not for select
-not_select_messages = ['_2JmX4',  '_36Yw- _18q-J', '_2JmX4', '_2BJ4G', '_3mSPV', '_25eIs', 'NQl4z']
+not_select_messages = ['_2JmX4',  '_36Yw- _18q-J', '_2BJ4G', '_3mSPV', '_25eIs', 'NQl4z']
 #not_select_messages olzh = ['_36Yw-',   ]
 
 # фото
@@ -58,7 +58,8 @@ list_en = {"Азиза": "77024280471",
 
 list_tr = {"Маржан": "77056969603",
            "Бегара": "77078735909",
-           "Суюндик": "77716607163"
+           "Суюндик": "77716607163",
+           "Еркін": "77785497042"
            }
 
 list_tbo = {"Куат": "77786460481",

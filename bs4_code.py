@@ -5,19 +5,21 @@ import warnings
 from bs4 import BeautifulSoup as bs
 from config import chat, contacts_dict, chat, not_select_messages, message_class
 import numpy as np
+
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
 def number_list_append(div_mes, flag, messages_list, sum, saved_number, key=0):
     if number_check(div_mes, flag) == saved_number:
+        text = ''.join(div_mes.text.splitlines())
         sum += 1
-        if (key != 0) & (div_mes.text.count(':') < 3):
-            if div_mes.text[-5:] == div_mes.text[-10:-5]:
-                messages_list = np.append(messages_list, div_mes.text[:-5])
+        if (key != 0) & (text.count(':') < 3):
+            if text[-5:] == text[-10:-5]:
+                messages_list = np.append(messages_list, text[:-5])
             else:
-                messages_list = np.append(messages_list, div_mes.text)
+                messages_list = np.append(messages_list, text)
         else:
-            messages_list = np.append(messages_list, div_mes.text)
+            messages_list = np.append(messages_list, text)
     return messages_list, sum
 
 
@@ -31,32 +33,38 @@ def number_check(div_mes, flag):
 
 
 def req_url(url, key=0, flag=0, saved_number=0):
-    # np
-    messages = np.array(bs(url, 'lxml').find('div', class_=chat).find_all('div'))
-    if key == 0:
-        temp = len(messages)
-        messages.clear()
-        return temp
-    else:
-        messages_list, sum = np.array([]), 0
-        for div_mes in messages:
-            if div_mes.get('class'):
-                classes = np.array([])
-                for element in div_mes.find_all(class_=True):
-                    classes = np.append(classes, element["class"])
-                classes = classes[classes != None]
-                # проверка сохранен ли контакт, сохранение сообщений которые можно выделить
-                if saved_number == 1:
-                    if not any(wrong_class in classes for wrong_class in not_select_messages):
-                        if '_1-lf9' in classes:
-                            messages_list, sum = number_list_append(div_mes, flag, messages_list, sum=sum,
-                                                                    saved_number=saved_number, key=key)
-                else:
-                    i_class = " ".join(map(str, div_mes.get('class')))
-                    # if div_mes.text[0:2] == '+7':
-                    #     print(i_class, ' ', div_mes.text)
-                    if i_class[-6:] == message_class:
-                        messages_list, sum = number_list_append(
-                            div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
-        print('messages to select = {}'.format(sum))
-        return messages_list
+    # np послд изменения
+    try:
+        messages = bs(url, 'lxml').find('div', class_=chat).find_all('div')
+        if key == 0:
+            temp = len(messages)
+            messages = None
+            return temp
+        else:
+            messages_list, sum = np.array([]), 0
+            for div_mes in messages:
+                if div_mes.get('class'):
+                    classes = np.array([])
+                    for element in div_mes.find_all(class_=True):
+                        classes = np.append(classes, element["class"])
+                    classes = classes[classes != None]
+                    # проверка сохранен ли контакт, сохранение сообщений которые можно выделить
+                    if saved_number == 1:
+                        if not any(wrong_class in classes for wrong_class in not_select_messages):
+                            if '_1-lf9' in classes:
+                                messages_list, sum = number_list_append(div_mes, flag, messages_list, sum=sum,
+                                                                        saved_number=saved_number, key=key)
+                    else:
+                        if '_1-lf9' in classes and 'NQl4z' not in classes:
+                            # !!!!!
+                            if 'Абай' != div_mes.text[0:4]:
+                                messages_list, sum = number_list_append(
+                                    div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
+                    classes = None
+            messages = None
+            print('messages to select = {}'.format(sum))
+            return messages_list
+    except Exception as e:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print(exc_type, fname, exc_tb.tb_lineno, e)

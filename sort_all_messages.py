@@ -10,6 +10,7 @@ def take_name_data():
         if len(name) > 1:
             data = name[len(name) - 1]
             while ':' in data:
+                        #сообщение11:5311:530:2211:530:0911:53
                 if data[data.index(':') - 2] not in abc[:-2]:
                     data = data[data.index(':') + 3:]
                 else:
@@ -33,10 +34,10 @@ def check_data(nd):
                 if ':' not in line_1:
                     break
                 if line_1.index(':') != 2:
-                    line_1 = line_1[((i + 1) * 5) + 4:]
+                    line_1 = line_1[5 + 4:]
                     s += 1
                 else:
-                    line_1 = line_1[(i + 1) * 5:]
+                    line_1 = line_1[5:]
         line_count -= s
 
         if '+' in line[1]:
