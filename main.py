@@ -1,20 +1,18 @@
+import os
+import sys
 import time
-import sys, os
 
 import numpy as np
 import selenium.common.exceptions
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
-from fuctions import taking_sorted_messages, select, click, message_count, sorted_text_list, set_driver_by
-from bs4_code import req_url
-from sort_all_messages import write_names_to_txt
-from config import contact_list, archive, select_ico, argument1, argument2, chat
+from config import contact_list, archive, select_ico, argument1, argument2
 from folder_works import start_folder_work
+from fuctions import taking_sorted_messages, select, click, message_count, sorted_text_list, set_driver_by
 from rename_files_names import start_renaming
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from sort_all_messages import write_names_to_txt
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 # noinspection PyGlobalUndefined
@@ -65,18 +63,16 @@ def archive_open():
     print("Подождите")
     while True:  # waiting for wa
         try:
-            select('//button[@class="{}"]', archive, "archive opened", clicked=1)
+            select('//button[@class="{}"]', archive, clicked=1)
             break
         except:
             time.sleep(1)
 
 
 def select_chat():
-    select('//span[@title="{}"]', contact_list[group_flag],
-           "contact opened", clicked=1)
+    select('//span[@title="{}"]', contact_list[group_flag], clicked=1)
     time.sleep(1)
-    select('//span[@title="{}"]', contact_list[group_flag],
-           "contact opened", clicked=1)
+    select('//span[@title="{}"]', contact_list[group_flag], clicked=1)
     time.sleep(2)
 
 
@@ -94,7 +90,7 @@ def find_mes_in_chat():
 
 def select_messages():
     try:
-        sorted_messages, sorted_messages_text, text_arr = taking_sorted_messages(saved_number=saved_number)
+        sorted_messages, sorted_messages_text, text_arr = taking_sorted_messages(saved_number=saved_number, contact=group_flag)
         # sorted_messages[i].text можно получить время отдельно
         txt_list = sorted_text_list()
         print('sm, smt, tm: ', len(sorted_messages), ' - ', len(sorted_messages_text), ' - ', len(txt_list))
@@ -102,9 +98,11 @@ def select_messages():
         for text in txt_list:
             check = 0
             for j_text in sorted_messages_text:
-                if text == str(j_text):
+                # if text == str(j_text):
+                if all(element in text for element in j_text):
                     check = 1
-                    index = np.where(sorted_messages_text == text)[0][0]
+                    # index = np.where(sorted_messages_text == j_text)[0][0]
+                    index = sorted_messages_text.index(j_text)
                     try:
                         driver.execute_script("arguments[0].click();",
                                               sorted_messages.item(index).find_element(By.CLASS_NAME, select_ico))
@@ -114,14 +112,14 @@ def select_messages():
                             action.move_to_element(sorted_messages.item(index)).perform()
                             driver.execute_script("arguments[0].click();",
                                                   sorted_messages.item(index).find_element(By.CLASS_NAME, select_ico))
-                    sorted_messages_text = np.delete(sorted_messages_text, index)
+                    # sorted_messages_text = np.delete(sorted_messages_text, index)
+                    sorted_messages_text.remove(j_text)
                     sorted_messages = np.delete(sorted_messages, index)
                     break
             if check == 0:
                 check_result.append(text)
-            if check_result:
-                print(check_result, '\n-------------------------\n', sorted_messages_text)
-        # print(len(check_result), ' - ', len(sorted_messages_text))
+        if check_result:
+            print(check_result, '\n-------------------------\n', sorted_messages_text)
         return text_arr
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -177,7 +175,7 @@ def main(g=None, f=None):
                     break
                 time_begin = time.time()
                 select_chat()
-                text_arr, b_time = find_select(time_begin)
+                text_arr, b_time = find_select(int(time_begin))
                 print('time for 1 role: ', time.time() - time_begin, ' - ', b_time, ' = ',
                       time.time() - time_begin - b_time - 3)
                 if type(text_arr) != "<class 'numpy.ndarray'>":

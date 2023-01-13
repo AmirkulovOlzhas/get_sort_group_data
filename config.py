@@ -1,5 +1,6 @@
-archive = "_2O4d9" #"_3hD9c"
-select_ico = "_30oSb" #"_3BK98"
+archive = "_2O4d9"  # "_3hD9c"  # "_2O4d9"
+# класс галочки выбора фото
+select_ico = "_30oSb"  # "_3BK98"  # "_30oSb"
 # chat = "n5hs2j7m oq31bsqd gx1rr48f qh5tioqs"
 chat = "n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj"
 
@@ -7,38 +8,10 @@ chat = "n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj"
 argument1 = r'--user-data-dir=C:\Users\OFFICE\AppData\Local\Google\Chrome\User Data\Default'
 argument2 = '--profile-directory=Default'
 
-# not for select
-not_select_messages = ['_2JmX4',  '_36Yw- _18q-J', '_2BJ4G', '_3mSPV', '_25eIs', 'NQl4z']
-#not_select_messages olzh = ['_36Yw-',   ]
+# классы сообщений не для скачивания (текст, карта, стикеры итд)
+not_select_messages = ['_2JmX4', '_36Yw-', '_36Yw- _18q-J', '_2BJ4G', '_3mSPV', '_25eIs', 'NQl4z']
 
-# фото
-# коллаж
-# сообщения
-# еще что то
 message_class = '_7GVCb'
-
-# message_class_list = (
-#     '_1-lf9 _1pC3e _18q-J',
-#     '_1-lf9 _1pC3e',
-#     '_1-lf9 _1uBlg',
-#     '_1-lf9 _18q-J _1uBlg',
-#     '_1-FMR j-md4 message-in focusable-list-item _7GVCb',
-#     '_1-FMR message-in focusable-list-item _7GVCb',
-#     '_1pC3e')
-
-# _1-lf9 _1uBlg , _1-lf9 _1pC3e, _1-lf9 _18q-J _1uBlg, _1-lf9 _1pC3e
-message_class_list_old = (
-    '_1-FMR _3Zpy8 message-in focusable-list-item',
-    '_1-FMR _3Zpy8 j-md4 message-in focusable-list-item',
-    '_1-FMR j-md4 message-in focusable-list-item',
-    '_1-FMR message-in focusable-list-item',
-)
-message_class_list_with_text = ('1-FMR message-in focusable-list-item',
-                                '_1-FMR _3Zpy8 message-in focusable-list-item')
-# _2jGOb copyable-text - сообщение
-# p357zi0d ktfrpxia nu7pwgvd fhf7t426 sap93d0t r15c9g6i   -  удаленное
-# contact
-# msg_cont_class = ['_1-lf9 _1pC3e', ' _1-lf9 _1pC3e _18q-J', '_1-lf9 _18q-J _1uBlg']
 contact_list = ["Содержание парков", "Еңбекші ішкі орам", "ТҰРАН САНИТАРЛЫҚ ТАЗАЛЫҚ", "Нурсат ТБО"]
 
 list_p = {"alatau": "77476001065",

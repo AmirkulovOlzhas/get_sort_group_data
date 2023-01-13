@@ -19,10 +19,9 @@ def rename_file(this_line):
         else:
             temp_line_name = temp_line_name
         os.rename(mypath + '\\' + this_line, mypath + '\\' + temp_line_name)
-    except Exception as e:
-        exc_type, exc_obj, exc_tb = sys.exc_info()
-        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-        print(exc_type, fname, exc_tb.tb_lineno, e)
+    except:
+        pass
+
 
 
 def convert_all_files(afn):
@@ -91,8 +90,14 @@ def start_renaming(a, folder_dir, name_lines, text_arr):
             print(f'{a} - {b}')
 
         print('Не все фото загрузились')
-        input('Press Enter to redownload')
-        return 1
+        while True:
+            a = input('Press Enter to redownload')
+            if a == 'Enter':
+                return 1
+            elif a == 'stop':
+                return 0
+
+
     else:
         convert_all_files(all_files_name)
         changed_files_name = get_files_name()
