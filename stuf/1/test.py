@@ -1,5 +1,5 @@
 import numpy as np
-
+import re
 
 def dict_test():
     abc = "0123456789+:"
@@ -68,4 +68,30 @@ def array_test():
     y = np.asarray(y)
     print(y)
 
-array_test()
+def re_func():
+    k = [['aaa', '11:2211:2211:22'],
+         ['aab', '11:2211:2211:2'],
+         ['abb', '11:2211:211:2'],
+         ['ab1b', '11:221:2211:2'],
+         ['bb1b', '11:21:2211:2'],
+         ['сообщение', '11:5311:530:2211:530:0911:5311:53']]
+
+    lines = []
+    for line in k:
+        line_1 = re.findall(r'\d{2}\:\d{2}', line[1])
+
+        if '+' in line[1]:
+            line_count = 3 + int(line[1][line[1].index('+') + 1:])
+        else:
+            line_count = len(line_1)
+            if line_count > 4:
+                print('+')
+                line_count = 4
+        print(f'{line[0]} - {line_1} - {line_count}')
+        while line_count > 0:
+            lines.append(line[0] + ' ' + line_1[0].replace(':', '_'))
+            line_count -= 1
+    return lines
+
+
+print(re_func())

@@ -19,10 +19,10 @@ def create_folder(ct):
 
     path = os.path.join(parent_dir, folder_name)
     folder_number = 0
-    time.sleep(3)
     while True:
         try:
             os.mkdir(path)
+            time.sleep(3)
             break
         except:
             folder_number += 1

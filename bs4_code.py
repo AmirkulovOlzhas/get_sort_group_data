@@ -72,9 +72,6 @@ def req_url(url, key=0, flag=0, saved_number=0):
                             else:
                                 messages_list, sum = number_list_append(
                                     div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
-                            # if div_mes.text[0:4] not in ['Абай', 'Енб-']:
-                            #     messages_list, sum = number_list_append(
-                            #         div_mes, flag, messages_list, sum=sum, saved_number=saved_number, key=key)
                     classes = None
             messages = None
             print('messages to select = {}'.format(sum))

@@ -12,7 +12,7 @@ argument2 = '--profile-directory=Default'
 not_select_messages = ['_2JmX4', '_36Yw-', '_36Yw- _18q-J', '_2BJ4G', '_3mSPV', '_25eIs', 'NQl4z']
 
 message_class = '_7GVCb'
-contact_list = ["Содержание парков", "Еңбекші ішкі орам", "ТҰРАН САНИТАРЛЫҚ ТАЗАЛЫҚ", "Нурсат ТБО"]
+contact_list = ["Содержание парков", "Еңбекші ішкі орам", "ТҰРАН ТАЗАЛЫҚ ДЕ СУППОРТ", "Нурсат ТБО"]
 
 list_p = {"alatau": "77476001065",
           "kasiret": "77750261982",

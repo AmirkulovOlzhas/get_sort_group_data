@@ -17,8 +17,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 # noinspection PyGlobalUndefined
 def create_driver():
-    options = webdriver.ChromeOptions();
-    options.add_argument(argument1);
+    options = webdriver.ChromeOptions()
+    options.add_argument(argument1)
     options.add_argument(argument2)
     global driver, action
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
@@ -91,16 +91,11 @@ def find_mes_in_chat():
 def select_messages():
     try:
         sorted_messages, sorted_messages_text, text_arr = taking_sorted_messages(saved_number=saved_number, contact=group_flag)
-        # sorted_messages[i].text можно получить время отдельно
         txt_list = sorted_text_list()
         print('sm, smt, tm: ', len(sorted_messages), ' - ', len(sorted_messages_text), ' - ', len(txt_list))
-        check_result = []
         for text in txt_list:
-            check = 0
             for j_text in sorted_messages_text:
-                # if text == str(j_text):
                 if all(element in text for element in j_text):
-                    check = 1
                     # index = np.where(sorted_messages_text == j_text)[0][0]
                     index = sorted_messages_text.index(j_text)
                     try:
@@ -116,10 +111,6 @@ def select_messages():
                     sorted_messages_text.remove(j_text)
                     sorted_messages = np.delete(sorted_messages, index)
                     break
-            if check == 0:
-                check_result.append(text)
-        if check_result:
-            print(check_result, '\n-------------------------\n', sorted_messages_text)
         return text_arr
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -158,8 +149,10 @@ def download_or_delete(text_arr):
 
 
 def main(g=None, f=None):
+    # открывает хром
     create_driver()
     archive_open()
+    # цикл действий
     while True:
         try:
             input_text = input('wirte "stop" to stop the app: ')

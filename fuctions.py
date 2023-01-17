@@ -75,7 +75,7 @@ def taking_sorted_messages(saved_number=0, contact=0):
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                 print(exc_type, fname, exc_tb.tb_lineno, e)
-        if 'Сообщения защищены' in smt[0][0]:  # smt[0]
+        if 'Сообщения защищены' in smt[0][0]:
             sm = np.delete(sm, 0)
             smt.remove(smt[0])
         messages = messages_classes = None
@@ -93,7 +93,7 @@ def taking_sorted_messages(saved_number=0, contact=0):
                 elif contact == 2:
                     temp_value = 'Абай'
                 if temp_value:
-                    if ''.join(m)[0:4] not in ['Абай', 'Енб-']:
+                    if ''.join(m)[0:4] != temp_value:
                         # print('-', '---'.join(mes.text.splitlines()))
                         smt.append(m)  # temp
                         sm = np.append(sm, mes)

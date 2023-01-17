@@ -1,4 +1,5 @@
 import time
+import re
 
 
 def take_name_data():
@@ -10,7 +11,7 @@ def take_name_data():
         if len(name) > 1:
             data = name[len(name) - 1]
             while ':' in data:
-                        #сообщение11:5311:530:2211:530:0911:53
+                # сообщение11:5311:530:2211:530:0911:53
                 if data[data.index(':') - 2] not in abc[:-2]:
                     data = data[data.index(':') + 3:]
                 else:
@@ -22,36 +23,23 @@ def take_name_data():
 
 def check_data(nd):
     lines = []
+    sum = 0
     for line in nd:
-        line_count = line[1].count(":")
-        s = 0
-        if line_count > 1:
-            if '+' in line[1]:
-                line_1 = line[1][:line[1].index('+')]
-            else:
-                line_1 = line[1]
-            for i in range(line_count):
-                if ':' not in line_1:
-                    break
-                if line_1.index(':') != 2:
-                    line_1 = line_1[5 + 4:]
-                    s += 1
-                else:
-                    line_1 = line_1[5:]
-        line_count -= s
+        line_1 = re.findall(r'\d{2}\:\d{2}', line[1])
 
         if '+' in line[1]:
-            line_count += int(line[1][line[1].index('+') + 1:])
-
+            line_count = 3 + int(line[1][line[1].index('+') + 1:])
+        else:
+            line_count = len(line_1)
+            if line_count > 4:
+                print('+')
+                line_count = 4
+        print(f'{line[0]} - {line_1} - {line_count}')
+        sum += line_count
         while line_count > 0:
-            if line[1]:
-                dot_index = line[1].index(':')
-                line[1] = line[1][dot_index - 2:dot_index + 3]
-
-                if ':' in line[1]:
-                    temp = line[0] + ' ' + line[1].replace(":", "_")
-                    lines.append(temp)
+            lines.append([line[0], line_1[0].replace(':', '_')])
             line_count -= 1
+    print(f'количество имён фотографий = {sum}')
     return lines
 
 
