@@ -24,12 +24,12 @@ def create_driver():
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver.get("https://web.whatsapp.com")
     action = webdriver.ActionChains(driver)
-    # send driver&By to fuctions.py
+    # send driver&By to functions.py
     set_driver_by(driver, By)
 
 
 def choose_chat(ch=9, saved=9):
-    group_dict = {0: 'park', 1: 'enb', 2: 'turan', 3: 'tbo'}
+    group_dict = {0: 'park', 1: 'enb', 2: 'turan', 3: 'tbo', 4: 'karatau'}
     # noinspection PyGlobalUndefined
     global group_flag, saved_number, group_name
     return_number = 0
@@ -40,7 +40,7 @@ def choose_chat(ch=9, saved=9):
                 group_flag = input("park-0, enb-1, turan-2, tbo-3: ")
                 saved_number = input("0 - not saved numbers mes, 1 saved: ")
                 group_flag, saved_number = int(group_flag), int(saved_number)
-                if group_flag in [0, 1, 2, 3] and saved_number in [0, 1]:
+                if group_flag in [0, 1, 2, 3, 4] and saved_number in [0, 1]:
                     group_name = group_dict[group_flag]
                     print("----------------------{}----------------------".format(group_name))
                     break
@@ -90,27 +90,37 @@ def find_mes_in_chat():
 
 def select_messages():
     try:
-        sorted_messages, sorted_messages_text, text_arr = taking_sorted_messages(saved_number=saved_number, contact=group_flag)
-        txt_list = sorted_text_list()
-        print('sm, smt, tm: ', len(sorted_messages), ' - ', len(sorted_messages_text), ' - ', len(txt_list))
-        for text in txt_list:
-            for j_text in sorted_messages_text:
-                if all(element in text for element in j_text):
-                    # index = np.where(sorted_messages_text == j_text)[0][0]
-                    index = sorted_messages_text.index(j_text)
-                    try:
-                        driver.execute_script("arguments[0].click();",
-                                              sorted_messages.item(index).find_element(By.CLASS_NAME, select_ico))
+        sorted_messages, sorted_messages_text, text_arr = taking_sorted_messages(saved_number=saved_number,
+                                                                                 contact=group_flag)
+        # txt_list = sorted_text_list()
+        # print('sm, smt, tm: ', len(sorted_messages), ' - ', len(sorted_messages_text), ' - ', len(txt_list))
+        for m in sorted_messages:
+            try:
+                driver.execute_script("arguments[0].click();",
+                                      m.find_element(By.CLASS_NAME, select_ico))
 
-                    except selenium.common.exceptions.NoSuchElementException:
-                        if text.count(':') > 2:
-                            action.move_to_element(sorted_messages.item(index)).perform()
-                            driver.execute_script("arguments[0].click();",
-                                                  sorted_messages.item(index).find_element(By.CLASS_NAME, select_ico))
-                    # sorted_messages_text = np.delete(sorted_messages_text, index)
-                    sorted_messages_text.remove(j_text)
-                    sorted_messages = np.delete(sorted_messages, index)
-                    break
+            except selenium.common.exceptions.NoSuchElementException:
+                action.move_to_element(m).perform()
+                driver.execute_script("arguments[0].click();",
+                                      m.find_element(By.CLASS_NAME, select_ico))
+        # for text in txt_list:
+        # for j_text in sorted_messages_text:
+        #     # if all(element in text for element in j_text):
+        #         # index = np.where(sorted_messages_text == j_text)[0][0]
+        #     index = sorted_messages_text.index(j_text)
+        #     try:
+        #         driver.execute_script("arguments[0].click();",
+        #                               sorted_messages.item(index).find_element(By.CLASS_NAME, select_ico))
+        #
+        #     except selenium.common.exceptions.NoSuchElementException:
+        #         if ''.join(j_text).count(':') > 2:
+        #             action.move_to_element(sorted_messages.item(index)).perform()
+        #             driver.execute_script("arguments[0].click();",
+        #                                   sorted_messages.item(index).find_element(By.CLASS_NAME, select_ico))
+        #         # sorted_messages_text = np.delete(sorted_messages_text, index)
+        #         # sorted_messages_text.remove(j_text)
+        #         # sorted_messages = np.delete(sorted_messages, index)
+                break
         return text_arr
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -127,7 +137,6 @@ def find_select(time_begin=0):
         else:
             return text_arr
     else:
-        print('Нет сообщений для выделения')
         return 0, time.time() - time_begin
 
 
@@ -148,7 +157,7 @@ def download_or_delete(text_arr):
         return 0
 
 
-def main(g=None, f=None):
+def main():
     # открывает хром
     create_driver()
     archive_open()
@@ -156,7 +165,7 @@ def main(g=None, f=None):
     while True:
         try:
             input_text = input('wirte "stop" to stop the app: ')
-            if input_text in ['0', '1', '2', '3']:
+            if input_text in ['0', '1', '2', '3', '4']:
                 control = choose_chat(int(input_text), 1)
             else:
                 control = choose_chat()
@@ -171,7 +180,7 @@ def main(g=None, f=None):
                 text_arr, b_time = find_select(int(time_begin))
                 print('time for 1 role: ', time.time() - time_begin, ' - ', b_time, ' = ',
                       time.time() - time_begin - b_time - 3)
-                if type(text_arr) != "<class 'numpy.ndarray'>":
+                if type(text_arr) != "<class 'int'>":
                     input()
                     while True:
                         if download_or_delete(text_arr) == 0:

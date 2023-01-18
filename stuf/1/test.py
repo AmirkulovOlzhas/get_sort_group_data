@@ -1,6 +1,7 @@
 import numpy as np
 import re
 
+
 def dict_test():
     abc = "0123456789+:"
     word = 'abc**Пересланное сообщение11:5311:530:2211:55'
@@ -63,10 +64,11 @@ def dict_test():
 def array_test():
     y = []
     for i in range(10):
-        x = np.array([i, i+1])
+        x = np.array([i, i + 1])
         y.append(x)
     y = np.asarray(y)
     print(y)
+
 
 def re_func():
     k = [['aaa', '11:2211:2211:22'],

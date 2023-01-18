@@ -19,8 +19,10 @@ def rename_file(this_line):
         else:
             temp_line_name = temp_line_name
         os.rename(mypath + '\\' + this_line, mypath + '\\' + temp_line_name)
-    except:
-        pass
+    except Exception as e:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print(exc_type, fname, exc_tb.tb_lineno, e)
 
 
 def convert_all_files(afn):
@@ -67,19 +69,19 @@ def rename_files(contact_index, changed_files_name, name_lines, text_arr):
             last_folder = create_new_folder(last_folder)
         while True:
             file_type = '.' + str(changed_files_name[i][-4:].replace('.', ''))
-            if os.path.exists(last_folder + '\\' + name_lines[i][
-                1] + f' {name_lines[i][0][contact_index:]} - {str(photo_number) + file_type}'):
+            if os.path.exists(last_folder + '\\' + name_lines[i][1]
+                              + f' {name_lines[i][0][contact_index:]} - {str(photo_number) + file_type}'):
                 photo_number += 1
             else:
-                shutil.move(mypath + '\\' + changed_files_name[i], last_folder + '\\' + name_lines[i][
-                    1] + f' {name_lines[i][0][contact_index:]} - {str(photo_number) + file_type}')
+                shutil.move(mypath + '\\' + changed_files_name[i], last_folder + '\\' + name_lines[i][1]
+                            + f' {name_lines[i][0][contact_index:]} - {str(photo_number) + file_type}')
                 break
     if contact_index != 0:
         copy_address_text(text_arr)
 
 
 def start_renaming(a, folder_dir, name_lines, text_arr):
-    contact_index = {'park': 0, 'turan': 5, 'enb': 4, 'tbo': 4}
+    contact_index = {'park': 0, 'turan': 5, 'enb': 4, 'tbo': 4, 'karatau': 8}
 
     # noinspection PyGlobalUndefined
     global mypath

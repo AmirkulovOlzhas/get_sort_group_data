@@ -13,7 +13,7 @@ ext_dir = ''
 
 
 def create_folder(ct):
-    contact_dict = {'park': 'P', 'enb': '-', 'turan': '', 'tbo': 'T'}
+    contact_dict = {'park': 'P', 'enb': '-', 'turan': '', 'tbo': 'T', 'karatau': 'K'}
     today = date.today()
     folder_name = str(today.day) + '-' + str(today.month) + '-' + str(today.year) + contact_dict[ct]
 

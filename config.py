@@ -1,6 +1,6 @@
-archive = "_2O4d9"  # "_3hD9c"  # "_2O4d9"
+archive = "_2O4d9"  # "_3hD9c"
 # класс галочки выбора фото
-select_ico = "_30oSb"  # "_3BK98"  # "_30oSb"
+select_ico = "_30oSb"  # "_3BK98"
 # chat = "n5hs2j7m oq31bsqd gx1rr48f qh5tioqs"
 chat = "n5hs2j7m oq31bsqd lqec2n0o eu5j4lnj"
 
@@ -12,7 +12,10 @@ argument2 = '--profile-directory=Default'
 not_select_messages = ['_2JmX4', '_36Yw-', '_36Yw- _18q-J', '_2BJ4G', '_3mSPV', '_25eIs', 'NQl4z']
 
 message_class = '_7GVCb'
-contact_list = ["Содержание парков", "Еңбекші ішкі орам", "ТҰРАН ТАЗАЛЫҚ ДЕ СУППОРТ", "Нурсат ТБО"]
+contact_list = ["Содержание парков", "Еңбекші ішкі орам", "ТҰРАН ТАЗАЛЫҚ ДЕ СУППОРТ", "Нурсат ТБО",
+                "КАРАТАУ ЦЕНТР.УЛИЦЫ♻️"]
+
+contact_place = {1: 'Енб-', 2: 'Абай'}
 
 list_p = {"alatau": "77476001065",
           "kasiret": "77750261982",
@@ -45,4 +48,9 @@ list_tbo = {"Куат": "77786460481",
             "Бакыт": "77013946513"
             }
 
-contacts_dict = {0: list_p, 1: list_en, 2: list_tr, 3: list_tbo}
+list_karatau = {"Ержан": "77785091224",
+                "Сабыр": "77023322014",
+                "Сауле": "77012309055"
+                }
+
+contacts_dict = {0: list_p, 1: list_en, 2: list_tr, 3: list_tbo, 4: list_karatau}
