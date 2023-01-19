@@ -27,6 +27,7 @@ def create_folder(ct):
         except:
             folder_number += 1
             path += str(folder_number)
+            print(path)
     print('----------------------folder created----------------------')
     return path
 

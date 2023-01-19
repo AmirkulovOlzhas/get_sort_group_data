@@ -57,12 +57,18 @@ def print_lines(changed_files_name, name_lines):
         print('Не все фото загрузились')
 
 
-def rename_files(contact_index, changed_files_name, name_lines, text_arr):
+def rename_files(changed_files_name, name_lines, text_arr, group_number):
     last_folder = mypath
     this_photo, ex_photo = 9999, 0
     name_lines = name_lines[::-1]
+    n = 1
+    if group_number == 0:
+        n = 0
     # rename
     for i in range(len(name_lines)):
+        contact_name = name_lines[i][0]
+        if '-' in contact_name:
+            contact_name = contact_name.split('-')[n]
         photo_number = 1
         ex_photo, this_photo = this_photo, int(name_lines[i][1].replace('_', ''))
         if this_photo > ex_photo:
@@ -70,20 +76,16 @@ def rename_files(contact_index, changed_files_name, name_lines, text_arr):
         while True:
             file_type = '.' + str(changed_files_name[i][-4:].replace('.', ''))
             if os.path.exists(last_folder + '\\' + name_lines[i][1]
-                              + f' {name_lines[i][0][contact_index:]} - {str(photo_number) + file_type}'):
+                              + f' {contact_name} - {str(photo_number) + file_type}'):
                 photo_number += 1
             else:
                 shutil.move(mypath + '\\' + changed_files_name[i], last_folder + '\\' + name_lines[i][1]
-                            + f' {name_lines[i][0][contact_index:]} - {str(photo_number) + file_type}')
+                            + f' {contact_name} - {str(photo_number) + file_type}')
                 break
-    if contact_index != 0:
-        copy_address_text(text_arr)
+    copy_address_text(text_arr)
 
 
-def start_renaming(a, folder_dir, name_lines, text_arr):
-    contact_index = {'park': 0, 'turan': 5, 'enb': 4, 'tbo': 4, 'karatau': 8}
-
-    # noinspection PyGlobalUndefined
+def start_renaming(folder_dir, name_lines, text_arr, group_number):
     global mypath
     mypath = folder_dir
     print(mypath)
@@ -94,12 +96,12 @@ def start_renaming(a, folder_dir, name_lines, text_arr):
     if len(changed_files_name) != len(name_lines):
         print_lines(changed_files_name, name_lines)
         while True:
-            a = input('Press Enter to redownload')
-            if a == 'Enter':
+            temp = input('Press Enter to redownload')
+            if temp == 'Enter':
                 return 1
-            elif a == 'stop':
+            elif temp == 'stop':
                 return 0
     else:
         changed_files_name.sort(reverse=True)
-        rename_files(contact_index[a], changed_files_name, name_lines, text_arr)
+        rename_files(changed_files_name, name_lines, text_arr, group_number)
         return 0

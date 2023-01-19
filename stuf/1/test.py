@@ -96,4 +96,12 @@ def re_func():
     return lines
 
 
-print(re_func())
+def re_func(a):
+    b = re.findall(r'\_77\d{9}', a)
+    print(b)
+    print(type(b[-1]))
+    print(b[-1][1:])
+
+
+a = 'album-false_120363029944605916@g.us_AA6DAF357E8F58393A234AD720370594_77785497042@c.us-false_120363029944605916@g.us_C61C5517878245921104B2FEC18F4D60_77785497042@c.us-8'
+re_func(a)
