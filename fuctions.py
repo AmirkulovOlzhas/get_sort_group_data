@@ -51,6 +51,12 @@ def get_contact_info(m, contact):
     return contact_name, contact_number
 
 
+def mess_count():
+    return len(driver.find_element(
+        By.XPATH, '//div[@class="{}"]'.format(chat)). \
+                        find_elements(By.XPATH, '//div[@data-id]'))
+
+
 def taking_sorted_messages(saved_number=0, contact=0):
     try:
         a = time.time()
@@ -90,7 +96,7 @@ def taking_sorted_messages(saved_number=0, contact=0):
                     smt.append(m)
                     sm = np.append(sm, mes)
 
-        else:  # choose all
+        elif saved_number == 3:  # choose all photos
             messages_classes = np.array(driver.find_element(
                 By.XPATH, '//div[@class="{}"]'.format(chat)). \
                                         find_elements(By.XPATH, '//div[@data-id]//div[contains(@class, "_1-lf9")]'))
@@ -106,6 +112,14 @@ def taking_sorted_messages(saved_number=0, contact=0):
                     if contact_name is None:
                         contact_name = contact_number
                     text_arr = np.append(text_arr, split_text_date(contact_name, m))
+        else:  # choose all (text too)
+            for mes in messages:
+                m = mes.text.splitlines()
+                contact_name, contact_number = get_contact_info(mes, contact)
+                if contact_number:
+                    smt.append(m)
+                    sm = np.append(sm, mes)
+
 
         print('\n-------------------------------\ntime for tsm: ', time.time() - a,
               '\n-----------------------------------')
@@ -126,16 +140,15 @@ def select(xpath, class_name, clicked=0):
 def message_count():
     a, b = 99, 100
     c, i = 0, 0
-    page = None
     while True:
         try:
             pg.press('home')
             time.sleep(0.1)
             pg.scroll(7)
             pg.scroll(-2)
-            page = driver.page_source
+            #if mes[0].text[n] != 'Сообщение'
             if i % 5 == 0:
-                a, b = b, count_mes_in_chat(page)
+                a, b = b, mess_count()
                 print()
                 if a == b:
                     print(a)
@@ -149,4 +162,4 @@ def message_count():
 
         except:
             print(i)
-    return count_mes_in_chat(page)
+    return mess_count()

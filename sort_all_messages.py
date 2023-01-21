@@ -31,8 +31,9 @@ def check_data(name_data):
         else:
             line_count = len(line[1])
         sum += line_count
+        photo_date = re.findall(r'\d{2}\:\d{2}', ''.join(line[1]))[0]
         while line_count > 0:
-            file_names.append([line[0], line[1][0].replace(':', '_')])
+            file_names.append([line[0], photo_date.replace(':', '_')])
             line_count -= 1
     print(f'----------------------количество имён фотографий = {sum}----------------------')
     return file_names

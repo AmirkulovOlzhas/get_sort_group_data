@@ -39,7 +39,7 @@ def choose_chat(ch=9, saved=9):
                 group_flag = input("park-0, enb-1, turan-2, tbo-3: ")
                 saved_number = input("0 - not saved numbers mes, 1 saved: ")
                 group_flag, saved_number = int(group_flag), int(saved_number)
-                if group_flag in [0, 1, 2, 3, 4] and saved_number in [0, 1, 3]:
+                if group_flag in [0, 1, 2, 3, 4] and saved_number in [0, 1, 3, 2]:
                     group_name = group_dict[group_flag]
                     print("----------------------{}----------------------".format(group_name))
                     break
@@ -118,7 +118,7 @@ def find_select():
 
 
 def download_or_delete(text_arr, smt):
-    if saved_number:
+    if saved_number in [1, 3]:
         print("----------------------names saved----------------------")
         select('//span[@data-testid="{}"]', class_name='download', clicked=1)
         name_lines = write_names_to_txt(smt)
