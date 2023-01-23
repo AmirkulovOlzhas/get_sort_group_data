@@ -3,6 +3,7 @@ import time
 import patoolib
 from datetime import date
 from os import listdir
+from config import contact_dict
 
 global parent_dir
 global ext_dir
@@ -13,9 +14,8 @@ ext_dir = ''
 
 
 def create_folder(ct):
-    contact_dict = {'park': 'P', 'enb': '-', 'turan': '', 'tbo': 'T', 'karatau': 'K'}
     today = date.today()
-    folder_name = str(today.day) + '-' + str(today.month) + '-' + str(today.year) + contact_dict[ct]
+    folder_name = str(today.day) + '-' + str(today.month) + '-' + str(today.year) + contact_dict[ct] + '!'
 
     path = os.path.join(parent_dir, folder_name)
     folder_number = 0

@@ -28,8 +28,8 @@ while True:
     except:
         print('wrong')
 
-group_name = ["Парки", "Енбекшинский", "Абайский"]
-mypath = "D:\\Фото архив\\" + group_name[group_index]
+group_names = ["Парки", "Енбекшинский", "Абайский"]
+mypath = "D:\\Фото архив\\" + group_names[group_index]
 all_folders_name = [f for f in listdir(mypath) if isdir(join(mypath, f))]
 
 for folder in all_folders_name:

@@ -2,6 +2,7 @@ import os
 import sys
 import time
 
+import numpy as np
 import selenium.common.exceptions
 from config import contact_list, archive, select_ico, argument1, argument2
 from folder_works import start_folder_work
@@ -54,7 +55,6 @@ def choose_chat(ch=9, saved=9):
     else:
         group_flag = ch
         saved_number = saved
-        group_name = group_dict[group_flag]
         return return_number
 
 
@@ -92,15 +92,24 @@ def select_messages():
         sorted_messages, sorted_messages_text, text_arr = taking_sorted_messages(saved_number=saved_number,
                                                                                  contact=group_flag)
         print('sm, smt, tm: ', len(sorted_messages), ' - ', len(sorted_messages_text))
+        if 'Сообщения' in sorted_messages_text[0]:
+            print('1')
+            sorted_messages_text = sorted_messages_text[1:]
+            sorted_messages = np.delete(sorted_messages, 0)
+
+        print('sm, smt, tm: ', len(sorted_messages), ' - ', len(sorted_messages_text))
         for m in sorted_messages:
             try:
                 driver.execute_script("arguments[0].click();",
                                       m.find_element(By.CLASS_NAME, select_ico))
 
             except selenium.common.exceptions.NoSuchElementException:
-                action.move_to_element(m).perform()
-                driver.execute_script("arguments[0].click();",
-                                      m.find_element(By.CLASS_NAME, select_ico))
+                try:
+                    action.move_to_element(m).perform()
+                    driver.execute_script("arguments[0].click();",
+                                          m.find_element(By.CLASS_NAME, select_ico))
+                except:
+                    pass
                 break
         return text_arr, sorted_messages_text
     except Exception as e:
@@ -124,8 +133,8 @@ def download_or_delete(text_arr, smt):
         name_lines = write_names_to_txt(smt)
         while True:
             try:
-                return start_renaming(start_folder_work(group_name), name_lines, text_arr, group_flag)
-            except:
+                return start_renaming(start_folder_work(group_flag), name_lines, text_arr, group_flag)
+            except Exception as e:
                 time.sleep(2)
     else:
         select('//span[@data-testid="{}"]', class_name='delete', clicked=1)

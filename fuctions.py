@@ -5,7 +5,6 @@ import time
 
 import numpy as np
 import pyautogui as pg
-from bs4_code import count_mes_in_chat
 from config import chat, not_select_messages, contacts, not_saved_contact
 
 

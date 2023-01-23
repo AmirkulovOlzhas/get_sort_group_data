@@ -1,9 +1,11 @@
 import os
+import re
 import sys
 import shutil
 from os import listdir
 from os.path import isfile, join
 from folder_works import copy_address_text
+from config import contact_dict
 
 
 def get_files_name():
@@ -58,30 +60,39 @@ def print_lines(changed_files_name, name_lines):
 
 
 def rename_files(changed_files_name, name_lines, text_arr, group_number):
-    last_folder = mypath
-    this_photo, ex_photo = 9999, 0
     name_lines = name_lines[::-1]
     n = 1
     if group_number == 0:
         n = 0
     # rename
+    folder_date = ''
     for i in range(len(name_lines)):
         contact_name = name_lines[i][0]
         if '-' in contact_name:
             contact_name = contact_name.split('-')[n]
         photo_number = 1
-        ex_photo, this_photo = this_photo, int(name_lines[i][1].replace('_', ''))
-        if this_photo > ex_photo:
-            last_folder = create_new_folder(last_folder)
+        temp_date = re.findall(r'\d{4}\-\d{2}\-\d{2}', changed_files_name[i])[0]
+        temp_date = temp_date[-2:] + '-' + temp_date[5:7] + '-' + temp_date[:4]
+        if temp_date != folder_date:
+            temp_fn = folder_date = temp_date
+            folder_num = ''
+            while True:
+                folder = os.path.join("D:\\WA_photo\\", temp_fn + contact_dict[group_number] + folder_num)
+                if os.path.exists(folder):
+                    folder_num += '-'
+                else:
+                    os.mkdir(folder)
+                    break
         while True:
             file_type = '.' + str(changed_files_name[i][-4:].replace('.', ''))
-            if os.path.exists(last_folder + '\\' + name_lines[i][1]
+            if os.path.exists(folder + '\\' + name_lines[i][1]
                               + f' {contact_name} - {str(photo_number) + file_type}'):
                 photo_number += 1
             else:
-                shutil.move(mypath + '\\' + changed_files_name[i], last_folder + '\\' + name_lines[i][1]
-                            + f' {contact_name} - {str(photo_number) + file_type}')
+                a = name_lines[i][1] + f' {contact_name} - {str(photo_number) + file_type}'
+                shutil.move(mypath + '\\' + changed_files_name[i], folder + '\\' + a)
                 break
+
     copy_address_text(text_arr)
 
 

@@ -1,5 +1,10 @@
+import os.path
+
 import numpy as np
 import re
+from os import listdir
+from os.path import isfile, join
+import shutil
 
 
 def dict_test():
@@ -101,8 +106,8 @@ def re_func():
     print(b[-1][1:])
 
 
-a = 'album-false_120363029944605916@g.us_AA6DAF357E8F58393A234AD720370594_77785497042@c.us-false_120363029944605916\
-    @g.us_C61C5517878245921104B2FEC18F4D60_77785497042@c.us-8'
+# a = 'album-false_120363029944605916@g.us_AA6DAF357E8F58393A234AD720370594_77785497042@c.us-false_120363029944605916\
+#     @g.us_C61C5517878245921104B2FEC18F4D60_77785497042@c.us-8'
 # re_func(a)
 
 
@@ -112,4 +117,22 @@ def re_func2(line):
     # print(photo_date.replace(':', '_'))
 
 
-re_func2(['0:19', '11:44', '11:44', '+11'])
+# re_func2(['0:19', '11:44', '11:44', '+11'])
+
+def folders_for_photo():
+    mypath = "D:\WA_photo\downloads\WhatsApp Unknown 2023-01-23 at 13.04.24"
+    x = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+    print(x)
+    folder_date = ''
+    folders_path = "D:\WA_photo\downloads"
+    for i in range(len(x)):
+        temp_date = re.findall(r'\d{4}\-\d{2}\-\d{2}', x[i])[0]
+        if temp_date != folder_date:
+            folder_date = temp_date
+            temp_fn = folder_date
+            if not os.path.exists(folders_path + '\\' + temp_fn):
+                os.mkdir(folders_path + '\\' + temp_fn)
+        shutil.move(mypath + '\\' + x[i], folders_path + '\\' + temp_fn)
+
+
+folders_for_photo()
