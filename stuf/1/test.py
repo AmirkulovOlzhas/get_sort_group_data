@@ -85,7 +85,7 @@ def re_func():
 
     lines = []
     for line in k:
-        line_1 = re.findall(r'\d{2}\:\d{2}', line[1])
+        line_1 = re.findall('\d{2}\:\d{2}', line[1])
 
         if '+' in line[1]:
             line_count = 3 + int(line[1][line[1].index('+') + 1:])

@@ -92,12 +92,10 @@ def select_messages():
         sorted_messages, sorted_messages_text, text_arr = taking_sorted_messages(saved_number=saved_number,
                                                                                  contact=group_flag)
         print('sm, smt, tm: ', len(sorted_messages), ' - ', len(sorted_messages_text))
-        if 'Сообщения' in sorted_messages_text[0]:
+        if 'Сообщения' == sorted_messages_text[0][0][:9]:
             print('1')
             sorted_messages_text = sorted_messages_text[1:]
             sorted_messages = np.delete(sorted_messages, 0)
-
-        print('sm, smt, tm: ', len(sorted_messages), ' - ', len(sorted_messages_text))
         for m in sorted_messages:
             try:
                 driver.execute_script("arguments[0].click();",
@@ -134,7 +132,7 @@ def download_or_delete(text_arr, smt):
         while True:
             try:
                 return start_renaming(start_folder_work(group_flag), name_lines, text_arr, group_flag)
-            except Exception as e:
+            except:
                 time.sleep(2)
     else:
         select('//span[@data-testid="{}"]', class_name='delete', clicked=1)

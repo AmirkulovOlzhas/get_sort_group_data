@@ -1,8 +1,8 @@
 from os import listdir
 from os.path import isfile, join, isdir
 
-import pandas as pd
-import matplotlib.pyplot as plt
+# import pandas as pd
+# import matplotlib.pyplot as plt
 
 
 def show_stat(result_dict):

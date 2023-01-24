@@ -15,7 +15,7 @@ all_files = os.listdir(src_folder)
 image_files = [f for f in all_files if (f.endswith('.jpg') or f.endswith('.jpeg') or f.endswith('.png') or f.endswith('.gif')) and specific_word in f]
 
 # Select 3 random files from the list
-selected_files = random.sample(image_files, 3)
+# selected_files = random.sample(image_files, 3)
 
 # Copy the selected files to the destination folder
 for file in selected_files:
