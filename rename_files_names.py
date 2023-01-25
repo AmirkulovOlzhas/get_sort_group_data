@@ -93,7 +93,7 @@ def rename_files(changed_files_name, name_lines, text_arr, group_number):
                 shutil.move(mypath + '\\' + changed_files_name[i], folder + '\\' + a)
                 break
 
-    copy_address_text(text_arr)
+    copy_address_text(text_arr, mypath)
 
 
 def start_renaming(folder_dir, name_lines, text_arr, group_number):

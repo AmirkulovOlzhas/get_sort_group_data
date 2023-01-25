@@ -93,7 +93,6 @@ def select_messages():
                                                                                  contact=group_flag)
         print('sm, smt, tm: ', len(sorted_messages), ' - ', len(sorted_messages_text))
         if 'Сообщения' == sorted_messages_text[0][0][:9]:
-            print('1')
             sorted_messages_text = sorted_messages_text[1:]
             sorted_messages = np.delete(sorted_messages, 0)
         for m in sorted_messages:
@@ -164,7 +163,7 @@ def main():
                 text_arr, smt = find_select()
                 print('time for 1 role: ', time.time() - time_begin)
                 if type(text_arr) != "<class 'int'>":
-                    input()
+                    # input()
                     while True:
                         if download_or_delete(text_arr, smt) == 0:
                             break

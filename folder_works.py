@@ -1,4 +1,6 @@
 import os, sys
+import re
+import shutil
 import time
 import patoolib
 from datetime import date
@@ -6,11 +8,11 @@ from os import listdir
 from config import contact_dict
 
 global parent_dir
-global ext_dir
+# global ext_dir
 # noinspection PyRedeclaration
 parent_dir = r"D:\\Wa_photo\\"
 # noinspection PyRedeclaration
-ext_dir = ''
+# ext_dir = ''
 
 
 def create_folder(ct):
@@ -32,21 +34,24 @@ def create_folder(ct):
     return path
 
 
-def extract_rar(rar_file, extract_dir):
-    if rar_file[-4:] == '.zip':
-        patoolib.extract_archive(r'D:\\WA_photo\\downloads\\' + rar_file, outdir=extract_dir)
-        global ext_dir
-        ext_dir = extract_dir
-        print('----------------------rar file extracted----------------------')
-        delete_rar(rar_file)
-        return extract_dir
+def extract_rar(rar_files, extract_dir):
+    for file in rar_files:
+        if file[-4:] == '.zip':
+            patoolib.extract_archive(r'D:\\WA_photo\\downloads\\' + file, outdir=extract_dir)
+            # global ext_dir
+            # ext_dir = extract_dir
+            print('----------------------rar file extracted----------------------')
+            delete_rar(file)
+            return extract_dir
+    shutil.move(r'D:\\WA_photo\\downloads\\'+rar_files[0], extract_dir)
+    return extract_dir
 
 
 def delete_rar(rar_file):
     os.remove(r'D:\\WA_photo\\downloads\\' + rar_file)
 
 
-def copy_address_text(text_mes_arr):
+def copy_address_text(text_mes_arr, ext_dir):
     try:
         text_arr = list(filter(None, text_mes_arr))
         with open(ext_dir + r'\\0Address.txt', 'w', encoding='utf8') as dst:
@@ -64,7 +69,7 @@ def start_folder_work(ct):
     i = 0
     while True:
         if len(listdir(r'D:\\WA_photo\\downloads\\')) > 0:
-            return extract_rar(listdir(r'D:\\WA_photo\\downloads\\')[0], create_folder(ct))
+            return extract_rar(listdir(r'D:\\WA_photo\\downloads\\'), create_folder(ct))
         else:
             time.sleep(1.5)
             i += 1
