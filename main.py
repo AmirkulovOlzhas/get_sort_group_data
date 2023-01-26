@@ -88,31 +88,25 @@ def find_mes_in_chat():
 
 
 def select_messages():
-    try:
-        sorted_messages, sorted_messages_text, text_arr = taking_sorted_messages(saved_number=saved_number,
-                                                                                 contact=group_flag)
-        print('sm, smt, tm: ', len(sorted_messages), ' - ', len(sorted_messages_text))
-        if 'Сообщения' == sorted_messages_text[0][0][:9]:
-            sorted_messages_text = sorted_messages_text[1:]
-            sorted_messages = np.delete(sorted_messages, 0)
-        for m in sorted_messages:
+    sorted_messages, sorted_messages_text, text_arr = taking_sorted_messages(saved_number=saved_number,
+                                                                             contact=group_flag)
+    print('sm, smt, tm: ', len(sorted_messages), ' - ', len(sorted_messages_text))
+    if 'Сообщения' == sorted_messages_text[0][0][:9]:
+        sorted_messages_text = sorted_messages_text[1:]
+        sorted_messages = np.delete(sorted_messages, 0)
+    for m in sorted_messages:
+        try:
+            driver.execute_script("arguments[0].click();",
+                                  m.find_element(By.CLASS_NAME, select_ico))
+        except selenium.common.exceptions.NoSuchElementException:
             try:
+                action.move_to_element(m).perform()
                 driver.execute_script("arguments[0].click();",
                                       m.find_element(By.CLASS_NAME, select_ico))
-
-            except selenium.common.exceptions.NoSuchElementException:
-                try:
-                    action.move_to_element(m).perform()
-                    driver.execute_script("arguments[0].click();",
-                                          m.find_element(By.CLASS_NAME, select_ico))
-                except:
-                    pass
-                break
-        return text_arr, sorted_messages_text
-    except Exception as e:
-        exc_type, exc_obj, exc_tb = sys.exc_info()
-        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-        print(exc_type, fname, exc_tb.tb_lineno, e)
+            except:
+                pass
+            break
+    return text_arr, sorted_messages_text
 
 
 def find_select():
@@ -134,6 +128,7 @@ def download_or_delete(text_arr, smt):
             except:
                 time.sleep(2)
     else:
+        input()
         select('//span[@data-testid="{}"]', class_name='delete', clicked=1)
         time.sleep(1.2)
         select('//div[@data-testid="{}"]', class_name='popup-controls-delete', clicked=1)

@@ -38,13 +38,12 @@ def extract_rar(rar_files, extract_dir):
     for file in rar_files:
         if file[-4:] == '.zip':
             patoolib.extract_archive(r'D:\\WA_photo\\downloads\\' + file, outdir=extract_dir)
-            # global ext_dir
-            # ext_dir = extract_dir
             print('----------------------rar file extracted----------------------')
             delete_rar(file)
             return extract_dir
-    shutil.move(r'D:\\WA_photo\\downloads\\'+rar_files[0], extract_dir)
-    return extract_dir
+    if file[-4:] in ['jpeg', '.mp4']:
+        shutil.move(r'D:\\WA_photo\\downloads\\'+rar_files[0], extract_dir)
+        return extract_dir
 
 
 def delete_rar(rar_file):

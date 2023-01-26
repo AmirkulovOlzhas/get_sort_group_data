@@ -69,6 +69,8 @@ def taking_sorted_messages(saved_number=0, contact=0):
                 By.XPATH, '//div[@class="{}"]'.format(chat)). \
                                         find_elements(By.XPATH, '//div[@data-id]//div[contains(@class, "_1-lf9")]'))
             for i in range(len(messages)):
+                print(end='.')
+
                 mes_class = np.array(messages_classes[i].get_attribute("class").split())
                 contact_name, contact_number = get_contact_info(messages[i], contact)
 
@@ -81,6 +83,7 @@ def taking_sorted_messages(saved_number=0, contact=0):
 
         elif saved_number == 0:
             for mes in messages:
+                print(end='.')
                 m, k = mes.text.splitlines(), 0
                 contact_name, contact_number = get_contact_info(mes, contact)
                 if contact_number:
@@ -101,6 +104,7 @@ def taking_sorted_messages(saved_number=0, contact=0):
                                         find_elements(By.XPATH, '//div[@data-id]//div[contains(@class, "_1-lf9")]'))
 
             for i in range(len(messages)):
+                print(end='.')
                 contact_name, contact_number = get_contact_info(messages[i], contact)
                 m = messages[i].text.splitlines()
                 mes_class = np.array(messages_classes[i].get_attribute("class").split())
@@ -113,6 +117,7 @@ def taking_sorted_messages(saved_number=0, contact=0):
                     text_arr = np.append(text_arr, split_text_date(contact_name, m))
         else:  # choose all (text too)
             for mes in messages:
+                print(end='.')
                 m = mes.text.splitlines()
                 contact_name, contact_number = get_contact_info(mes, contact)
                 if contact_number:
