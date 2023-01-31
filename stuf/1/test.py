@@ -136,3 +136,13 @@ def folders_for_photo():
 
 
 folders_for_photo()
+
+def get_contact_info(mes, contact):
+    return mes, contact
+def a(s, c):
+    messages = []
+    sm, smt, text_arr = np.array([]), [], np.array([])
+
+    for i in range(len(messages)):
+        m = messages[i].text.splitlines()
+        contact_name, contact_number = get_contact_info(messages[i], c)

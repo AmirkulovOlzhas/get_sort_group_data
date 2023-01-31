@@ -37,7 +37,7 @@ def split_text_date(contact_name, td):
             s = date + '|' + contact_name + ' - ' + text + '\n'
             return s
     except:
-        pass
+        print('-')
 
 
 def get_contact_info(m, contact):
@@ -53,79 +53,48 @@ def get_contact_info(m, contact):
 def mess_count():
     return len(driver.find_element(
         By.XPATH, '//div[@class="{}"]'.format(chat)). \
-                        find_elements(By.XPATH, '//div[@data-id]'))
+               find_elements(By.XPATH, '//div[@data-id]'))
 
 
 def taking_sorted_messages(saved_number=0, contact=0):
     try:
-        a = time.time()
+        start_time = time.time()
         messages = np.array(driver.find_element(
             By.XPATH, '//div[@class="{}"]'.format(chat)). \
                             find_elements(By.XPATH, '//div[@data-id]'))
         sm, smt, text_arr = np.array([]), [], np.array([])
-
+        if saved_number in [1, 3]:
+            messages_classes = np.array(driver.find_element(
+                By.XPATH, '//div[@class="{}"]'.format(chat)). \
+                                        find_elements(By.XPATH, '//div[@data-id]//div[contains(@class, "_1-lf9")]'))
         if saved_number == 1:
-            messages_classes = np.array(driver.find_element(
-                By.XPATH, '//div[@class="{}"]'.format(chat)). \
-                                        find_elements(By.XPATH, '//div[@data-id]//div[contains(@class, "_1-lf9")]'))
-            for i in range(len(messages)):
-                print(end='.')
+            ab_func = lambda x: [x[1], x[0]]
+        else:
+            ab_func = lambda x: x
 
-                mes_class = np.array(messages_classes[i].get_attribute("class").split())
-                contact_name, contact_number = get_contact_info(messages[i], contact)
-
-                if contact_name:  # not_select_mess
-                    m = messages[i].text.splitlines()
+        for i in range(len(messages)):
+            x = 0
+            contact_name, contact_number = get_contact_info(messages[i], contact)
+            a, b = ab_func([contact_number, contact_name])
+            if a:
+                if saved_number == 2:
+                    x = 1
+                elif saved_number == 0:
+                    if b is None:
+                        x = 1
+                else:
+                    mes_class = np.array(messages_classes[i].get_attribute("class").split())
                     if all(bad_class not in mes_class for bad_class in not_select_messages):
-                        sm = np.append(sm, messages[i])
-                        smt.append(m)  # text_date
-                    text_arr = np.append(text_arr, split_text_date(contact_name, m))
-
-        elif saved_number == 0:
-            for mes in messages:
-                print(end='.')
-                m, k = mes.text.splitlines(), 0
-                contact_name, contact_number = get_contact_info(mes, contact)
-                if contact_number:
-                    if contact != 4:
                         if contact_name is None:
-                            k = 1
-                    else:
-                        if contact_number in ['77474490473', '77475421701', '77053655758',
-                                              '77085482053', '77765870727', '77028948707']:
-                            k = 1
-                if k == 1:
-                    smt.append(m)
-                    sm = np.append(sm, mes)
+                            contact_name = contact_number
+                        x = 1
+                if x == 1:
+                    sm = np.append(sm, messages[i])
+                    smt.append(messages[i].text.splitlines())  # text_date
+                if saved_number in [1, 3]:
+                    text_arr = np.append(text_arr, split_text_date(contact_name, messages[i].text.splitlines()))
 
-        elif saved_number == 3:  # choose all photos
-            messages_classes = np.array(driver.find_element(
-                By.XPATH, '//div[@class="{}"]'.format(chat)). \
-                                        find_elements(By.XPATH, '//div[@data-id]//div[contains(@class, "_1-lf9")]'))
-
-            for i in range(len(messages)):
-                print(end='.')
-                contact_name, contact_number = get_contact_info(messages[i], contact)
-                m = messages[i].text.splitlines()
-                mes_class = np.array(messages_classes[i].get_attribute("class").split())
-                if contact_number:
-                    if all(bad_class not in mes_class for bad_class in not_select_messages):
-                        smt.append(m)
-                        sm = np.append(sm, messages[i])
-                    if contact_name is None:
-                        contact_name = contact_number
-                    text_arr = np.append(text_arr, split_text_date(contact_name, m))
-        else:  # choose all (text too)
-            for mes in messages:
-                print(end='.')
-                m = mes.text.splitlines()
-                contact_name, contact_number = get_contact_info(mes, contact)
-                if contact_number:
-                    smt.append(m)
-                    sm = np.append(sm, mes)
-
-
-        print('\n-------------------------------\ntime for tsm: ', time.time() - a,
+        print('\n-------------------------------\ntime for tsm: ', time.time() - start_time,
               '\n-----------------------------------')
         return sm, smt, text_arr
     except Exception as e:
@@ -144,13 +113,13 @@ def select(xpath, class_name, clicked=0):
 def message_count():
     a, b = 99, 100
     c, i = 0, 0
-    while True:
+    error_count = 0
+    while error_count<5:
         try:
             pg.press('home')
             time.sleep(0.1)
             pg.scroll(7)
             pg.scroll(-2)
-            #if mes[0].text[n] != 'Сообщение'
             if i % 5 == 0:
                 a, b = b, mess_count()
                 print()
@@ -159,11 +128,15 @@ def message_count():
                     c += 1
                 else:
                     c = 0
-                if c == 4:
+                if c == 3:
                     break
             print(end='.')
             i += 1
 
         except:
-            print(i)
+            time.sleep(1)
+            print(f'Ошибка {7-error_count}')
+            error_count += 1
+    if error_count == 7:
+        return 0
     return mess_count()
