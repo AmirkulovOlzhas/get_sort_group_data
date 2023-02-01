@@ -37,7 +37,7 @@ def split_text_date(contact_name, td):
             s = date + '|' + contact_name + ' - ' + text + '\n'
             return s
     except:
-        print('-')
+        pass
 
 
 def get_contact_info(m, contact):
@@ -85,9 +85,9 @@ def taking_sorted_messages(saved_number=0, contact=0):
                 else:
                     mes_class = np.array(messages_classes[i].get_attribute("class").split())
                     if all(bad_class not in mes_class for bad_class in not_select_messages):
-                        if contact_name is None:
-                            contact_name = contact_number
                         x = 1
+                    if contact_name is None:
+                        contact_name = contact_number
                 if x == 1:
                     sm = np.append(sm, messages[i])
                     smt.append(messages[i].text.splitlines())  # text_date
@@ -114,7 +114,7 @@ def message_count():
     a, b = 99, 100
     c, i = 0, 0
     error_count = 0
-    while error_count<5:
+    while error_count < 5:
         try:
             pg.press('home')
             time.sleep(0.1)
@@ -135,7 +135,7 @@ def message_count():
 
         except:
             time.sleep(1)
-            print(f'Ошибка {7-error_count}')
+            print(f'Ошибка {5 - error_count}')
             error_count += 1
     if error_count == 7:
         return 0
