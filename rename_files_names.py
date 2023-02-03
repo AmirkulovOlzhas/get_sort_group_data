@@ -106,6 +106,7 @@ def start_renaming(folder_dir, name_lines, text_arr, group_number):
     print("Photo count: ", len(changed_files_name), ' - ', len(name_lines))
     if len(changed_files_name) != len(name_lines):
         print_lines(changed_files_name, name_lines)
+        return 1
         while True:
             temp = input('Press Enter to redownload')
             if temp == 'Enter':

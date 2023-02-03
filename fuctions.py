@@ -64,6 +64,7 @@ def taking_sorted_messages(saved_number=0, contact=0):
                             find_elements(By.XPATH, '//div[@data-id]'))
         sm, smt, text_arr = np.array([]), [], np.array([])
         if saved_number in [1, 3]:
+            # time_1 = '24:00'
             messages_classes = np.array(driver.find_element(
                 By.XPATH, '//div[@class="{}"]'.format(chat)). \
                                         find_elements(By.XPATH, '//div[@data-id]//div[contains(@class, "_1-lf9")]'))
@@ -73,7 +74,11 @@ def taking_sorted_messages(saved_number=0, contact=0):
             ab_func = lambda x: x
 
         for i in range(len(messages)):
-            x = 0
+            print(end='.')
+            if i % 7 == 0:
+                print()
+            # print(messages[i].text.splitlines(), ' - ', messages[i].get_attribute("class"))
+            # x = 0
             contact_name, contact_number = get_contact_info(messages[i], contact)
             a, b = ab_func([contact_number, contact_name])
             if a:
@@ -92,8 +97,15 @@ def taking_sorted_messages(saved_number=0, contact=0):
                     sm = np.append(sm, messages[i])
                     smt.append(messages[i].text.splitlines())  # text_date
                 if saved_number in [1, 3]:
+                    # if
+                    # messages[i].text.splitlines()[-1] > time_1:
+                    #     text_arr = np.append(text_arr, '------------------\n' + split_text_date(contact_name, messages[
+                    #         i].text.splitlines()))
+                    # else:
                     text_arr = np.append(text_arr, split_text_date(contact_name, messages[i].text.splitlines()))
-
+            else:
+                print(messages[i].get_attribute("class").split())
+                print(messages[i].get_attribute("class"))
         print('\n-------------------------------\ntime for tsm: ', time.time() - start_time,
               '\n-----------------------------------')
         return sm, smt, text_arr
