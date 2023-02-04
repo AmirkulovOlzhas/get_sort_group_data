@@ -77,10 +77,13 @@ def taking_sorted_messages(saved_number=0, contact=0):
             print(end='.')
             if i % 7 == 0:
                 print()
-            # print(messages[i].text.splitlines(), ' - ', messages[i].get_attribute("class"))
-            # x = 0
+            x = 0
             contact_name, contact_number = get_contact_info(messages[i], contact)
             a, b = ab_func([contact_number, contact_name])
+            # saved_number: 0 - select all messages from not saved numbers
+            # 1 - select only photos only from saved contacts
+            # 2 - select all, from all
+            # 3 - select only photo only
             if a:
                 if saved_number == 2:
                     x = 1
@@ -97,15 +100,8 @@ def taking_sorted_messages(saved_number=0, contact=0):
                     sm = np.append(sm, messages[i])
                     smt.append(messages[i].text.splitlines())  # text_date
                 if saved_number in [1, 3]:
-                    # if
-                    # messages[i].text.splitlines()[-1] > time_1:
-                    #     text_arr = np.append(text_arr, '------------------\n' + split_text_date(contact_name, messages[
-                    #         i].text.splitlines()))
-                    # else:
                     text_arr = np.append(text_arr, split_text_date(contact_name, messages[i].text.splitlines()))
-            else:
-                print(messages[i].get_attribute("class").split())
-                print(messages[i].get_attribute("class"))
+
         print('\n-------------------------------\ntime for tsm: ', time.time() - start_time,
               '\n-----------------------------------')
         return sm, smt, text_arr

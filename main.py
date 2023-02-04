@@ -28,21 +28,22 @@ def create_driver():
     set_driver_by(driver, By)
 
 
-def choose_chat(ch=9, saved=9):
-    group_dict = {0: 'park', 1: 'enb', 2: 'turan', 3: 'tbo', 4: 'karatau'}
+def choose_chat(ch=None, saved=9):
+    group_dict = {0: 'park', 1: 'enb', 2: 'turan', 3: 'tbo', 4: 'karatau', 9: 'None'}
     # noinspection PyGlobalUndefined
-    global group_flag, saved_number, group_name
+    global group_flag, saved_number
     return_number = 0
 
-    if (ch == 9) & (saved == 9):
+    if (ch == None) & (saved == 9):
         while True:
             try:
-                group_flag = input("park-0, enb-1, turan-2, tbo-3: ")
+                for i in range(4):
+                    print(f'{i} - {contact_list[i]}')
+                group_flag = input()
                 saved_number = input("0 - not saved numbers mes, 1 saved: ")
                 group_flag, saved_number = int(group_flag), int(saved_number)
                 if group_flag in [0, 1, 2, 3, 4] and saved_number in [0, 1, 3, 2]:
-                    group_name = group_dict[group_flag]
-                    print("----------------------{}----------------------".format(group_name))
+                    print("----------------------{}----------------------".format(group_dict[group_flag]))
                     break
                 else:
                     print('set one of 012')
@@ -145,16 +146,27 @@ def main():
             input_text = input('wirte "stop" to stop the app: ')
             if input_text in ['0', '1', '2', '3', '4']:
                 control = choose_chat(int(input_text), 1)
+            # загрузка фото выбранного чата
+            elif input_text.lower() == 'start':
+                try:
+                    temp_g_name = driver.find_element(By.XPATH,
+                                                      '//span[@data-testid="conversation-info-header-chat-title"]').text
+                except:
+                    temp_g_name = '???'
+                control = choose_chat(temp_g_name, 3)
+
             else:
                 control = choose_chat()
 
             if control == 1:
                 break
+                # pass
             else:
                 if input_text == 'stop':
                     break
                 time_begin = time.time()
-                select_chat()
+                if isinstance(group_flag, int):
+                    select_chat()
                 text_arr, smt = find_select()
                 print('time for 1 role: ', time.time() - time_begin)
                 if type(text_arr) != "<class 'int'>":

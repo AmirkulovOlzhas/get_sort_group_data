@@ -59,7 +59,7 @@ def print_lines(changed_files_name, name_lines):
         print('Не все фото загрузились')
 
 
-def rename_files(changed_files_name, name_lines, text_arr, group_number):
+def rename_files(changed_files_name, name_lines, text_arr, group_number, folder_name):
     name_lines = name_lines[::-1]
     n = 1
     if group_number == 0:
@@ -77,7 +77,7 @@ def rename_files(changed_files_name, name_lines, text_arr, group_number):
             temp_fn = folder_date = temp_date
             folder_num = ''
             while True:
-                folder = os.path.join("D:\\WA_photo\\", temp_fn + contact_dict[group_number] + folder_num)
+                folder = os.path.join(mypath, temp_fn + folder_name + folder_num)
                 if os.path.exists(folder):
                     folder_num += '-'
                 else:
@@ -98,7 +98,7 @@ def rename_files(changed_files_name, name_lines, text_arr, group_number):
 
 def start_renaming(folder_dir, name_lines, text_arr, group_number):
     global mypath
-    mypath = folder_dir
+    mypath = folder_dir[0]
     print(mypath)
     # taking photo names from folder
     convert_all_files(get_files_name())
@@ -115,5 +115,5 @@ def start_renaming(folder_dir, name_lines, text_arr, group_number):
                 return 0
     else:
         changed_files_name.sort(reverse=True)
-        rename_files(changed_files_name, name_lines, text_arr, group_number)
+        rename_files(changed_files_name, name_lines, text_arr, group_number, folder_dir[1])
         return 0
