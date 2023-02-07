@@ -177,6 +177,11 @@ def main():
                         else:
                             # вниз + find_mes + если соообщений нет
                             text_arr, smt = find_select()
+                    if input('Очистить чат? (y/n) или (да/нет)').lower() in ['y', 'да']:
+                        select('//div[@class="{}"]', '_28_W0', clicked=1)
+                        select('//div[@aria-label="{}"]', 'Очистить чат', clicked=1)
+                        select('//div[@class="{}"]', "_1M6AF _3QJHf", clicked=1)
+
                 else:
                     print('Нет сообщений для скачивания')
                     select('//button[@aria-label="{}"]', class_name='Отменить пересылку', clicked=1)

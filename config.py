@@ -8,7 +8,7 @@ argument1 = r'--user-data-dir=C:\Users\OFFICE\AppData\Local\Google\Chrome\User D
 argument2 = '--profile-directory=Default'
 
 # классы сообщений не для скачивания (текст, карта, стикеры итд)
-not_select_messages = ['_2JmX4', '_36Yw-', '_36Yw- _18q-J', '_2BJ4G', '_3mSPV', '_25eIs', 'NQl4z']
+not_select_messages = ['_2JmX4', '_36Yw-', '_36Yw- _18q-J', '_2BJ4G', '_3mSPV', '_25eIs', 'NQl4z', '_7Vlce']
 
 message_class = '_7GVCb'
 contact_list = ["Содержание парков", "Еңбекші ішкі орам", "ТҰРАН ТАЗАЛЫҚ ДЕ СУППОРТ", "Нурсат ТБО",
