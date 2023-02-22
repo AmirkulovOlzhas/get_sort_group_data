@@ -29,7 +29,8 @@ def create_driver():
 
 
 def choose_chat(ch=None, saved=9):
-    group_dict = {0: 'park', 1: 'enb', 2: 'turan', 3: 'tbo', 4: 'karatau', 9: 'None'}
+    group_dict = {0: 'park', 1: 'enb', 2: 'turan', 3: 'tbo', 4: 'karatau', 5: 'ТБО, Туран, Азат, Мирас', 6: 'ТБО ГОРОД',
+                  7: 'Больница РОЩА', 9: 'None'}
     # noinspection PyGlobalUndefined
     global group_flag, saved_number
     return_number = 0
@@ -42,7 +43,7 @@ def choose_chat(ch=None, saved=9):
                 group_flag = input()
                 saved_number = input("0 - not saved numbers mes, 1 saved: ")
                 group_flag, saved_number = int(group_flag), int(saved_number)
-                if group_flag in [0, 1, 2, 3, 4] and saved_number in [0, 1, 3, 2]:
+                if group_flag in [0, 1, 2, 3, 4, 5, 6, 7] and saved_number in [0, 1, 3, 2]:
                     print("----------------------{}----------------------".format(group_dict[group_flag]))
                     break
                 else:
@@ -167,6 +168,7 @@ def main():
                 time_begin = time.time()
                 if isinstance(group_flag, int):
                     select_chat()
+                #select chat by chat name
                 text_arr, smt = find_select()
                 print('time for 1 role: ', time.time() - time_begin)
                 if type(text_arr) != "<class 'int'>":
@@ -177,7 +179,7 @@ def main():
                         else:
                             # вниз + find_mes + если соообщений нет
                             text_arr, smt = find_select()
-                    if saved_number in [1,3]:
+                    if saved_number in [1, 3]:
                         if input('Очистить чат? (y/n) или (да/нет)').lower() in ['y', 'да']:
                             select('//div[@class="{}"]', '_28_W0', clicked=1)
                             select('//div[@aria-label="{}"]', 'Очистить чат', clicked=1)

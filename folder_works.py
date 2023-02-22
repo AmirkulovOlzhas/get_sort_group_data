@@ -21,7 +21,7 @@ def create_folder(ct):
         temp_cd = contact_dict[ct]
     else:
         temp_cd = ct
-    folder_name = str(today.day) + '-' + str(today.month) + '-' + str(today.year) + temp_cd + '!'
+    folder_name = str(today.month) + '-' + str(today.day) + '-' + str(today.year) + temp_cd + '!'
 
     path = os.path.join(parent_dir, folder_name)
     folder_number = 0
@@ -38,14 +38,16 @@ def create_folder(ct):
     return [path, temp_cd]
 
 
-def extract_rar(rar_files, extract_dir):
+def extract_rar(rar_files, ct):
     for file in rar_files:
         if file[-4:] == '.zip':
+            extract_dir = create_folder(ct)
             patoolib.extract_archive(r'D:\\WA_photo\\downloads\\' + file, outdir=extract_dir[0])
             print('----------------------rar file extracted----------------------')
             delete_rar(file)
             return extract_dir
     if file[-4:] in ['jpeg', '.mp4']:
+        extract_dir = create_folder(ct)
         shutil.move(r'D:\\WA_photo\\downloads\\'+rar_files[0], extract_dir[0])
         return extract_dir
 
@@ -72,7 +74,7 @@ def start_folder_work(ct):
     i = 0
     while True:
         if len(listdir(r'D:\\WA_photo\\downloads\\')) > 0:
-            return extract_rar(listdir(r'D:\\WA_photo\\downloads\\'), create_folder(ct))
+            return extract_rar(listdir(r'D:\\WA_photo\\downloads\\'), ct)
         else:
             time.sleep(1.5)
             i += 1

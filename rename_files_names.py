@@ -72,7 +72,8 @@ def rename_files(changed_files_name, name_lines, text_arr, group_number, folder_
             contact_name = contact_name.split('-')[n]
         photo_number = 1
         temp_date = re.findall(r'\d{4}\-\d{2}\-\d{2}', changed_files_name[i])[0]
-        temp_date = temp_date[-2:] + '-' + temp_date[5:7] + '-' + temp_date[:4]
+        #тут изменить
+        temp_date = temp_date[5:7] + '-' + temp_date[-2:] + '-' + temp_date[:4]
         if temp_date != folder_date:
             temp_fn = folder_date = temp_date
             folder_num = ''

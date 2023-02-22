@@ -80,10 +80,11 @@ def taking_sorted_messages(saved_number=0, contact=0):
             x = 0
             contact_name, contact_number = get_contact_info(messages[i], contact)
             a, b = ab_func([contact_number, contact_name])
-            # saved_number: 0 - select all messages from not saved numbers
-            # 1 - select only photos only from saved contacts
-            # 2 - select all, from all
-            # 3 - select only photo only
+            # saved_number:
+            # 0 - select all messages from not saved numbers
+            # 1 - select only photos from saved contacts
+            # 2 - select all messages from all contacts
+            # 3 - select only photo from only
             if a:
                 if saved_number == 2:
                     x = 1
@@ -137,7 +138,10 @@ def message_count():
                 else:
                     c = 0
                 if c == 3:
-                    break
+                    if input('введи "+" чтобы продолжить скролить: ') != '+':
+                        break
+                    else:
+                        c = 0
             print(end='.')
             i += 1
 
