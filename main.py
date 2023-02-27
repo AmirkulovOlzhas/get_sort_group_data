@@ -28,14 +28,14 @@ def create_driver():
     set_driver_by(driver, By)
 
 
-def choose_chat(ch=None, saved=9):
+def choose_chat(ch=None, saved=99):
     group_dict = {0: 'park', 1: 'enb', 2: 'turan', 3: 'tbo', 4: 'karatau', 5: 'ТБО, Туран, Азат, Мирас', 6: 'ТБО ГОРОД',
-                  7: 'Больница РОЩА', 9: 'None'}
+                  7: 'Больница РОЩА',8: 'ТҰРАН СУ БОЙЫНША' , 99: 'None'}
     # noinspection PyGlobalUndefined
     global group_flag, saved_number
     return_number = 0
 
-    if (ch == None) & (saved == 9):
+    if (ch == None) & (saved == 99):
         while True:
             try:
                 for i in range(4):
@@ -43,7 +43,7 @@ def choose_chat(ch=None, saved=9):
                 group_flag = input()
                 saved_number = input("0 - not saved numbers mes, 1 saved: ")
                 group_flag, saved_number = int(group_flag), int(saved_number)
-                if group_flag in [0, 1, 2, 3, 4, 5, 6, 7] and saved_number in [0, 1, 3, 2]:
+                if group_flag in [0, 1, 2, 3, 4, 5, 6, 7, 8] and saved_number in [0, 1, 3, 2]:
                     print("----------------------{}----------------------".format(group_dict[group_flag]))
                     break
                 else:
@@ -137,27 +137,28 @@ def download_or_delete(text_arr, smt):
         return 0
 
 
-def main():
-    # открывает хром
-    create_driver()
-    archive_open()
-    # цикл действий
+def main(contact=None, sn=None):
     while True:
         try:
-            input_text = input('wirte "stop" to stop the app: ')
-            if input_text in ['0', '1', '2', '3', '4']:
-                control = choose_chat(int(input_text), 1)
-            # загрузка фото выбранного чата
-            elif input_text.lower() == 'start':
-                try:
-                    temp_g_name = driver.find_element(By.XPATH,
-                                                      '//span[@data-testid="conversation-info-header-chat-title"]').text
-                except:
-                    temp_g_name = '???'
-                control = choose_chat(temp_g_name, 3)
-
+            if contact is None:
+                input_text = input('wirte "stop" to stop the app: ')
+                if input_text in ['0', '1', '2', '3', '4', '5', '6', '7', '8']:
+                    control = choose_chat(int(input_text), 1)
+                # загрузка фото выбранного чата
+                elif input_text.lower() == 'start':
+                    try:
+                        temp_g_name = driver.find_element(By.XPATH,
+                                                          '//span[@data-testid="conversation-info-header-chat-title"]').text
+                    except:
+                        temp_g_name = '???'
+                    control = choose_chat(temp_g_name, 3)
+                elif input_text == 'stop':
+                    break
+                else:
+                    control = choose_chat()
             else:
-                control = choose_chat()
+                input_text = ''
+                control = choose_chat(contact, sn)
 
             if control == 1:
                 break
@@ -168,8 +169,12 @@ def main():
                 time_begin = time.time()
                 if isinstance(group_flag, int):
                     select_chat()
-                #select chat by chat name
-                text_arr, smt = find_select()
+                # select chat by chat name
+                try:
+                    text_arr, smt = find_select()
+                except:
+                    print('Нет сообщений!')
+                    break
                 print('time for 1 role: ', time.time() - time_begin)
                 if type(text_arr) != "<class 'int'>":
                     # input()
@@ -179,15 +184,16 @@ def main():
                         else:
                             # вниз + find_mes + если соообщений нет
                             text_arr, smt = find_select()
-                    if saved_number in [1, 3]:
-                        if input('Очистить чат? (y/n) или (да/нет)').lower() in ['y', 'да']:
-                            select('//div[@class="{}"]', '_28_W0', clicked=1)
-                            select('//div[@aria-label="{}"]', 'Очистить чат', clicked=1)
-                            select('//div[@class="{}"]', "_1M6AF _3QJHf", clicked=1)
+                    # if saved_number in [1, 3]:
+                    #     if input('Очистить чат? (y/n) или (да/нет)').lower() in ['y', 'да']:
+                    select('//div[@class="{}"]', '_28_W0', clicked=1)
+                    select('//div[@aria-label="{}"]', 'Очистить чат', clicked=1)
+                    select('//div[@class="{}"]', "_1M6AF _3QJHf", clicked=1)
 
                 else:
                     print('Нет сообщений для скачивания')
                     select('//button[@aria-label="{}"]', class_name='Отменить пересылку', clicked=1)
+                break
 
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -196,5 +202,26 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # create_driver()
+    # archive_open()
+    # main()
+    list_of_group = [
+        [0, 1], [1, 1], [2, 1],
+        [3, 3], [4, 3], [5, 3],
+        [6, 3], [7, 3]
+    ]
+    create_driver()
+    archive_open()
+    for i in list_of_group:
+        select('//span[@title="{}"]', contact_list[i[0]], clicked=1)
+        time.sleep(1.5)
+    for i in list_of_group:
+        # открывает хром
+        if i[0] == 3:
+            driver.quit()
+            create_driver()
+            archive_open()
+        # цикл действий
+        print(f'-----------------{i}------------------')
+        main(i[0], i[1])
     driver.quit()

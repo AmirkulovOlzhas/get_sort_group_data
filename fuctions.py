@@ -17,22 +17,24 @@ def set_driver_by(d, B):
 
 def click(click_c=1):
     for i in range(click_c):
-        pg.click(389, 777, button='middle')
+        pg.click(400, 800, button='middle')
 
 
-def split_text_date(contact_name, td):
+def split_text_date(contact_name, td, not_saved_contacts):
     try:
         abc = '1234567890:+ Видео'
         text = ''
         date = re.findall(f'\d\d\:\d\d', ''.join(td))[-1]
+        if any(a in td for a in ['Пересланное сообщение', 'Данное сообщение удалено']):
+            td = td.replace('Данное сообщение удалено', '')
+            td= td.replace('Пересланное сообщение', '')
         for word in td:
             if not all(letter in abc for letter in word):
-                if word not in ['Пересланное сообщение', 'Данное сообщение удалено']:
-                    if '**' not in word:
-                        if word not in not_saved_contact:
-                            text += word
-                        else:
-                            contact_name += '|' + word
+                if '**' not in word:
+                    if word not in not_saved_contacts:
+                        text += word
+                    else:
+                        contact_name += '|' + word
         if text:
             s = date + '|' + contact_name + ' - ' + text + '\n'
             return s
@@ -50,10 +52,15 @@ def get_contact_info(m, contact):
     return contact_name, contact_number
 
 
-def mess_count():
-    return len(driver.find_element(
-        By.XPATH, '//div[@class="{}"]'.format(chat)). \
-               find_elements(By.XPATH, '//div[@data-id]'))
+def mess_count(type = 0):
+    if type == 0 :
+        return len(driver.find_element(
+            By.XPATH, '//div[@class="{}"]'.format(chat)). \
+                   find_elements(By.XPATH, '//div[@data-id]'))
+    else:
+        return driver.find_element(
+            By.XPATH, '//div[@class="{}"]'.format(chat)). \
+                   find_elements(By.XPATH, '//div[@data-id]')[0]
 
 
 def taking_sorted_messages(saved_number=0, contact=0):
@@ -72,7 +79,10 @@ def taking_sorted_messages(saved_number=0, contact=0):
             ab_func = lambda x: [x[1], x[0]]
         else:
             ab_func = lambda x: x
-
+        if contact > 3:
+            not_saved_contacts = not_saved_contact[contact]
+        else:
+            not_saved_contacts = []
         for i in range(len(messages)):
             print(end='.')
             if i % 7 == 0:
@@ -101,7 +111,7 @@ def taking_sorted_messages(saved_number=0, contact=0):
                     sm = np.append(sm, messages[i])
                     smt.append(messages[i].text.splitlines())  # text_date
                 if saved_number in [1, 3]:
-                    text_arr = np.append(text_arr, split_text_date(contact_name, messages[i].text.splitlines()))
+                    text_arr = np.append(text_arr, split_text_date(contact_name, messages[i].text.splitlines(), not_saved_contacts))
 
         print('\n-------------------------------\ntime for tsm: ', time.time() - start_time,
               '\n-----------------------------------')
@@ -138,10 +148,15 @@ def message_count():
                 else:
                     c = 0
                 if c == 3:
-                    if input('введи "+" чтобы продолжить скролить: ') != '+':
+                    a = mess_count(1)
+                    if a.text.split('.')[0] == 'Сообщения защищены сквозным шифрованием':
                         break
-                    else:
-                        c = 0
+                    if c > 7:
+                        break
+                    # if input('введи "+" чтобы продолжить скролить: ') != '+':
+                    #     break
+                    # else:
+                    #     c = 0
             print(end='.')
             i += 1
 
