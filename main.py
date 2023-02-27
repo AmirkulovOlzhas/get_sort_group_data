@@ -30,7 +30,7 @@ def create_driver():
 
 def choose_chat(ch=None, saved=99):
     group_dict = {0: 'park', 1: 'enb', 2: 'turan', 3: 'tbo', 4: 'karatau', 5: 'ТБО, Туран, Азат, Мирас', 6: 'ТБО ГОРОД',
-                  7: 'Больница РОЩА',8: 'ТҰРАН СУ БОЙЫНША' , 99: 'None'}
+                  7: 'Больница РОЩА', 8: 'ТҰРАН СУ БОЙЫНША', 99: 'None'}
     # noinspection PyGlobalUndefined
     global group_flag, saved_number
     return_number = 0
@@ -186,9 +186,15 @@ def main(contact=None, sn=None):
                             text_arr, smt = find_select()
                     # if saved_number in [1, 3]:
                     #     if input('Очистить чат? (y/n) или (да/нет)').lower() in ['y', 'да']:
-                    select('//div[@class="{}"]', '_28_W0', clicked=1)
-                    select('//div[@aria-label="{}"]', 'Очистить чат', clicked=1)
-                    select('//div[@class="{}"]', "_1M6AF _3QJHf", clicked=1)
+                    try:
+                        select('//div[@class="{}"]', '_28_W0', clicked=1)
+                        select('//div[@aria-label="{}"]', 'Очистить чат', clicked=1)
+                        select('//div[@class="{}"]', "_1M6AF _3QJHf", clicked=1)
+                        time.sleep(1)
+                        select('//div[@class="{}"]', "_1M6AF _3QJHf", clicked=1)
+                        time.sleep(2)
+                    except:
+                        print('Сообщения не удалены')
 
                 else:
                     print('Нет сообщений для скачивания')
@@ -208,7 +214,7 @@ if __name__ == "__main__":
     list_of_group = [
         [0, 1], [1, 1], [2, 1],
         [3, 3], [4, 3], [5, 3],
-        [6, 3], [7, 3]
+        [6, 3], [7, 3], [8, 3]
     ]
     create_driver()
     archive_open()
@@ -223,5 +229,8 @@ if __name__ == "__main__":
             archive_open()
         # цикл действий
         print(f'-----------------{i}------------------')
-        main(i[0], i[1])
+        try:
+            main(i[0], i[1])
+        except:
+            pass
     driver.quit()
