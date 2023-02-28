@@ -29,30 +29,33 @@ def create_driver():
 
 
 def choose_chat(ch=None, saved=99):
-    group_dict = {0: 'park', 1: 'enb', 2: 'turan', 3: 'tbo', 4: 'karatau', 5: 'ТБО, Туран, Азат, Мирас', 6: 'ТБО ГОРОД',
-                  7: 'Больница РОЩА', 8: 'ТҰРАН СУ БОЙЫНША', 99: 'None'}
     # noinspection PyGlobalUndefined
     global group_flag, saved_number
+    group_flag = None
+    saved_number = None
     return_number = 0
 
     if (ch == None) & (saved == 99):
         while True:
             try:
-                for i in range(4):
+                for i in range(contact_list):
                     print(f'{i} - {contact_list[i]}')
                 group_flag = input()
-                saved_number = input("0 - not saved numbers mes, 1 saved: ")
+                saved_number = input("0 - выбор фото и сообщений не сохраненных контактов, "
+                                     "1 - загрузка фото и сообщений сохраненных"
+                                     "2 - выбор всех сообщений"
+                                     "3 - сохранение фото и текста всех контактов: ")
                 group_flag, saved_number = int(group_flag), int(saved_number)
-                if group_flag in [0, 1, 2, 3, 4, 5, 6, 7, 8] and saved_number in [0, 1, 3, 2]:
-                    print("----------------------{}----------------------".format(group_dict[group_flag]))
+                if group_flag in range(len(contact_list)) and saved_number in [0, 1, 3, 2]:
+                    print("----------------------{}----------------------".format(contact_list[group_flag]))
                     break
                 else:
-                    print('set one of 012')
+                    print('введите корректное число')
             except:
                 if 'stop' in [group_flag, saved_number]:
                     return_number = 1
                     break
-                print('set only corrtect info')
+                print('Введи числа')
         return return_number
     else:
         group_flag = ch
@@ -80,11 +83,11 @@ def select_chat():
 def find_mes_in_chat():
     # расчет сообщений -> меню -> выбор сообщений
     try:
-        select('//span[@class="{}"]', "_3K42l", clicked=1)
+        select('//span[@class="{}"]', "_3K42l", clicked=1)  # кнопка вниз
     except:
         print("----------------------нет кнопки вниз----------------------")
-    select('//div[@class="{}"]', '_28_W0', clicked=1)
-    select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1)
+    select('//div[@class="{}"]', '_28_W0', clicked=1) # три точки
+    select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1) # выбор сообщений
     click()
     return message_count()
 
@@ -141,7 +144,10 @@ def main(contact=None, sn=None):
     while True:
         try:
             if contact is None:
-                input_text = input('wirte "stop" to stop the app: ')
+                input_text = input('1 - Пункт.'
+                                   'Введите от 0-8 что бы сохранить фото от сохраненных контактов группы\n'
+                                   'либо вручную откройте группу и напишете "start" чтобы сохранить все \n'
+                                   'что бы сделать расширенный выбор, введите пустую строку: ')
                 if input_text in ['0', '1', '2', '3', '4', '5', '6', '7', '8']:
                     control = choose_chat(int(input_text), 1)
                 # загрузка фото выбранного чата
