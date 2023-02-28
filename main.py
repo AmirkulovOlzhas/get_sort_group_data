@@ -38,7 +38,7 @@ def choose_chat(ch=None, saved=99):
     if (ch == None) & (saved == 99):
         while True:
             try:
-                for i in range(contact_list):
+                for i in range(len(contact_list)):
                     print(f'{i} - {contact_list[i]}')
                 group_flag = input()
                 saved_number = input("0 - выбор фото и сообщений не сохраненных контактов, "
@@ -51,10 +51,13 @@ def choose_chat(ch=None, saved=99):
                     break
                 else:
                     print('введите корректное число')
-            except:
+            except Exception as e:
                 if 'stop' in [group_flag, saved_number]:
                     return_number = 1
                     break
+                exc_type, exc_obj, exc_tb = sys.exc_info()
+                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                print(exc_type, fname, exc_tb.tb_lineno, e)
                 print('Введи числа')
         return return_number
     else:
@@ -86,8 +89,8 @@ def find_mes_in_chat():
         select('//span[@class="{}"]', "_3K42l", clicked=1)  # кнопка вниз
     except:
         print("----------------------нет кнопки вниз----------------------")
-    select('//div[@class="{}"]', '_28_W0', clicked=1) # три точки
-    select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1) # выбор сообщений
+    select('//div[@class="{}"]', '_28_W0', clicked=1)  # три точки
+    select('//div[@aria-label="{}"]', 'Выбрать сообщения', clicked=1)  # выбор сообщений
     click()
     return message_count()
 
@@ -122,7 +125,7 @@ def find_select():
         return 0, []
 
 
-def download_or_delete(text_arr, smt):
+def download_or_delete(text_arr, smt, auto_delete):
     if saved_number in [1, 3]:
         print("----------------------names saved----------------------")
         select('//span[@data-testid="{}"]', class_name='download', clicked=1)
@@ -144,6 +147,7 @@ def main(contact=None, sn=None):
     while True:
         try:
             if contact is None:
+                auto_delete = 0
                 input_text = input('1 - Пункт.'
                                    'Введите от 0-8 что бы сохранить фото от сохраненных контактов группы\n'
                                    'либо вручную откройте группу и напишете "start" чтобы сохранить все \n'
@@ -163,6 +167,7 @@ def main(contact=None, sn=None):
                 else:
                     control = choose_chat()
             else:
+                auto_delete = 1
                 input_text = ''
                 control = choose_chat(contact, sn)
 
@@ -185,7 +190,7 @@ def main(contact=None, sn=None):
                 if type(text_arr) != "<class 'int'>":
                     # input()
                     while True:
-                        if download_or_delete(text_arr, smt) == 0:
+                        if download_or_delete(text_arr, smt, auto_delete) == 0:
                             break
                         else:
                             # вниз + find_mes + если соообщений нет
@@ -193,13 +198,21 @@ def main(contact=None, sn=None):
                     # if saved_number in [1, 3]:
                     #     if input('Очистить чат? (y/n) или (да/нет)').lower() in ['y', 'да']:
                     try:
-                        select('//div[@class="{}"]', '_28_W0', clicked=1)
-                        select('//div[@aria-label="{}"]', 'Очистить чат', clicked=1)
-                        time.sleep(2)
-                        select('//div[@class="{}"]', "_1M6AF _3QJHf", clicked=1)
-                        time.sleep(2)
-                        select('//div[@class="{}"]', "_1M6AF _3QJHf", clicked=1)
-                        time.sleep(5)
+                        if auto_delete:
+                            x = 1
+                        else:
+                            if input('Очистить чат? (y/n) или (да/нет)').lower() in ['y', 'да']:
+                                x = 1
+                            else:
+                                x = 0
+                        if x:
+                            select('//div[@class="{}"]', '_28_W0', clicked=1)
+                            select('//div[@aria-label="{}"]', 'Очистить чат', clicked=1)
+                            time.sleep(2)
+                            select('//div[@class="{}"]', "_1M6AF _3QJHf", clicked=1)
+                            time.sleep(2)
+                            select('//div[@class="{}"]', "_1M6AF _3QJHf", clicked=1)
+                            time.sleep(5)
                     except:
                         print('Сообщения не удалены')
 
@@ -225,7 +238,7 @@ if __name__ == "__main__":
     for i in list_of_group:
         select('//span[@title="{}"]', contact_list[i[0]], clicked=1)
         time.sleep(1.5)
-    main()
+    # main()
     for i in list_of_group:
         # открывает хром
         if i[0] == 3:
