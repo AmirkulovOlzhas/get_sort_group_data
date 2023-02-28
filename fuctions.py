@@ -25,9 +25,10 @@ def split_text_date(contact_name, td, not_saved_contacts):
         abc = '1234567890:+ Видео'
         text = ''
         date = re.findall(f'\d\d\:\d\d', ''.join(td))[-1]
-        if any(a in td for a in ['Пересланное сообщение', 'Данное сообщение удалено']):
+        if any(a in td for a in ['Пересланное сообщение', 'Данное сообщение удалено', 'Данное сообщение удалено админом ()']):
             td = td.replace('Данное сообщение удалено', '')
-            td= td.replace('Пересланное сообщение', '')
+            td = td.replace('Данное сообщение удалено админом ()', '')
+            td = td.replace('Пересланное сообщение', '')
         for word in td:
             if not all(letter in abc for letter in word):
                 if '**' not in word:
@@ -151,8 +152,8 @@ def message_count():
                     a = mess_count(1)
                     if a.text.split('.')[0] == 'Сообщения защищены сквозным шифрованием':
                         break
-                    if c > 7:
-                        break
+                if c > 7:
+                    break
                     # if input('введи "+" чтобы продолжить скролить: ') != '+':
                     #     break
                     # else:

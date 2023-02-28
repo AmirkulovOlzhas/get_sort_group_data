@@ -189,10 +189,11 @@ def main(contact=None, sn=None):
                     try:
                         select('//div[@class="{}"]', '_28_W0', clicked=1)
                         select('//div[@aria-label="{}"]', 'Очистить чат', clicked=1)
-                        select('//div[@class="{}"]', "_1M6AF _3QJHf", clicked=1)
-                        time.sleep(1)
+                        time.sleep(2)
                         select('//div[@class="{}"]', "_1M6AF _3QJHf", clicked=1)
                         time.sleep(2)
+                        select('//div[@class="{}"]', "_1M6AF _3QJHf", clicked=1)
+                        time.sleep(5)
                     except:
                         print('Сообщения не удалены')
 
@@ -208,19 +209,17 @@ def main(contact=None, sn=None):
 
 
 if __name__ == "__main__":
-    # create_driver()
-    # archive_open()
-    # main()
     list_of_group = [
         [0, 1], [1, 1], [2, 1],
         [3, 3], [4, 3], [5, 3],
-        [6, 3], [7, 3], [8, 3]
+        [6, 3], [7, 3]  # , [8, 3]
     ]
     create_driver()
     archive_open()
     for i in list_of_group:
         select('//span[@title="{}"]', contact_list[i[0]], clicked=1)
         time.sleep(1.5)
+    main()
     for i in list_of_group:
         # открывает хром
         if i[0] == 3:
